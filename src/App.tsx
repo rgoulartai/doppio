@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import Landing from './pages/Landing'
 import Learn from './pages/Learn'
 import Complete from './pages/Complete'
@@ -23,6 +24,7 @@ function App() {
       {/* PWA install banners — platform-detected, shown after 5s delay */}
       <IOSInstallBanner />
       <AndroidInstallBanner />
+      <Analytics />
     </BrowserRouter>
   )
 }
