@@ -9,4 +9,6 @@
 scripts/.last_run
 scripts/update_timeline.log
 scripts/auto_commit_push.log
+scripts/budget_screenshot.log
+scripts/budget_auth.json
 *.tmp
