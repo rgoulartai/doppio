@@ -36,7 +36,7 @@
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
 | 2.1 | Create content.json with TypeScript types | done | phase-2/content-layer | 2026-03-06 | src/types/content.ts (4 interfaces), src/data/content.json (9 cards + 5 resources), src/types/custom-elements.d.ts, resolveJsonModule added. tsc --noEmit and build both pass. |
-| 2.2 | Video Curation (real video IDs) | in-progress | phase-1/vercel-deploy | 2026-03-06 | All 9 candidates researched. Awaiting user approval before writing to content.json. |
+| 2.2 | Video Curation (real video IDs) | done | main | 2026-03-06 | All 9 video IDs written to content.json. L1C1=MLBeeUmB76M (Voice Mode), L1C2=3KVir824798 (Upload Files), L1C3=rnh0M3qqSgc (Gmail), L2C1=gT8GyrZ__Mw (Claude Cowork), L2C2=2pUJG-M0Cu4 (Browser Agent), L2C3=5C-d-8LSEI4 (Receipts), L3C1=pXR_bShli10 (Expense Report), L3C2=UobQwGTli5w (Perplexity Deep Research), L3C3=LnURCxwsB34 (Perplexity Features) |
 | 2.3 | Verify Try-it URL Patterns | pending | | | Requires browser test of ChatGPT/Claude/Perplexity |
 | 2.R | Phase 2 Regression | pending | | | |
 
