@@ -1,7 +1,7 @@
 # Doppio - Implementation Progress
 
 **Target**: Sunday March 8, 2026 12:00 PM EST (Skool Hackathon submission)
-**Current Phase**: Phase 1: Scaffolding & Infrastructure (in-progress)
+**Current Phase**: Phase 2: Content Layer (in-progress)
 
 ---
 
@@ -9,13 +9,13 @@
 
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
-| 1: Scaffolding & Infrastructure | done | 4 | 5 | Project scaffold, PWA, Supabase, Vercel |
+| 1: Scaffolding & Infrastructure | done | 5 | 5 | Project scaffold, PWA, Supabase, Vercel — regression passed |
 | 2: Content Layer | in-progress | 0 | 4 | content.json skeleton done, video IDs researched (awaiting approval) |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
 | 5: Analytics & Polish | pending | 0 | 5 | Analytics, OG tags, icons, mobile polish |
 | 6: E2E Testing | pending | 0 | 5 | Full multi-angle testing on production |
-| **Total** | | **0** | **29** | |
+| **Total** | | **5** | **29** | |
 
 ---
 
@@ -29,7 +29,7 @@
 | 1.2 | PWA Setup (manifest, Service Worker, icons) | done | phase-1/pwa-setup | 2026-03-06 | vite-plugin-pwa configured, icons generated (4 sizes), iOS/Android install banners created, SW active. |
 | 1.3 | Supabase Project Setup | done | phase-1/supabase-setup | 2026-03-06 | Schema applied (user_progress + analytics_events + RLS). supabase.ts + auth.ts created. App.tsx updated. Anonymous auth toggle needs manual enable in Supabase Dashboard → Authentication → Settings. |
 | 1.4 | Vercel Deploy + Custom Domain | done | phase-1/vercel-deploy | 2026-03-06 | vercel.json with CSP headers + SPA rewrites. Analytics component wired. Deployed to https://doppio-gold.vercel.app. Env vars set for Production. Custom domain doppio.kookyos.com added to Vercel. USER ACTION NEEDED: Add A record on Hostgator DNS: doppio → 76.76.21.21 (Vercel IP) |
-| 1.R | Phase 1 Regression | pending | | | |
+| 1.R | Phase 1 Regression | done | main | 2026-03-06 | All checks PASS (C3/C5/D3/D7 PENDING — awaiting Supabase anon auth enable + Hostgator DNS). Fixed: Vite cache cleared (Analytics hook error), dev-dist/ added to .gitignore. |
 
 ### Phase 2: Content Layer
 
@@ -85,8 +85,17 @@
 ## Regression Results
 
 ### Phase 1 Regression
-- Status: pending
-- Results: TBD
+- Status: done
+- Date: 2026-03-06
+- Overall: PASS (with PENDING items awaiting user action)
+- Section A: Build Health — PASS (4/4)
+- Section B: Local Dev Server — PASS (8/8; Vite cache cleared to fix Analytics hook error)
+- Section C: Supabase Integration — PASS (3/5 PASS, 2/5 PENDING — C3/C5 await anonymous auth enable in Supabase Dashboard)
+- Section D: Vercel Production — PASS (5/7 PASS, 2/7 PENDING — D3 awaits anon auth, D7 DNS not propagated)
+- Section E: File Structure — PASS (19/19)
+- Section F: Git State — PASS (after fixing: dev-dist/ untracked and added to .gitignore)
+- Fixes applied: (1) Cleared node_modules/.vite cache — resolved @vercel/analytics duplicate React chunk error; (2) Added dev-dist/ and .playwright-mcp/ to .gitignore and removed dev-dist from git tracking
+- Phase 2 ready: YES
 
 ### Phase 2 Regression
 - Status: pending

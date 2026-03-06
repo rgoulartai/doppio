@@ -4,6 +4,7 @@ node_modules/
 # Build output
 dist/
 dist-ssr/
+dev-dist/
 
 # Environment variables — NEVER commit these
 .env
@@ -21,6 +22,11 @@ dist-ssr/
 # Logs
 *.log
 npm-debug.log*
+
+# Playwright MCP screenshots and regression artifacts
+.playwright-mcp/
+*-landing.png
+*-production-*.png
 
 # macOS
 .DS_Store
