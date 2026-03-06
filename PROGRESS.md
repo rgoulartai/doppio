@@ -9,7 +9,7 @@
 
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
-| 1: Scaffolding & Infrastructure | in-progress | 3 | 5 | Project scaffold, PWA, Supabase, Vercel |
+| 1: Scaffolding & Infrastructure | done | 4 | 5 | Project scaffold, PWA, Supabase, Vercel |
 | 2: Content Layer | pending | 0 | 4 | content.json, video curation, Try-it URLs |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
