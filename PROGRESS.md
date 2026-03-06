@@ -54,7 +54,7 @@
 
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
-| 4.1 | Level Navigation & Card Flow | pending | | | |
+| 4.1 | Level Navigation & Card Flow | done | feat/phase-3-ui | 2026-03-06 | LevelHeader, LevelNav (3 tabs + completion checkmarks), CardList (VideoCard+TryItButton pairs), LevelCompleteScreen stub, Learn.tsx replaced. Tab switching, progress bar, completion overlay all verified via Playwright. Build passes. |
 | 4.2 | Level Completion Screen | pending | | | |
 | 4.3 | Final Completion Screen | pending | | | |
 | 4.4 | PWA Install Prompts | pending | | | |
