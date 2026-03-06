@@ -1,7 +1,7 @@
 # Doppio - Implementation Progress
 
 **Target**: Sunday March 8, 2026 12:00 PM EST (Skool Hackathon submission)
-**Current Phase**: Phase 2: Content Layer (in-progress)
+**Current Phase**: Phase 3: Core Learning UI (in-progress)
 
 ---
 
@@ -10,7 +10,7 @@
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
 | 1: Scaffolding & Infrastructure | done | 5 | 5 | Project scaffold, PWA, Supabase, Vercel — regression passed |
-| 2: Content Layer | in-progress | 2 | 4 | content.json + TypeScript types done, 9 real video IDs curated (official Anthropic/Perplexity channels) |
+| 2: Content Layer | done | 4 | 4 | All 4 tasks complete. content.json validated, 9 real video IDs, tryItUrl patterns verified, regression passed. |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
 | 5: Analytics & Polish | pending | 0 | 5 | Analytics, OG tags, icons, mobile polish |
@@ -38,7 +38,7 @@
 | 2.1 | Create content.json with TypeScript types | done | phase-2/content-layer | 2026-03-06 | src/types/content.ts (4 interfaces), src/data/content.json (9 cards + 5 resources), src/types/custom-elements.d.ts, resolveJsonModule added. tsc --noEmit and build both pass. |
 | 2.2 | Video Curation (real video IDs) | done | phase-2/content-layer | 2026-03-06 | All 9 video IDs replaced with verified embeddable YouTube IDs. L1C1=yo42ayzL41U (AI fridge photo meal plan), L1C2=SlZLZRJ450M (Upload PDF to ChatGPT), L1C3=MFuvf3JxEQ0 (ChatGPT professional email), L2C1=d6iawCYuuEE (Claude Cowork organize desktop), L2C2=rBJnWMD0Pho (Anthropic: Claude handles browser work), L2C3=jqx18KgIzAE (Anthropic: Claude computer use orchestrating), L3C1=UAmKyyZ-b9E (Anthropic: Introducing Cowork), L3C2=Z1_M2XtsUwY (Perplexity: Introducing Deep Research), L3C3=YeldJ4UezDQ (Perplexity: Introducing Comet). All 9 verified HTTP 200 embeddable. 6 backup IDs added to backups[] array. tsc --noEmit + npm run build both pass. |
 | 2.3 | Verify Try-it URL Patterns | done | phase-2/content-layer | 2026-03-06 | ChatGPT ?q= works (auto-submits). Perplexity ?q= works (auto-executes). Claude ?q= works for authenticated users (unauthenticated: redirect to login strips param — clipboard copy is fallback). No content.json changes needed. <Toaster /> added to App.tsx. Build passes. |
-| 2.R | Phase 2 Regression | pending | | | |
+| 2.R | Phase 2 Regression | done | phase-2/content-layer | 2026-03-06 | All checks PASS. Build ✓, tsc ✓, 9/9 cards valid (no placeholders, id format ✓, prompt match ✓, URL base ✓), 9/9 oEmbed 200 ✓, 5 resources ✓, dev server clean (0 errors). Phase 3 ready. |
 
 ### Phase 3: Core Learning UI
 
@@ -98,8 +98,17 @@
 - Phase 2 ready: YES
 
 ### Phase 2 Regression
-- Status: pending
-- Results: TBD
+- Status: done
+- Date: 2026-03-06
+- Overall: PASS
+- Build: PASS — npm run build exits 0, tsc --noEmit exits 0
+- JSON: PASS — valid JSON, 0 placeholders, 9 cards, 5 resources
+- Video IDs: PASS — all 9 pass 11-char format validation
+- oEmbed: PASS — all 9 return HTTP 200
+- Prompts: PASS — all 9 copyPrompt === tryItPrompt
+- URLs: PASS — all 9 tryItUrl start with correct tool base URL
+- Dev Server: PASS — loads at localhost, 0 console errors
+- Phase 3 ready: YES
 
 ### Phase 3 Regression
 - Status: pending
