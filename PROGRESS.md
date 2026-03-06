@@ -120,10 +120,10 @@
 | Tool/Service | Status | Notes |
 |-------------|--------|-------|
 | Supabase Project | done | Project tqknjbjvdkipszyghfgj active in us-east-2 |
-| Supabase Anonymous Auth | pending | MANUAL STEP: Enable in Dashboard: Authentication → Settings → Anonymous sign-ins |
+| Supabase Anonymous Auth | done | Enabled in Dashboard: Authentication → Settings → Anonymous sign-ins ✅ |
 | Vercel Project | done | Deployed — https://doppio-gold.vercel.app (production). Project: doppio under renatos-projects-e523b708 |
 | Vercel Analytics | done | <Analytics /> component wired in App.tsx via @vercel/analytics/react |
-| Custom Domain (doppio.kookyos.com) | pending | Domain added to Vercel project. USER ACTION NEEDED: Add A record on Hostgator DNS: doppio → 76.76.21.21 |
+| Custom Domain (doppio.kookyos.com) | done | A record set on Hostgator DNS: doppio → 76.76.21.21 ✅ |
 | Nano Banana (teaser video) | pending | User creates teaser video after UI built |
 | Git Repository | done | Active — branch phase-1/vercel-deploy |
 
@@ -135,9 +135,10 @@ These require user action (agent cannot complete autonomously):
 
 | Step | When | What User Must Do |
 |------|------|-------------------|
-| Supabase project creation | Before Task 1.3 | Create new project at supabase.com, provide URL + anon key |
-| Vercel account | Before Task 1.4 | ✅ Account already exists |
-| Hostgator DNS | After Task 1.4 | Add A record in Hostgator DNS Zone Editor: Host=`doppio`, Type=`A`, Points To=`76.76.21.21`, TTL=3600 |
+| Supabase project creation | Before Task 1.3 | ✅ Done |
+| Supabase anonymous auth | Before Phase 3 | ✅ Done — enabled in Dashboard |
+| Vercel account | Before Task 1.4 | ✅ Done |
+| Hostgator DNS | After Task 1.4 | ✅ Done — A record doppio → 76.76.21.21 |
 | Nano Banana session | After Phase 3 | Screenshot app UI → generate 15s teaser → add to public/ |
 | Hackathon submission | Before March 8 noon EST | Record 2-min demo video, post to Skool #Submissions |
 
