@@ -7,12 +7,16 @@ interface LevelHeaderProps {
 
 export function LevelHeader({ totalCompleted }: LevelHeaderProps) {
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-gray-950 border-b border-gray-800">
-      <Link to="/" className="font-bold text-lg tracking-tight text-white">
+    <div className="flex items-center justify-between px-5 py-3 bg-apple-surface border-b border-apple-divider">
+      <Link
+        to="/"
+        className="text-[17px] font-semibold tracking-tight text-apple-text"
+        aria-label="Doppio home"
+      >
         Doppio
       </Link>
-      <span className="text-sm text-gray-400 font-medium">
-        {totalCompleted} of 9 complete
+      <span className="text-[13px] text-apple-secondary font-medium tabular-nums">
+        {totalCompleted} of 9
       </span>
     </div>
   );

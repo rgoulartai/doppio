@@ -9,7 +9,7 @@ interface LevelNavProps {
 
 export function LevelNav({ activeLevel, completedCounts, onSelectLevel }: LevelNavProps) {
   return (
-    <div className="flex border-b border-gray-800">
+    <div className="flex bg-apple-surface border-b border-apple-divider">
       {content.levels.map((lvl) => {
         const level = lvl.level as 1 | 2 | 3;
         const isActive = level === activeLevel;
@@ -18,15 +18,27 @@ export function LevelNav({ activeLevel, completedCounts, onSelectLevel }: LevelN
           <button
             key={level}
             onClick={() => onSelectLevel(level)}
-            className={`flex-1 py-3 text-sm font-medium flex items-center justify-center gap-1 transition-colors
+            className={`
+              flex-1 py-3 text-[13px] font-medium
+              flex items-center justify-center gap-1.5
+              transition-colors duration-150 relative
               ${isActive
-                ? 'border-b-2 border-blue-500 text-blue-400'
-                : 'text-gray-500 hover:text-gray-300 border-b-2 border-transparent'}`}
+                ? 'text-apple-blue'
+                : 'text-apple-secondary hover:text-apple-text'}
+            `}
             style={{ touchAction: 'manipulation' }}
+            aria-selected={isActive}
+            role="tab"
           >
             <span>{lvl.emoji}</span>
-            <span>{lvl.title}</span>
-            {isFullyComplete && <span className="text-green-400 text-xs ml-0.5">✓</span>}
+            <span className="tracking-tight">{lvl.title}</span>
+            {isFullyComplete && (
+              <span className="text-apple-green text-[11px] font-semibold ml-0.5">✓</span>
+            )}
+            {/* Active underline */}
+            {isActive && (
+              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-apple-blue rounded-t-full" />
+            )}
           </button>
         );
       })}

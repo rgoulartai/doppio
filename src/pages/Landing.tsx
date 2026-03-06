@@ -7,34 +7,46 @@ export default function Landing() {
   const isBadgeRef = searchParams.get('ref') === 'badge'
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-apple-bg text-apple-text">
 
-      {/* Badge referral banner — only visible when ?ref=badge */}
+      {/* Badge referral banner */}
       {isBadgeRef && (
         <div
           data-testid="badge-banner"
-          className="w-full bg-yellow-400 text-yellow-900 text-sm font-semibold py-3 px-4 text-center"
+          className="w-full bg-apple-blue text-white text-[13px] font-medium py-2.5 px-4 text-center tracking-tight"
         >
-          🎉 Someone completed Doppio and became an AI Manager! Start your journey →
+          Someone completed Doppio and became an AI Manager — start your journey
         </div>
       )}
 
-      {/* Hero section with video */}
+      {/* Hero */}
       <HeroVideo />
 
       {/* CTA section */}
-      <div className="flex flex-col items-center px-6 py-12 text-center">
+      <div className="flex flex-col items-center px-6 py-14 text-center stagger-1">
         <button
           onClick={() => navigate('/learn')}
-          className="w-full max-w-xs bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold py-4 px-8 rounded-2xl active:scale-95 transition-transform shadow-lg"
+          className="btn-apple-primary w-full max-w-[280px]"
           style={{ touchAction: 'manipulation' }}
         >
-          Start Level 1 →
+          Start Learning
         </button>
 
-        <p className="mt-6 text-sm text-gray-400 max-w-xs">
-          9 curated video lessons. 3 levels. One transformation.
+        <p className="mt-5 text-[15px] text-apple-secondary max-w-xs leading-relaxed">
+          9 curated lessons &middot; 3 levels &middot; 20 minutes
         </p>
+      </div>
+
+      {/* Feature pills */}
+      <div className="flex justify-center gap-3 px-6 pb-16 flex-wrap stagger-2">
+        {['No coding', 'No prompting', 'Just natural language'].map((label) => (
+          <span
+            key={label}
+            className="text-[13px] text-apple-secondary bg-white border border-apple-divider rounded-pill px-4 py-1.5 font-medium"
+          >
+            {label}
+          </span>
+        ))}
       </div>
 
     </div>

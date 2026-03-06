@@ -19,7 +19,7 @@ export function ProgressBar({
 
   return (
     <div
-      className={`w-full bg-gray-700 rounded-full h-2 overflow-hidden ${className}`}
+      className={`w-full bg-apple-divider rounded-full h-[3px] overflow-hidden ${className}`}
       role="progressbar"
       aria-valuenow={percent}
       aria-valuemin={0}
@@ -27,7 +27,7 @@ export function ProgressBar({
       aria-label={`${completedCards} of ${totalCards} cards completed`}
     >
       <div
-        className="bg-blue-500 h-2 rounded-full transition-all duration-500 ease-out"
+        className="bg-apple-blue h-[3px] rounded-full transition-all duration-500 ease-out"
         style={{ width: `${widthPercent}%` }}
       />
     </div>
