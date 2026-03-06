@@ -143,6 +143,12 @@ A: **Vercel** free Hobby plan. Deploy from Git repo. Custom domain `doppio.kooky
 **D29: Which video platforms?**
 A: **YouTube** (primary) and **TikTok** (secondary). Instagram Reels excluded — requires Facebook App token. X/Twitter excluded — last resort only.
 
+**D62: Why is TikTok included but not Instagram Reels? (2026-03-06)**
+A: Both were evaluated as secondary video sources. TikTok: public oEmbed via `https://www.tiktok.com/embed/v2/{VIDEO_ID}` — no API key, no auth, works with a plain iframe. Instagram Reels: requires a Facebook App token (OAuth client credentials) registered through Meta's developer platform, which would need a backend secret or expose credentials client-side. Since Doppio is a fully client-side PWA with no backend, Instagram is technically infeasible without a security violation. Decision: TikTok ✅, Instagram ❌ (permanent, not just MVP deferral).
+
+**D63: Are webpage/article links allowed as content sources? (2026-03-06)**
+A: Yes — but as supplementary resource links, not as replacements for video cards. Each card MAY have an optional `resourceLink` field (title + url) pointing to an authoritative learning page (e.g., Anthropic Docs, Google AI Essentials). These appear as a "Learn more →" link below the video. The completion screen `completionResources` array is also expanded to include official learning hubs (Anthropic, Google). Rationale: videos are the primary learning medium (engagement, retention); webpage links add depth for users who want to go further without bloating the core UX.
+
 **D30: How are videos embedded?**
 A: **Facade/lazy-load pattern** — static thumbnail + play button shown first. Real iframe loads only on user click. Prevents CLS and eliminates 10MB+ of up-front third-party resource loading. YouTube uses `lite-youtube-embed` web component. TikTok uses direct iframe URL `https://www.tiktok.com/embed/v2/{VIDEO_ID}`.
 
@@ -235,7 +241,7 @@ A:
 - No user accounts / login (anonymous only)
 - No daily streaks mechanic
 - No live demo playground (replaced by resource links)
-- No Instagram Reels embeds (API key required)
+- No Instagram Reels embeds (requires Facebook App OAuth token — technically infeasible client-side, see D62)
 - No multi-language support
 - No custom prompt builder
 - No social features (likes, comments, leaderboard)

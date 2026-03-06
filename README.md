@@ -15,16 +15,17 @@ No prompting tips. No coding. No app store. Just a shareable URL.
 1. [What Doppio Does](#what-doppio-does)
 2. [Tech Stack](#tech-stack)
 3. [How This Project Was Built — The AI Workflow](#how-this-project-was-built--the-ai-workflow)
-4. [The m2c1 Skill — What It Is and How It Works](#the-m2c1-skill--what-it-is-and-how-it-works)
-5. [Subagents Launched by m2c1](#subagents-launched-by-m2c1)
-6. [How Videos Are Curated](#how-videos-are-curated)
-7. [Obsidian as a Human-Friendly Project Interface](#obsidian-as-a-human-friendly-project-interface)
-8. [Environment Variables and Secrets](#environment-variables-and-secrets)
-9. [Context Management: /handoff and /pickup](#context-management-handoff-and-pickup)
-10. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
-11. [Project Structure](#project-structure)
-12. [Getting Started](#getting-started)
-13. [Hackathon Context](#hackathon-context)
+4. [MCP Servers That Made This Possible](#mcp-servers-that-made-this-possible)
+5. [The m2c1 Skill — What It Is and How It Works](#the-m2c1-skill--what-it-is-and-how-it-works)
+6. [Subagents Launched by m2c1](#subagents-launched-by-m2c1)
+7. [How Videos Are Curated](#how-videos-are-curated)
+8. [Obsidian as a Human-Friendly Project Interface](#obsidian-as-a-human-friendly-project-interface)
+9. [Environment Variables and Secrets](#environment-variables-and-secrets)
+10. [Context Management: /handoff and /pickup](#context-management-handoff-and-pickup)
+11. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
+12. [Project Structure](#project-structure)
+13. [Getting Started](#getting-started)
+14. [Hackathon Context](#hackathon-context)
 
 ---
 
@@ -84,6 +85,73 @@ This project was built entirely within [Claude Code](https://claude.ai/claude-co
 6. **Implementation skills created** — Specialized skill files were written for each major technical domain, so future Claude sessions always have the right context loaded.
 
 Everything is tracked in `.claude/orchestration-doppio/`. The Obsidian vault makes all of this human-readable without opening a terminal.
+
+---
+
+## MCP Servers That Made This Possible
+
+[MCP (Model Context Protocol)](https://modelcontextprotocol.io) is Anthropic's open standard that lets Claude connect to external tools and services as first-class capabilities — not as copy-pasted instructions, but as live, callable tools. Think of it as plugins for Claude's brain.
+
+This project was built inside a Claude Code session augmented by the following MCP servers. Each one removed a category of friction that would otherwise have required manual work or context-switching.
+
+### Core Development MCPs
+
+| MCP Server | Package | What It Did for This Project |
+|------------|---------|------------------------------|
+| **Playwright** | `@playwright/mcp@latest` | Drove the budget screenshot tracker — authenticating with saved browser cookies, navigating to `platform.claude.com/settings/billing`, and capturing a screenshot every hour during the hackathon window. Also used for browser-based UI testing during development. |
+| **Supabase** | `@supabase/mcp-server-supabase` | Direct access to the Supabase project — running SQL migrations, applying RLS policies, querying tables, and managing the anonymous auth setup without leaving the Claude session. |
+| **GitHub** | `@github/mcp-server` | Repository management — creating commits, pushing branches, opening PRs, and querying git history all from within Claude Code. |
+| **Context7** | `@upstash/context7-mcp@latest` | Fetched up-to-date library documentation on demand. Used for `vite-plugin-pwa`, `@supabase/supabase-js`, `lite-youtube-embed`, and `canvas-confetti` — libraries where the docs Claude was trained on may be outdated. |
+| **Desktop Commander** | `@wonderwhy-er/desktop-commander` | Ran shell commands, created the three launchd automation jobs (`timeline`, `autocommit`, `budget`), and executed system-level tasks without exiting Claude Code. |
+| **Hostinger MCP** | `hostinger-api-mcp@latest` | Managed DNS records for `doppio.kookyos.com` — adding the CNAME record pointing to Vercel's target directly from the Claude session when the deployment was ready. |
+
+### Search & Knowledge MCPs
+
+| MCP Server | Package | What It Did for This Project |
+|------------|---------|------------------------------|
+| **Exa** | `exa-mcp-server` | Semantic web search used for video curation — finding the best YouTube and TikTok demos for each of the 9 learning cards based on recency, view count, and channel authority. |
+| **Brave Search** | `@modelcontextprotocol/server-brave-search` | Supplementary web search for documentation lookups, package version checks, and general research queries. |
+| **QMD** | local (`qmd mcp`) | A local semantic search engine over the KOOKY OS knowledge base (80+ markdown docs). Used to retrieve prior project decisions, architecture patterns, and skill documentation without re-reading files manually. |
+
+### Infrastructure & Automation MCPs
+
+| MCP Server | Package | What It Did for This Project |
+|------------|---------|------------------------------|
+| **n8n-gmail** | n8n cloud SSE | Email integration via the KOOKY OS n8n cloud instance. Connected to Gmail for project-related notifications during the hackathon. |
+| **n8n-gcalendar** | n8n cloud SSE | Google Calendar integration for deadline tracking. |
+| **Filesystem** | `@modelcontextprotocol/server-filesystem` | Direct read/write access to `/Users/renatosgafilho/Projects` — faster than shell commands for file operations inside Claude sessions. |
+
+### KOOKY OS Agent MCPs
+
+These MCPs expose other AI models as callable tools inside Claude Code, allowing multi-model coordination within a single session. Each wraps an n8n workflow that routes requests to a different AI.
+
+| MCP Name | AI Behind It | Role in KOOKY OS |
+|----------|-------------|-----------------|
+| **kai** | Claude (Anthropic) | Primary AI assistant — general reasoning and drafting |
+| **gem** | Gemini (Google) | Long-context analysis, Google ecosystem tasks |
+| **grok** | Grok (xAI) | Real-time web knowledge, social/trend queries |
+| **lex** | Perplexity | Deep research with citations |
+| **caio** | Custom agent | KOOKY OS internal workflows |
+| **loop** | Custom agent | Iterative task loops and feedback cycles |
+| **carta** | Custom agent | Document and content generation |
+| **briks** | Custom agent | Modular task composition |
+
+> These agents are part of the broader [KOOKY OS](https://kooky.com.br) multi-agent operating system, not specific to Doppio. They were available during the build and used opportunistically for research and cross-checking.
+
+### Task & Context MCPs
+
+| MCP Server | What It Did |
+|------------|-------------|
+| **CLEO** | KOOKY OS task manager — tracked all 29 implementation tasks across 6 phases, enforced lifecycle gates (research → consensus → specification → decomposition → implementation), and provided sprint-complete handoffs. |
+| **CodeGraphContext** | Semantic code graph search — used for navigating the codebase by concept rather than filename, especially useful when tracing data flows across React components. |
+| **Notion** | Synced project notes and decisions to a Notion workspace for stakeholder visibility during the hackathon. |
+| **Compass** | MCP directory and discovery — used to find and evaluate new MCP servers during the build. |
+
+### Why This Matters for the Hackathon
+
+Without MCPs, each of these tasks would require: switching windows, opening a browser, copying values back into the terminal, and re-orienting Claude with context. With MCPs, Claude can say "apply this SQL migration to Supabase" or "add a CNAME record for this domain" and have it happen in the same conversation turn, with no context break.
+
+In a 72-hour hackathon, that compound friction reduction is the difference between shipping and not shipping.
 
 ---
 
