@@ -7,6 +7,23 @@ import Complete from './pages/Complete'
 import { IOSInstallBanner } from './components/IOSInstallBanner'
 import { AndroidInstallBanner } from './components/AndroidInstallBanner'
 import { getOrCreateAnonUser } from './lib/auth'
+import { usePageTracking } from './hooks/usePageTracking'
+
+function AppRoutes() {
+  usePageTracking()
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/learn" element={<Learn />} />
+        <Route path="/complete" element={<Complete />} />
+      </Routes>
+      {/* PWA install banners — platform-detected, shown after 5s delay */}
+      <IOSInstallBanner />
+      <AndroidInstallBanner />
+    </>
+  )
+}
 
 function App() {
   // Initialize anonymous auth on mount (called once — cached in auth.ts module)
@@ -16,14 +33,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/learn" element={<Learn />} />
-        <Route path="/complete" element={<Complete />} />
-      </Routes>
-      {/* PWA install banners — platform-detected, shown after 5s delay */}
-      <IOSInstallBanner />
-      <AndroidInstallBanner />
+      <AppRoutes />
       <Analytics />
     </BrowserRouter>
   )
