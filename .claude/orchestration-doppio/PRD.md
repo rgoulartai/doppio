@@ -1,8 +1,10 @@
 # Doppio - Product Requirements Document
 
 **Created**: 2026-03-06
-**Status**: Draft
+**Status**: Superseded by DISCOVERY.md — read that for authoritative decisions
 **Source**: User brain dump
+
+> **Note**: This PRD was the starting point. All open questions were resolved and decisions locked in `DISCOVERY.md`. Where this document conflicts with DISCOVERY.md, DISCOVERY.md wins. Strikethroughs below indicate items overridden by subsequent decisions.
 
 ---
 
@@ -50,7 +52,7 @@ Target users: non-technical workers (e.g., office professionals, managers, small
 
 ### Video Content
 
-- 15 hardcoded video embeds (YouTube, TikTok, Instagram Reels, X/Twitter oEmbed)
+- 9 hardcoded video embeds (YouTube primary, TikTok secondary) ~~Instagram Reels, X/Twitter oEmbed~~ — excluded in DISCOVERY.md D62: Instagram requires a Facebook App OAuth token (infeasible client-side); X/Twitter excluded as last resort only
 - One high-quality demo per card
 - 3 extra videos as backups/alternates (15 total vs 9 minimum)
 - Curated from existing public social media demos
@@ -95,7 +97,7 @@ Target users: non-technical workers (e.g., office professionals, managers, small
 ## 4. Technical Signals
 
 - **Frontend**: React + Tailwind + Vite (PWA-ready via vite-plugin-pwa or similar)
-- **Content**: Hardcoded video embeds — YouTube IFrame API, TikTok oEmbed, Instagram Reels oEmbed, X/Twitter oEmbed
+- **Content**: Hardcoded video embeds — YouTube (`lite-youtube-embed`), TikTok direct iframe (`tiktok.com/embed/v2/{id}`) ~~Instagram Reels oEmbed, X/Twitter oEmbed~~ — see DISCOVERY.md D62
 - **Progress storage**: localStorage (primary), Supabase (optional, secondary)
 - **Deploy**: Vercel or Netlify (free tier)
 - **No AI backend**: Zero backend AI processing — pure static curation
@@ -111,7 +113,7 @@ Target users: non-technical workers (e.g., office professionals, managers, small
 - Which 9 specific videos will be used? (need curation pass)
 - What AI tools does the "Try it" CTA open? (ChatGPT, Claude, Perplexity — which per card?)
 - What are the exact prefilled prompts for each "Try it" card?
-- TikTok / Instagram oEmbed: do they require API keys or are public embeds free?
+- ~~TikTok / Instagram oEmbed: do they require API keys or are public embeds free?~~ — Resolved: TikTok is free (plain iframe). Instagram requires Facebook App OAuth token — excluded (D62).
 - ~~What's the target hackathon and its judging criteria?~~
 - Is the "live demo playground" a real interactive component or a curated showcase?
 - Should the app support multiple languages (global audience implied by "globally pronounceable" naming criterion)?
@@ -119,7 +121,7 @@ Target users: non-technical workers (e.g., office professionals, managers, small
 - Which 9 specific videos will be used? (need curation pass)
 - What AI tools does the "Try it" CTA open? (ChatGPT, Claude, Perplexity — which per card?)
 - What are the exact prefilled prompts for each "Try it" card?
-- TikTok / Instagram oEmbed: do they require API keys or are public embeds free?
+- ~~TikTok / Instagram oEmbed: do they require API keys or are public embeds free?~~ — see above
 
 **Resolved:**
 - Final name: **Doppio** ✓

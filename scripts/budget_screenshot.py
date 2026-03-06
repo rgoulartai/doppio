@@ -81,7 +81,8 @@ def take_screenshot():
         page = ctx.new_page()
 
         log(f"Navigating to {TARGET_URL}")
-        page.goto(TARGET_URL, wait_until="networkidle", timeout=30000)
+        page.goto(TARGET_URL, wait_until="domcontentloaded", timeout=60000)
+        page.wait_for_timeout(3000)  # let JS render billing data
 
         # Try to extract the balance value for the log
         balance_text = "unknown"
@@ -93,10 +94,31 @@ def take_screenshot():
         except Exception:
             pass
 
-        # Screenshot the full billing card area, or full page as fallback
+        # Crop to the credit balance card — find the balance element and walk up to its container
         try:
-            card = page.locator('[class*="balance"], [class*="credit"], [class*="card"]').first
-            card.screenshot(path=str(screenshot_path))
+            balance_el = page.locator("text=/\\$[\\d,]+\\.\\d{2}/").first
+            balance_el.wait_for(timeout=8000)
+            container_box = balance_el.evaluate("""el => {
+                let p = el;
+                for (let i = 0; i < 5; i++) {
+                    p = p.parentElement;
+                    if (!p) break;
+                    const r = p.getBoundingClientRect();
+                    if (r.width > 200) return {x: r.x, y: r.y, width: r.width, height: r.height};
+                }
+                return null;
+            }""")
+            if container_box:
+                pad = 24
+                clip = {
+                    "x":      max(0, container_box["x"] - pad),
+                    "y":      max(0, container_box["y"] - 40),   # extra top for title
+                    "width":  container_box["width"]  + pad * 2,
+                    "height": container_box["height"] + 40 + pad,
+                }
+                page.screenshot(path=str(screenshot_path), clip=clip)
+            else:
+                raise ValueError("no container")
         except Exception:
             page.screenshot(path=str(screenshot_path), full_page=False)
 

@@ -23,7 +23,8 @@ No prompting tips. No coding. No app store. Just a shareable URL.
 9. [Environment Variables and Secrets](#environment-variables-and-secrets)
 10. [Context Management: /handoff and /pickup](#context-management-handoff-and-pickup)
 11. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
-12. [Project Structure](#project-structure)
+12. [Full Autonomy Mode: --dangerously-skip-permissions](#full-autonomy-mode---dangerously-skip-permissions)
+13. [Project Structure](#project-structure)
 13. [Getting Started](#getting-started)
 14. [Hackathon Context](#hackathon-context)
 
@@ -90,66 +91,23 @@ Everything is tracked in `.claude/orchestration-doppio/`. The Obsidian vault mak
 
 ## MCP Servers That Made This Possible
 
-[MCP (Model Context Protocol)](https://modelcontextprotocol.io) is Anthropic's open standard that lets Claude connect to external tools and services as first-class capabilities — not as copy-pasted instructions, but as live, callable tools. Think of it as plugins for Claude's brain.
+[MCP (Model Context Protocol)](https://modelcontextprotocol.io) is Anthropic's open standard that lets Claude connect to external tools and services as live, callable capabilities — not copy-pasted instructions, but actual actions taken inside the same conversation turn.
 
-This project was built inside a Claude Code session augmented by the following MCP servers. Each one removed a category of friction that would otherwise have required manual work or context-switching.
+These are the MCP servers directly used to build Doppio:
 
-### Core Development MCPs
-
-| MCP Server | Package | What It Did for This Project |
-|------------|---------|------------------------------|
-| **Playwright** | `@playwright/mcp@latest` | Drove the budget screenshot tracker — authenticating with saved browser cookies, navigating to `platform.claude.com/settings/billing`, and capturing a screenshot every hour during the hackathon window. Also used for browser-based UI testing during development. |
-| **Supabase** | `@supabase/mcp-server-supabase` | Direct access to the Supabase project — running SQL migrations, applying RLS policies, querying tables, and managing the anonymous auth setup without leaving the Claude session. |
-| **GitHub** | `@github/mcp-server` | Repository management — creating commits, pushing branches, opening PRs, and querying git history all from within Claude Code. |
-| **Context7** | `@upstash/context7-mcp@latest` | Fetched up-to-date library documentation on demand. Used for `vite-plugin-pwa`, `@supabase/supabase-js`, `lite-youtube-embed`, and `canvas-confetti` — libraries where the docs Claude was trained on may be outdated. |
-| **Desktop Commander** | `@wonderwhy-er/desktop-commander` | Ran shell commands, created the three launchd automation jobs (`timeline`, `autocommit`, `budget`), and executed system-level tasks without exiting Claude Code. |
-| **Hostinger MCP** | `hostinger-api-mcp@latest` | Managed DNS records for `doppio.kookyos.com` — adding the CNAME record pointing to Vercel's target directly from the Claude session when the deployment was ready. |
-
-### Search & Knowledge MCPs
-
-| MCP Server | Package | What It Did for This Project |
-|------------|---------|------------------------------|
-| **Exa** | `exa-mcp-server` | Semantic web search used for video curation — finding the best YouTube and TikTok demos for each of the 9 learning cards based on recency, view count, and channel authority. |
-| **Brave Search** | `@modelcontextprotocol/server-brave-search` | Supplementary web search for documentation lookups, package version checks, and general research queries. |
-| **QMD** | local (`qmd mcp`) | A local semantic search engine over the KOOKY OS knowledge base (80+ markdown docs). Used to retrieve prior project decisions, architecture patterns, and skill documentation without re-reading files manually. |
-
-### Infrastructure & Automation MCPs
-
-| MCP Server | Package | What It Did for This Project |
-|------------|---------|------------------------------|
-| **n8n-gmail** | n8n cloud SSE | Email integration via the KOOKY OS n8n cloud instance. Connected to Gmail for project-related notifications during the hackathon. |
-| **n8n-gcalendar** | n8n cloud SSE | Google Calendar integration for deadline tracking. |
-| **Filesystem** | `@modelcontextprotocol/server-filesystem` | Direct read/write access to `/Users/renatosgafilho/Projects` — faster than shell commands for file operations inside Claude sessions. |
-
-### KOOKY OS Agent MCPs
-
-These MCPs expose other AI models as callable tools inside Claude Code, allowing multi-model coordination within a single session. Each wraps an n8n workflow that routes requests to a different AI.
-
-| MCP Name | AI Behind It | Role in KOOKY OS |
-|----------|-------------|-----------------|
-| **kai** | Claude (Anthropic) | Primary AI assistant — general reasoning and drafting |
-| **gem** | Gemini (Google) | Long-context analysis, Google ecosystem tasks |
-| **grok** | Grok (xAI) | Real-time web knowledge, social/trend queries |
-| **lex** | Perplexity | Deep research with citations |
-| **caio** | Custom agent | KOOKY OS internal workflows |
-| **loop** | Custom agent | Iterative task loops and feedback cycles |
-| **carta** | Custom agent | Document and content generation |
-| **briks** | Custom agent | Modular task composition |
-
-> These agents are part of the broader [KOOKY OS](https://kooky.com.br) multi-agent operating system, not specific to Doppio. They were available during the build and used opportunistically for research and cross-checking.
-
-### Task & Context MCPs
-
-| MCP Server | What It Did |
-|------------|-------------|
-| **CLEO** | KOOKY OS task manager — tracked all 29 implementation tasks across 6 phases, enforced lifecycle gates (research → consensus → specification → decomposition → implementation), and provided sprint-complete handoffs. |
-| **CodeGraphContext** | Semantic code graph search — used for navigating the codebase by concept rather than filename, especially useful when tracing data flows across React components. |
-| **Notion** | Synced project notes and decisions to a Notion workspace for stakeholder visibility during the hackathon. |
-| **Compass** | MCP directory and discovery — used to find and evaluate new MCP servers during the build. |
+| MCP Server | Package | Used For |
+|------------|---------|----------|
+| **Playwright** | `@playwright/mcp@latest` | Budget screenshot tracker — authenticating with saved browser cookies, navigating to `platform.claude.com/settings/billing`, capturing hourly screenshots. Also used for UI testing during development. |
+| **Supabase** | `@supabase/mcp-server-supabase` | Applying SQL migrations, setting up RLS policies, querying tables, and managing anonymous auth — all without leaving the Claude session. |
+| **GitHub** | `@github/mcp-server` | Creating the repository, pushing commits, and querying git history from within Claude Code. |
+| **Context7** | `@upstash/context7-mcp@latest` | Fetching up-to-date library documentation for `vite-plugin-pwa`, `@supabase/supabase-js`, `lite-youtube-embed`, and `canvas-confetti` — packages where Claude's training data may be outdated. |
+| **Exa** | `exa-mcp-server` | Semantic web search for video curation — finding the best YouTube and TikTok demos for each of the 9 cards based on recency, view count, and channel authority. |
+| **Hostinger MCP** | `hostinger-api-mcp@latest` | Adding the CNAME record for `doppio.kookyos.com` pointing to Vercel's target when deployment was ready. |
+| **QMD** | local (`qmd mcp`) | Searching the KOOKY OS knowledge base (80+ docs) for architecture patterns, prior decisions, and skill documentation without re-reading files manually. |
 
 ### Why This Matters for the Hackathon
 
-Without MCPs, each of these tasks would require: switching windows, opening a browser, copying values back into the terminal, and re-orienting Claude with context. With MCPs, Claude can say "apply this SQL migration to Supabase" or "add a CNAME record for this domain" and have it happen in the same conversation turn, with no context break.
+Without MCPs, each of these tasks means switching windows, opening a browser, copying values back into the terminal, and re-orienting Claude. With MCPs, Claude can "apply this SQL migration" or "add this DNS record" in the same conversation turn, with no context break.
 
 In a 72-hour hackathon, that compound friction reduction is the difference between shipping and not shipping.
 
@@ -431,6 +389,55 @@ The display looks something like:
 When it hits ~60%, that's your cue to run `/handoff`.
 
 > **Tip**: You can also type `/usage` at any time inside a Claude Code session to see a snapshot of your current context consumption.
+
+---
+
+## Full Autonomy Mode: --dangerously-skip-permissions
+
+Claude Code has a flag that removes all permission prompts and lets Claude operate with complete autonomy — no confirmations for file edits, shell commands, or system operations.
+
+```bash
+# Launch Claude Code in full autonomy mode
+cd your-project-folder
+claude --dangerously-skip-permissions
+
+# Or create an alias for convenience
+alias claude-skip="claude --dangerously-skip-permissions"
+claude-skip
+```
+
+### What It Does
+
+Every action Claude takes — editing files, running shell commands, installing packages, creating directories — normally triggers a permission prompt you must approve. This flag bypasses all of that. Claude runs end-to-end without stopping to ask.
+
+### Pros
+
+- **Maximum speed** — no interruptions, Claude executes entire workflows unattended
+- **True autonomy** — ideal for isolated build tasks, scripted CI pipelines, or sandboxed environments
+- **Hackathon-friendly** — when you're racing a deadline and trust your setup, it removes all friction
+
+### Cons and Risks
+
+- **No safety net** — Claude can delete files, overwrite code, run destructive commands, and there is no undo prompt
+- **Irreversible actions** — a misunderstood instruction can wipe work without warning
+- **Trust without verification** — you won't see what's happening until it's done
+
+> ⚠️ **Only use this in isolated environments**: Docker containers, VMs, or throwaway directories. Never on a production codebase or anything you can't afford to lose.
+
+```bash
+# Safe pattern — run inside a Docker container
+docker run -v $(pwd):/workspace -it node:20 bash
+cd /workspace
+claude --dangerously-skip-permissions
+```
+
+### Why I Don't Use It for This Project
+
+Even during a 72-hour hackathon, I keep permission prompts on. The reason is simple: **I want control over what gets built.**
+
+Claude is highly capable, but the approvals aren't friction — they're checkpoints. Each prompt is a moment to verify the action matches my intent, catch a misunderstood instruction before it propagates, and stay aligned with the decisions locked in `DISCOVERY.md`. Removing that loop means trusting Claude's interpretation of every task, which in a creative product build introduces drift I'd rather catch in real time.
+
+The alternative to `--dangerously-skip-permissions` for granular control is editing `~/.claude/settings.json` to create an allowlist of specific commands Claude can run without prompting, while still requiring approval for everything else. That's a middle ground worth exploring if the interruptions feel excessive but full autonomy feels too risky.
 
 ---
 

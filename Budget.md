@@ -3,3 +3,12 @@ Start : 2:20 PM
 
 3:56 PM
 ![[Pasted image 20260306155615.png]]
+
+
+---
+
+### March 6, 2026 at 5:24 PM
+
+**Balance:** $123.44
+
+![Credit Balance March 6, 2026 at 5:24 PM](screenshots/budget_2026-03-06_17-24.png)
