@@ -1,7 +1,7 @@
 # Doppio - Implementation Progress
 
 **Target**: Sunday March 8, 2026 12:00 PM EST (Skool Hackathon submission)
-**Current Phase**: Phase 1: Scaffolding & Infrastructure (not started)
+**Current Phase**: Phase 1: Scaffolding & Infrastructure (in-progress)
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
-| 1: Scaffolding & Infrastructure | in-progress | 1 | 5 | Project scaffold, PWA, Supabase, Vercel |
+| 1: Scaffolding & Infrastructure | in-progress | 2 | 5 | Project scaffold, PWA, Supabase, Vercel |
 | 2: Content Layer | pending | 0 | 4 | content.json, video curation, Try-it URLs |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
@@ -26,7 +26,7 @@
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
 | 1.1 | Scaffold React + Vite + Tailwind project | done | phase-1/scaffold | 2026-03-06 | Vite 7 + React 19 + Tailwind v3 + React Router v7. All 3 routes verified. Build passes. |
-| 1.2 | PWA Setup (manifest, Service Worker, icons) | pending | | | |
+| 1.2 | PWA Setup (manifest, Service Worker, icons) | done | phase-1/pwa-setup | 2026-03-06 | vite-plugin-pwa configured, icons generated (4 sizes), iOS/Android install banners created, SW active. |
 | 1.3 | Supabase Project Setup | pending | | | Requires human: create Supabase project, provide credentials |
 | 1.4 | Vercel Deploy + Custom Domain | pending | | | Requires human: Vercel account, DNS config on Hostgator |
 | 1.R | Phase 1 Regression | pending | | | |
