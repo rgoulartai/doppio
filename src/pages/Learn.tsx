@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { VideoCard } from '../components/VideoCard'
+import { TryItButton } from '../components/TryItButton'
 import contentData from '../data/content.json'
 import type { VideoCard as VideoCardType } from '../types/content'
 
@@ -11,11 +12,16 @@ export default function Learn() {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-4">
       <h1 className="text-2xl font-bold mb-6">Level 1 — Beginner</h1>
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto space-y-3">
         <VideoCard
           card={firstCard}
           isCompleted={completed.has(firstCard.id)}
           onComplete={() => setCompleted(prev => new Set([...prev, firstCard.id]))}
+        />
+        <TryItButton
+          card={firstCard}
+          level={1}
+          cardIndex={1}
         />
       </div>
     </div>
