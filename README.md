@@ -17,13 +17,14 @@ No prompting tips. No coding. No app store. Just a shareable URL.
 3. [How This Project Was Built — The AI Workflow](#how-this-project-was-built--the-ai-workflow)
 4. [The m2c1 Skill — What It Is and How It Works](#the-m2c1-skill--what-it-is-and-how-it-works)
 5. [Subagents Launched by m2c1](#subagents-launched-by-m2c1)
-6. [Obsidian as a Human-Friendly Project Interface](#obsidian-as-a-human-friendly-project-interface)
-7. [Environment Variables and Secrets](#environment-variables-and-secrets)
-8. [Context Management: /handoff and /pickup](#context-management-handoff-and-pickup)
-9. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
-10. [Project Structure](#project-structure)
-11. [Getting Started](#getting-started)
-12. [Hackathon Context](#hackathon-context)
+6. [How Videos Are Curated](#how-videos-are-curated)
+7. [Obsidian as a Human-Friendly Project Interface](#obsidian-as-a-human-friendly-project-interface)
+8. [Environment Variables and Secrets](#environment-variables-and-secrets)
+9. [Context Management: /handoff and /pickup](#context-management-handoff-and-pickup)
+10. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
+11. [Project Structure](#project-structure)
+12. [Getting Started](#getting-started)
+13. [Hackathon Context](#hackathon-context)
 
 ---
 
@@ -151,6 +152,70 @@ After the research phase, m2c1 also generated **8 implementation skill files** (
 | `video-embed-facade` | Facade pattern for multi-platform video embeds |
 | `canvas-confetti-gamification` | Confetti, level completion UX |
 | `doppio-content-schema` | `content.json` schema and video card data model |
+
+---
+
+## How Videos Are Curated
+
+Doppio's learning experience is only as good as the videos inside it. Bad video = user disengages. Great video = user tries the AI tool immediately and feels the "aha" moment. So curation is treated as a first-class product decision, not an afterthought.
+
+### The Problem With Manual Curation
+
+Manually browsing YouTube for demos is slow, inconsistent, and biased toward whatever you happen to find first. A video with 200 views from last week might be technically accurate but have zero social proof. A video from 2023 might show an outdated ChatGPT interface that confuses users. And recency matters enormously in AI — a demo from 18 months ago may show capabilities that have since been completely replaced.
+
+### The Automated Curation Strategy
+
+Videos for Doppio are selected using a **weighted scoring model** that balances four signals:
+
+| Signal | Weight | Why It Matters |
+|--------|--------|---------------|
+| **View count** | 35% | Social proof — if millions watched it, it's probably clear and relatable |
+| **Recency** | 30% | AI tools change fast. A 2025–2026 video shows current UI, current capabilities |
+| **Positive sentiment** | 20% | Like ratio + comment tone. High like ratio (>95%) = trustworthy, accurate content |
+| **Channel authority** | 15% | Official channels (Anthropic, OpenAI, Perplexity) and verified top creators get a boost |
+
+A video must score above a minimum threshold on **all four signals** to qualify. No single metric can carry a weak score — a viral old video still loses to a recent accurate one with solid engagement.
+
+### Minimum Thresholds (Current)
+
+| Signal | Minimum | Notes |
+|--------|---------|-------|
+| Views | 50,000 | Relaxed to 10K for Level 3 (advanced tools have smaller audiences) |
+| Published | 2025 or later | Ensures current UI and model capabilities |
+| Duration | Under 3 min | Keeps cards punchy — users are mid-session, not looking for tutorials |
+| Like ratio | >90% | Filters out controversial or misleading content |
+
+### Channel Priority List
+
+In order of preference when multiple videos tie on score:
+
+**Level 1 (ChatGPT):** Skill Leap AI → Jeff Su → Matt Wolfe → Nate Hurst → OpenAI Official
+
+**Level 2 (Claude):** Anthropic Official → The AI Advantage → Riley Brown
+
+**Level 3 (Advanced Agents):** Anthropic Official → Perplexity AI Official → The Rundown AI
+
+### Content Integrity Rules
+
+- **No AI-generated narration** — real human voice builds more trust with non-technical users
+- **Must show the actual tool interface** — not just a screen recording of results, but the act of typing and getting output
+- **No "prompt engineering" framing** — if the video says "here's a great prompt," it's disqualifying. Doppio teaches natural language, not prompt craft
+- **Redundancy** — 6 backup videos are always curated per level. If a video gets taken down or becomes outdated, a swap takes 30 seconds in `content.json`
+
+### Why Recency Beats View Count
+
+In the AI space specifically, a video published in January 2025 demonstrating ChatGPT's vision feature is already outdated — the interface has changed, new features have been added, and users following along will see a different UI than what's shown. This is uniquely harmful for Doppio because the whole point is that users immediately go try the thing they just watched.
+
+A video with 80K views from March 2026 beats a video with 2M views from 2024 every time. The user will try the demo on the current version of the tool — the video needs to match what they'll actually see.
+
+### How to Update Videos
+
+All video content lives in `src/content.json`. To swap a video:
+
+1. Find a replacement that meets the criteria above
+2. Copy the YouTube video ID from the URL (`youtube.com/watch?v=VIDEO_ID_HERE`)
+3. Update the `videoId` field in `content.json` for that card
+4. No code change, no redeployment needed for content-only swaps (Vercel auto-deploys on git push)
 
 ---
 
