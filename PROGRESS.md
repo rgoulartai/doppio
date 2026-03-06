@@ -1,7 +1,7 @@
 # Doppio - Implementation Progress
 
 **Target**: Sunday March 8, 2026 12:00 PM EST (Skool Hackathon submission)
-**Current Phase**: Phase 3: Core Learning UI (in-progress)
+**Current Phase**: Phase 4: Level Flow & Gamification (pending)
 
 ---
 
@@ -11,7 +11,7 @@
 |-------|--------|------------|-------|-------|
 | 1: Scaffolding & Infrastructure | done | 5 | 5 | Project scaffold, PWA, Supabase, Vercel — regression passed |
 | 2: Content Layer | done | 4 | 4 | All 4 tasks complete. content.json validated, 9 real video IDs, tryItUrl patterns verified, regression passed. |
-| 3: Core Learning UI | in-progress | 4 | 5 | Landing, VideoCard, TryItButton, Progress done. Regression pending. |
+| 3: Core Learning UI | done | 5 | 5 | All 5 tasks complete. 1 user action needed: enable anon auth in Supabase Dashboard. |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
 | 5: Analytics & Polish | pending | 0 | 5 | Analytics, OG tags, icons, mobile polish |
 | 6: E2E Testing | pending | 0 | 5 | Full multi-angle testing on production |
@@ -48,7 +48,7 @@
 | 3.2 | VideoCard Component | done | feat/phase-3-ui | 2026-03-06 | VideoCard.tsx, YouTubeEmbed.tsx, TikTokEmbed.tsx created. lite-youtube-embed wired in main.tsx. IntersectionObserver lazy load, online/offline detection, completion overlay, Mark as done button. TSX type declaration fixed (declare namespace React.JSX). Build passes, UI tested. |
 | 3.3 | "Try it" CTA Button | done | feat/phase-3-ui | 2026-03-06 | tryit.ts (openTryIt + getToolDisplayName), TryItButton.tsx with clipboard copy, toast notification, analytics track(), inline fallback. Build passes, UI renders with "Try it in ChatGPT →". Toaster already in App.tsx. |
 | 3.4 | Progress Tracking (useProgress hook + progress bar UI) | done | feat/phase-3-ui | 2026-03-06 | progress.ts (loadProgress, markCardComplete, syncFromSupabase, helpers), useProgress.ts hook, ProgressBar.tsx (CSS-only, ARIA). App.tsx updated with syncFromSupabase on mount + window.focus listener. Build passes, localStorage write verified. Supabase auth fails in localhost as expected (graceful fallback). |
-| 3.R | Phase 3 Regression | pending | | | |
+| 3.R | Phase 3 Regression | done | feat/phase-3-ui | 2026-03-06 | PASS with 1 user action needed. Landing ✅, badge banner ✅, mobile layout ✅, /learn loads ✅, VideoCard YouTube thumbnail ✅, Mark as done overlay ✅, TryItButton opens ChatGPT ✅, analytics_events 201 ✅. BLOCKER: Anonymous auth returns 422 — user must enable in Supabase Dashboard → Authentication → Settings → "Enable anonymous sign-ins". user_progress sync unblocked once auth is on. App works in localStorage-only mode in the meantime. |
 
 ### Phase 4: Level Flow & Gamification
 
