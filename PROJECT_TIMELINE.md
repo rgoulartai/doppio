@@ -73,5 +73,21 @@
 ## Activity Log
 
 <!-- AUTO-TIMELINE:START -->
-_No activity logged yet. Auto-updater will populate this section every 30 minutes._
+
+### March 6, 2026 — Implementation Sprint
+
+| Time | Task | Description |
+|------|------|-------------|
+| **~15:38** | Budget tracker | Hourly screenshot tracker set up — Playwright + launchd, captures balance card every hour (Mar 6 5pm → Mar 8 noon) |
+| **~16:00** | Task 1.1 | React 18 + Vite + Tailwind scaffold complete. All 3 routes verified (/, /level/:id, /complete). Build passes. |
+| **~16:20** | Task 1.2 | PWA setup — vite-plugin-pwa, icons (4 sizes), iOS + Android install banners, Service Worker registered |
+| **~16:40** | Handoff #1 | Session handoff. content.json skeleton + `resourceLink` schema committed. |
+| **~17:00** | Task 1.3 | Supabase schema applied — `user_progress` + `analytics_events` + RLS. `supabase.ts` + `auth.ts` created. Anonymous auth wired. |
+| **~17:35** | Task 1.4 | Vercel deploy → doppio-gold.vercel.app. CSP headers. Analytics wired. Custom domain `doppio.kookyos.com` configured. |
+| **~17:40** | DISCOVERY.md | D62: TikTok ✅ Instagram ❌ (FB OAuth infeasible client-side). D63: `resourceLink` field added per card. |
+| **~17:45** | content.json | `resourceLink` added to all 9 cards. 6 cards have real links. `completionResources` expanded to 7 entries. |
+| **~17:50** | Budget tracker fix | Fixed Python path + page timeout + crop logic. Confirmed working. |
+| **~17:55** | Video curation | All 9 YouTube candidates identified via 5 parallel search passes. Awaiting user approval before writing IDs to content.json. |
+| **~17:59** | Handoff #2 | Session handoff — video IDs pending approval, UI build queued for March 7. |
+
 <!-- AUTO-TIMELINE:END -->
