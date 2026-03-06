@@ -35,7 +35,7 @@
 
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
-| 2.1 | Create content.json with TypeScript types | pending | | | |
+| 2.1 | Create content.json with TypeScript types | done | phase-2/content-layer | 2026-03-06 | src/types/content.ts (4 interfaces), src/data/content.json (9 cards + 5 resources), src/types/custom-elements.d.ts, resolveJsonModule added. tsc --noEmit and build both pass. |
 | 2.2 | Video Curation (real video IDs) | in-progress | phase-1/vercel-deploy | 2026-03-06 | All 9 candidates researched. Awaiting user approval before writing to content.json. |
 | 2.3 | Verify Try-it URL Patterns | pending | | | Requires browser test of ChatGPT/Claude/Perplexity |
 | 2.R | Phase 2 Regression | pending | | | |

@@ -1,245 +1,180 @@
 {
-  "_meta": {
-    "version": "1.0.0",
-    "lastUpdated": "2026-03-06",
-    "curationCriteria": {
-      "minViews": 50000,
-      "minViewsLevel3": 10000,
-      "publishedAfter": "2025-01-01",
-      "maxDurationSeconds": 180,
-      "minLikeRatio": 0.90
-    },
-    "note": "To swap a video: update videoId only. No code changes needed. resourceLink is optional per card — shown as 'Learn more →' below the video."
-  },
-
   "levels": [
     {
-      "id": 1,
+      "level": 1,
       "title": "Beginner",
-      "subtitle": "ChatGPT beyond Google",
-      "description": "Start using ChatGPT for real everyday tasks — not just asking questions.",
-      "aiTool": "ChatGPT",
-      "tryItBaseUrl": "https://chat.openai.com/",
+      "emoji": "🌱",
+      "subtitle": "ChatGPT beyond search — everyday tasks with natural language",
+      "aiToolLabel": "ChatGPT",
       "cards": [
         {
-          "id": "L1C1",
+          "id": "l1c1",
           "level": 1,
           "card": 1,
-          "title": "Meal plan from a receipt photo",
-          "description": "Upload a grocery receipt and let ChatGPT plan your meals for the week.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "ChatGPT receipt photo meal plan 2025",
-          "videoSearchChannels": ["Skill Leap AI", "Jeff Su", "Matt Wolfe", "Nate Hurst"],
-          "videoCurationNotes": "Must show: user uploading a real photo to ChatGPT and getting a structured meal plan output. No 2024 or older — ChatGPT vision UI has changed.",
-          "tryItPrompt": "Scan this grocery receipt photo and create a meal plan for the week using what I already have",
-          "tryItUrl": "https://chat.openai.com/?q=Scan+this+grocery+receipt+photo+and+create+a+meal+plan+for+the+week+using+what+I+already+have",
-          "clipboardFallback": "Scan this grocery receipt photo and create a meal plan for the week using what I already have",
-          "resourceLink": null,
-          "badge": null
+          "title": "Plan my groceries from a receipt photo",
+          "description": "Watch someone upload a grocery receipt photo and get a full 3-day meal plan with a shopping list for missing ingredients.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "chatgpt",
+          "tryItPrompt": "I have a photo of my grocery receipt. Analyze what I bought, suggest a 3-day meal plan using those ingredients, and list what extra I might need.",
+          "tryItUrl": "https://chatgpt.com/?q=I+have+a+photo+of+my+grocery+receipt.+Analyze+what+I+bought%2C+suggest+a+3-day+meal+plan+using+those+ingredients%2C+and+list+what+extra+I+might+need.",
+          "copyPrompt": "I have a photo of my grocery receipt. Analyze what I bought, suggest a 3-day meal plan using those ingredients, and list what extra I might need."
         },
         {
-          "id": "L1C2",
+          "id": "l1c2",
           "level": 1,
           "card": 2,
-          "title": "Summarize any PDF instantly",
-          "description": "Drop a PDF into ChatGPT and get the key points plus smart follow-up questions.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "ChatGPT summarize PDF bullet points tutorial 2025",
-          "videoSearchChannels": ["Matt Wolfe", "Nate Hurst", "Jeff Su", "Skill Leap AI"],
-          "videoCurationNotes": "Must show: actual PDF upload to ChatGPT, bullet point summary output, follow-up questions. Short demo preferred.",
-          "tryItPrompt": "Summarize this PDF in 3 bullet points and suggest 2 follow-up questions I should ask",
-          "tryItUrl": "https://chat.openai.com/?q=Summarize+this+PDF+in+3+bullet+points+and+suggest+2+follow-up+questions+I+should+ask",
-          "clipboardFallback": "Summarize this PDF in 3 bullet points and suggest 2 follow-up questions I should ask",
-          "resourceLink": { "title": "ChatGPT file uploads guide", "url": "https://help.openai.com/en/articles/8555545-file-uploads-faq" },
-          "badge": null
+          "title": "Summarize this PDF in 5 bullet points",
+          "description": "See ChatGPT read a 20-page work document and return exactly 5 bullet points covering everything that matters.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "chatgpt",
+          "tryItPrompt": "I'm going to paste a document. Please summarize it into exactly 5 bullet points covering the key takeaways.",
+          "tryItUrl": "https://chatgpt.com/?q=I%27m+going+to+paste+a+document.+Please+summarize+it+into+exactly+5+bullet+points+covering+the+key+takeaways.",
+          "copyPrompt": "I'm going to paste a document. Please summarize it into exactly 5 bullet points covering the key takeaways."
         },
         {
-          "id": "L1C3",
+          "id": "l1c3",
           "level": 1,
           "card": 3,
-          "title": "Write the perfect email reply",
-          "description": "Paste an email, get a professional reply that's warm but firm — in seconds.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "ChatGPT write professional email reply decline meeting 2025",
-          "videoSearchChannels": ["Jeff Su", "Skill Leap AI", "Matt Wolfe"],
-          "videoCurationNotes": "Must show: real email being pasted, natural language instruction like 'decline this politely', clean output. No 'prompt engineering' framing.",
-          "tryItPrompt": "Write a professional reply to this email that's friendly but declines the meeting",
-          "tryItUrl": "https://chat.openai.com/?q=Write+a+professional+reply+to+this+email+that%27s+friendly+but+declines+the+meeting",
-          "clipboardFallback": "Write a professional reply to this email that's friendly but declines the meeting",
-          "resourceLink": null,
-          "badge": null
+          "title": "Write a professional email declining a meeting",
+          "description": "Watch ChatGPT draft a polished, friendly decline email in under 10 seconds from a simple one-line request.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "chatgpt",
+          "tryItPrompt": "Write a professional but friendly email declining a meeting invite. Make it respectful and suggest an alternative time or approach.",
+          "tryItUrl": "https://chatgpt.com/?q=Write+a+professional+but+friendly+email+declining+a+meeting+invite.+Make+it+respectful+and+suggest+an+alternative+time+or+approach.",
+          "copyPrompt": "Write a professional but friendly email declining a meeting invite. Make it respectful and suggest an alternative time or approach."
         }
       ]
     },
     {
-      "id": 2,
+      "level": 2,
       "title": "Intermediate",
-      "subtitle": "Simple AI delegation",
-      "description": "Hand off real tasks to Claude — files, documents, research.",
-      "aiTool": "Claude",
-      "tryItBaseUrl": "https://claude.ai/new",
+      "emoji": "⚡",
+      "subtitle": "Simple AI delegation — Claude handles file and browser tasks for you",
+      "aiToolLabel": "Claude",
       "cards": [
         {
-          "id": "L2C1",
+          "id": "l2c1",
           "level": 2,
           "card": 1,
-          "title": "Clean up your Downloads folder",
-          "description": "Ask Claude to organize your files — it knows what to keep, what to trash.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Claude AI computer use Cowork file management demo 2025 2026",
-          "videoSearchChannels": ["Anthropic", "The AI Advantage", "Riley Brown"],
-          "videoCurationNotes": "Must show: Claude Cowork or computer use doing file/folder management autonomously. Prefer Anthropic official launch demo if available.",
-          "tryItPrompt": "Look at my Downloads folder and delete everything older than 30 days except PDFs",
-          "tryItUrl": "https://claude.ai/new",
-          "clipboardFallback": "Look at my Downloads folder and delete everything older than 30 days except PDFs",
-          "resourceLink": { "title": "Introducing Claude Cowork", "url": "https://www.anthropic.com/news/claude-computer-use" },
-          "badge": null
+          "title": "Clean up my Downloads folder",
+          "description": "Watch Claude organize a chaotic Downloads folder by file type, create subfolders, and move everything into place — no manual sorting.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "claude",
+          "tryItPrompt": "Please organize my Downloads folder by grouping files by type, creating subfolders, and moving files into the right place. Ask before deleting anything.",
+          "tryItUrl": "https://claude.ai/new?q=Please+organize+my+Downloads+folder+by+grouping+files+by+type%2C+creating+subfolders%2C+and+moving+files+into+the+right+place.+Ask+before+deleting+anything.",
+          "copyPrompt": "Please organize my Downloads folder by grouping files by type, creating subfolders, and moving files into the right place. Ask before deleting anything."
         },
         {
-          "id": "L2C2",
+          "id": "l2c2",
           "level": 2,
           "card": 2,
-          "title": "Find a restaurant and book it",
-          "description": "Give Claude a task like a real assistant — it'll search, decide, and act.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Claude AI agent autonomous task booking web browsing 2025 2026",
-          "videoSearchChannels": ["Anthropic", "The AI Advantage", "Riley Brown"],
-          "videoCurationNotes": "Must show: Claude taking an agentic action on the web (not just chat). Booking, browsing, finding info autonomously.",
-          "tryItPrompt": "Find a well-reviewed Italian restaurant near my location and book a table for 2 tonight at 7pm",
-          "tryItUrl": "https://claude.ai/new",
-          "clipboardFallback": "Find a well-reviewed Italian restaurant near my location and book a table for 2 tonight at 7pm",
-          "resourceLink": { "title": "Claude's agentic capabilities", "url": "https://www.anthropic.com/research/building-effective-agents" },
-          "badge": null
+          "title": "Book a restaurant for tonight",
+          "description": "See Claude browse the web, find an Italian restaurant with tonight availability, and complete the booking — start to finish.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "claude",
+          "tryItPrompt": "Find a well-reviewed Italian restaurant near me that has availability tonight for 2 people at 7:30 PM and book it. Show me the options before confirming.",
+          "tryItUrl": "https://claude.ai/new?q=Find+a+well-reviewed+Italian+restaurant+near+me+that+has+availability+tonight+for+2+people+at+7%3A30+PM+and+book+it.+Show+me+the+options+before+confirming.",
+          "copyPrompt": "Find a well-reviewed Italian restaurant near me that has availability tonight for 2 people at 7:30 PM and book it. Show me the options before confirming."
         },
         {
-          "id": "L2C3",
+          "id": "l2c3",
           "level": 2,
           "card": 3,
-          "title": "Fill in a form from receipts",
-          "description": "Share your receipts — Claude reads them and fills in the expense form for you.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Claude AI fill form document processing receipts 2025 2026",
-          "videoSearchChannels": ["Anthropic", "Riley Brown", "The AI Advantage"],
-          "videoCurationNotes": "Must show: Claude processing a document or image and producing structured form/table output. Can be any form-filling or document extraction task.",
-          "tryItPrompt": "Fill in this expense form using the receipts I'll share with you",
-          "tryItUrl": "https://claude.ai/new",
-          "clipboardFallback": "Fill in this expense form using the receipts I'll share with you",
-          "resourceLink": null,
-          "badge": null
+          "title": "Fill out this expense form for me",
+          "description": "Watch Claude open a web form, read the fields, and fill in all the details from shared receipts — one command, whole form done.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "claude",
+          "tryItPrompt": "I need to fill out a form online. Here's the URL and my information. Please open the form, fill in my details, and show me a preview before submitting.",
+          "tryItUrl": "https://claude.ai/new?q=I+need+to+fill+out+a+form+online.+Here%27s+the+URL+and+my+information.+Please+open+the+form%2C+fill+in+my+details%2C+and+show+me+a+preview+before+submitting.",
+          "copyPrompt": "I need to fill out a form online. Here's the URL and my information. Please open the form, fill in my details, and show me a preview before submitting."
         }
       ]
     },
     {
-      "id": 3,
+      "level": 3,
       "title": "Advanced",
-      "subtitle": "Full AI agents",
-      "description": "Delegate complex multi-step workflows to AI — and get polished outputs.",
-      "aiTool": "Claude Cowork + Perplexity",
-      "tryItBaseUrl": "https://claude.ai/new",
+      "emoji": "🚀",
+      "subtitle": "Full AI agents — multi-step workflows from raw inputs to polished outputs",
+      "aiToolLabel": "Claude & Perplexity",
       "cards": [
         {
-          "id": "L3C1",
+          "id": "l3c1",
           "level": 3,
           "card": 1,
-          "title": "Receipts → expense report",
-          "description": "Give Claude 5 receipts. Get back a categorized expense report in a table.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Claude Cowork expense report receipts multi-step task 2025 2026",
-          "videoSearchChannels": ["Anthropic", "The Rundown AI"],
-          "videoCurationNotes": "Must show: Claude handling multiple documents/receipts and producing a structured output table. Can be any multi-doc aggregation task.",
-          "tryItPrompt": "Take these 5 receipts, categorize them, and generate an expense report in table format",
-          "tryItUrl": "https://claude.ai/new",
-          "clipboardFallback": "Take these 5 receipts, categorize them, and generate an expense report in table format",
-          "resourceLink": { "title": "Claude prompt library", "url": "https://docs.anthropic.com/en/prompt-library/library" },
-          "badge": null
+          "title": "Turn my receipts into an expense report",
+          "description": "Watch Claude read a pile of receipt photos, extract dates, vendors, and amounts, then produce a formatted expense report ready to submit.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "claude",
+          "tryItPrompt": "I have photos of work trip receipts. Please extract the date, vendor, amount, and category from each one and create a formatted expense report I can submit.",
+          "tryItUrl": "https://claude.ai/new?q=I+have+photos+of+work+trip+receipts.+Please+extract+the+date%2C+vendor%2C+amount%2C+and+category+from+each+one+and+create+a+formatted+expense+report+I+can+submit.",
+          "copyPrompt": "I have photos of work trip receipts. Please extract the date, vendor, amount, and category from each one and create a formatted expense report I can submit."
         },
         {
-          "id": "L3C2",
+          "id": "l3c2",
           "level": 3,
           "card": 2,
-          "title": "Research trends → build a dashboard",
-          "description": "Perplexity researches a topic in depth and structures it into a readable report.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Perplexity AI deep research summary report demo 2025 2026",
-          "videoSearchChannels": ["Perplexity AI", "The Rundown AI"],
-          "videoCurationNotes": "Must show: Perplexity Deep Research running a real query and producing a structured output — not just a chat answer.",
-          "tryItPrompt": "Research the top 3 trends in remote work for 2025 and build me a summary dashboard",
-          "tryItUrl": "https://www.perplexity.ai/",
-          "clipboardFallback": "Research the top 3 trends in remote work for 2025 and build me a summary dashboard",
-          "resourceLink": { "title": "Perplexity Deep Research guide", "url": "https://www.perplexity.ai/hub/blog/introducing-perplexity-deep-research" },
-          "badge": null
+          "title": "Research the top trends and build a summary dashboard",
+          "description": "See Perplexity pull live sources, synthesize the top 3 remote-work trends, and produce a one-page summary dashboard with citations.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "perplexity",
+          "tryItPrompt": "Research the top 3 trends in remote work for 2025, find what experts and employees are saying, and build me a one-page summary dashboard with sources.",
+          "tryItUrl": "https://www.perplexity.ai/?q=Research+the+top+3+trends+in+remote+work+for+2025%2C+find+what+experts+and+employees+are+saying%2C+and+build+me+a+one-page+summary+with+sources.",
+          "copyPrompt": "Research the top 3 trends in remote work for 2025, find what experts and employees are saying, and build me a one-page summary dashboard with sources."
         },
         {
-          "id": "L3C3",
+          "id": "l3c3",
           "level": 3,
           "card": 3,
-          "title": "Find the best flights in a table",
-          "description": "Give Perplexity a travel goal — it compares options and shows you the best ones.",
-          "videoPlatform": "youtube",
-          "videoId": "TBD",
-          "videoSearchQuery": "Perplexity AI comparison research structured output table 2025 2026",
-          "videoSearchChannels": ["Perplexity AI", "The Rundown AI"],
-          "videoCurationNotes": "Must show: Perplexity doing a comparison task and outputting a table or structured result. Flights, hotels, products — any comparison qualifies.",
-          "tryItPrompt": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table",
-          "tryItUrl": "https://www.perplexity.ai/",
-          "clipboardFallback": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table",
-          "resourceLink": { "title": "Perplexity Pro tips", "url": "https://www.perplexity.ai/hub/blog/pro-tips-getting-the-most-out-of-perplexity" },
-          "badge": null
+          "title": "Find the best flights and compare them in a table",
+          "description": "Watch an AI agent search live flight data across multiple routes and return a clean comparison table — price, duration, layovers — in one shot.",
+          "platform": "youtube",
+          "videoId": "PLACEHOLDER_VIDEO_ID",
+          "aiTool": "perplexity",
+          "tryItPrompt": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table showing price, total duration, number of stops, and airline.",
+          "tryItUrl": "https://www.perplexity.ai/?q=Find+the+best+flights+from+NYC+to+Tokyo+in+April+under+%241200+and+compare+them+in+a+table+showing+price%2C+total+duration%2C+stops%2C+and+airline.",
+          "copyPrompt": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table showing price, total duration, number of stops, and airline."
         }
       ]
     }
   ],
-
-  "completionResources": [
-    {
-      "title": "Anthropic's Claude Courses",
-      "description": "Official hands-on AI courses from Anthropic — free, practical, no coding required",
-      "url": "https://www.anthropic.com/learn",
-      "type": "course"
-    },
-    {
-      "title": "Google AI Essentials",
-      "description": "Google's free AI literacy course — learn to use AI tools confidently at work",
-      "url": "https://grow.google/intl/en_us/google-ai-essentials/",
-      "type": "course"
-    },
+  "resources": [
     {
       "title": "Skill Leap AI",
-      "description": "Best YouTube channel for practical AI tool tutorials for non-technical users",
       "url": "https://www.youtube.com/@SkillLeapAI",
-      "type": "youtube"
-    },
-    {
-      "title": "Jeff Su",
-      "description": "ChatGPT productivity for work — clear, short, jargon-free",
-      "url": "https://www.youtube.com/@JeffSu",
-      "type": "youtube"
-    },
-    {
-      "title": "The AI Advantage",
-      "description": "Hands-on Claude and AI agent demos for business users",
-      "url": "https://www.youtube.com/@TheAIAdvantage",
-      "type": "youtube"
+      "description": "Practical AI tutorials for non-technical office workers — new demos every week.",
+      "emoji": "🎓"
     },
     {
       "title": "Anthropic on YouTube",
-      "description": "Official Claude demos and product announcements",
       "url": "https://www.youtube.com/@anthropic-ai",
-      "type": "youtube"
+      "description": "Official Claude demos including computer use and multi-step agent workflows.",
+      "emoji": "🤖"
     },
     {
-      "title": "r/ChatGPT",
-      "description": "Community sharing creative real-world uses — great for inspiration",
-      "url": "https://www.reddit.com/r/ChatGPT/",
-      "type": "community"
+      "title": "The Rundown AI",
+      "url": "https://www.youtube.com/@TheRundownAI",
+      "description": "Weekly coverage of the best new AI tools with hands-on workflow demos.",
+      "emoji": "📰"
+    },
+    {
+      "title": "Perplexity AI on YouTube",
+      "url": "https://www.youtube.com/@PerplexityAI",
+      "description": "Official Perplexity tutorials showing research synthesis and agentic workflows.",
+      "emoji": "🔍"
+    },
+    {
+      "title": "Matt Wolfe",
+      "url": "https://www.youtube.com/@mreflow",
+      "description": "The go-to channel for discovering new AI tools explained for everyday users.",
+      "emoji": "🌐"
     }
   ]
 }
