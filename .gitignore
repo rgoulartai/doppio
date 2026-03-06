@@ -1,3 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+
+# Environment variables — NEVER commit these
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Vercel
+.vercel/
+
+# Editor
+.vscode/
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
 # macOS
 .DS_Store
 

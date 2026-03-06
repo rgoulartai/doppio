@@ -9,7 +9,7 @@
       "maxDurationSeconds": 180,
       "minLikeRatio": 0.90
     },
-    "note": "To swap a video: update videoId only. No code changes needed."
+    "note": "To swap a video: update videoId only. No code changes needed. resourceLink is optional per card — shown as 'Learn more →' below the video."
   },
 
   "levels": [
@@ -35,6 +35,7 @@
           "tryItPrompt": "Scan this grocery receipt photo and create a meal plan for the week using what I already have",
           "tryItUrl": "https://chat.openai.com/?q=Scan+this+grocery+receipt+photo+and+create+a+meal+plan+for+the+week+using+what+I+already+have",
           "clipboardFallback": "Scan this grocery receipt photo and create a meal plan for the week using what I already have",
+          "resourceLink": null,
           "badge": null
         },
         {
@@ -51,6 +52,7 @@
           "tryItPrompt": "Summarize this PDF in 3 bullet points and suggest 2 follow-up questions I should ask",
           "tryItUrl": "https://chat.openai.com/?q=Summarize+this+PDF+in+3+bullet+points+and+suggest+2+follow-up+questions+I+should+ask",
           "clipboardFallback": "Summarize this PDF in 3 bullet points and suggest 2 follow-up questions I should ask",
+          "resourceLink": { "title": "ChatGPT file uploads guide", "url": "https://help.openai.com/en/articles/8555545-file-uploads-faq" },
           "badge": null
         },
         {
@@ -67,6 +69,7 @@
           "tryItPrompt": "Write a professional reply to this email that's friendly but declines the meeting",
           "tryItUrl": "https://chat.openai.com/?q=Write+a+professional+reply+to+this+email+that%27s+friendly+but+declines+the+meeting",
           "clipboardFallback": "Write a professional reply to this email that's friendly but declines the meeting",
+          "resourceLink": null,
           "badge": null
         }
       ]
@@ -93,6 +96,7 @@
           "tryItPrompt": "Look at my Downloads folder and delete everything older than 30 days except PDFs",
           "tryItUrl": "https://claude.ai/new",
           "clipboardFallback": "Look at my Downloads folder and delete everything older than 30 days except PDFs",
+          "resourceLink": { "title": "Introducing Claude Cowork", "url": "https://www.anthropic.com/news/claude-computer-use" },
           "badge": null
         },
         {
@@ -109,6 +113,7 @@
           "tryItPrompt": "Find a well-reviewed Italian restaurant near my location and book a table for 2 tonight at 7pm",
           "tryItUrl": "https://claude.ai/new",
           "clipboardFallback": "Find a well-reviewed Italian restaurant near my location and book a table for 2 tonight at 7pm",
+          "resourceLink": { "title": "Claude's agentic capabilities", "url": "https://www.anthropic.com/research/building-effective-agents" },
           "badge": null
         },
         {
@@ -125,6 +130,7 @@
           "tryItPrompt": "Fill in this expense form using the receipts I'll share with you",
           "tryItUrl": "https://claude.ai/new",
           "clipboardFallback": "Fill in this expense form using the receipts I'll share with you",
+          "resourceLink": null,
           "badge": null
         }
       ]
@@ -151,6 +157,7 @@
           "tryItPrompt": "Take these 5 receipts, categorize them, and generate an expense report in table format",
           "tryItUrl": "https://claude.ai/new",
           "clipboardFallback": "Take these 5 receipts, categorize them, and generate an expense report in table format",
+          "resourceLink": { "title": "Claude prompt library", "url": "https://docs.anthropic.com/en/prompt-library/library" },
           "badge": null
         },
         {
@@ -167,6 +174,7 @@
           "tryItPrompt": "Research the top 3 trends in remote work for 2025 and build me a summary dashboard",
           "tryItUrl": "https://www.perplexity.ai/",
           "clipboardFallback": "Research the top 3 trends in remote work for 2025 and build me a summary dashboard",
+          "resourceLink": { "title": "Perplexity Deep Research guide", "url": "https://www.perplexity.ai/hub/blog/introducing-perplexity-deep-research" },
           "badge": null
         },
         {
@@ -183,6 +191,7 @@
           "tryItPrompt": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table",
           "tryItUrl": "https://www.perplexity.ai/",
           "clipboardFallback": "Find the best flights from NYC to Tokyo in April under $1200 and compare them in a table",
+          "resourceLink": { "title": "Perplexity Pro tips", "url": "https://www.perplexity.ai/hub/blog/pro-tips-getting-the-most-out-of-perplexity" },
           "badge": null
         }
       ]
@@ -191,29 +200,46 @@
 
   "completionResources": [
     {
+      "title": "Anthropic's Claude Courses",
+      "description": "Official hands-on AI courses from Anthropic — free, practical, no coding required",
+      "url": "https://www.anthropic.com/learn",
+      "type": "course"
+    },
+    {
+      "title": "Google AI Essentials",
+      "description": "Google's free AI literacy course — learn to use AI tools confidently at work",
+      "url": "https://grow.google/intl/en_us/google-ai-essentials/",
+      "type": "course"
+    },
+    {
       "title": "Skill Leap AI",
       "description": "Best YouTube channel for practical AI tool tutorials for non-technical users",
-      "url": "https://www.youtube.com/@SkillLeapAI"
+      "url": "https://www.youtube.com/@SkillLeapAI",
+      "type": "youtube"
     },
     {
       "title": "Jeff Su",
       "description": "ChatGPT productivity for work — clear, short, jargon-free",
-      "url": "https://www.youtube.com/@JeffSu"
+      "url": "https://www.youtube.com/@JeffSu",
+      "type": "youtube"
     },
     {
       "title": "The AI Advantage",
       "description": "Hands-on Claude and AI agent demos for business users",
-      "url": "https://www.youtube.com/@TheAIAdvantage"
+      "url": "https://www.youtube.com/@TheAIAdvantage",
+      "type": "youtube"
     },
     {
       "title": "Anthropic on YouTube",
       "description": "Official Claude demos and product announcements",
-      "url": "https://www.youtube.com/@anthropic-ai"
+      "url": "https://www.youtube.com/@anthropic-ai",
+      "type": "youtube"
     },
     {
       "title": "r/ChatGPT",
       "description": "Community sharing creative real-world uses — great for inspiration",
-      "url": "https://www.reddit.com/r/ChatGPT/"
+      "url": "https://www.reddit.com/r/ChatGPT/",
+      "type": "community"
     }
   ]
 }
