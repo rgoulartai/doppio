@@ -10,7 +10,7 @@
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
 | 1: Scaffolding & Infrastructure | done | 4 | 5 | Project scaffold, PWA, Supabase, Vercel |
-| 2: Content Layer | pending | 0 | 4 | content.json, video curation, Try-it URLs |
+| 2: Content Layer | in-progress | 0 | 4 | content.json skeleton done, video IDs researched (awaiting approval) |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
 | 5: Analytics & Polish | pending | 0 | 5 | Analytics, OG tags, icons, mobile polish |
@@ -28,7 +28,7 @@
 | 1.1 | Scaffold React + Vite + Tailwind project | done | phase-1/scaffold | 2026-03-06 | Vite 7 + React 19 + Tailwind v3 + React Router v7. All 3 routes verified. Build passes. |
 | 1.2 | PWA Setup (manifest, Service Worker, icons) | done | phase-1/pwa-setup | 2026-03-06 | vite-plugin-pwa configured, icons generated (4 sizes), iOS/Android install banners created, SW active. |
 | 1.3 | Supabase Project Setup | done | phase-1/supabase-setup | 2026-03-06 | Schema applied (user_progress + analytics_events + RLS). supabase.ts + auth.ts created. App.tsx updated. Anonymous auth toggle needs manual enable in Supabase Dashboard → Authentication → Settings. |
-| 1.4 | Vercel Deploy + Custom Domain | pending | | | Requires human: Vercel account, DNS config on Hostgator |
+| 1.4 | Vercel Deploy + Custom Domain | done | phase-1/vercel-deploy | 2026-03-06 | vercel.json with CSP headers + SPA rewrites. Analytics component wired. Deployed to https://doppio-gold.vercel.app. Env vars set for Production. Custom domain doppio.kookyos.com added to Vercel. USER ACTION NEEDED: Add A record on Hostgator DNS: doppio → 76.76.21.21 (Vercel IP) |
 | 1.R | Phase 1 Regression | pending | | | |
 
 ### Phase 2: Content Layer
@@ -36,7 +36,7 @@
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
 | 2.1 | Create content.json with TypeScript types | pending | | | |
-| 2.2 | Video Curation (real video IDs) | pending | | | Requires web search for 9 videos |
+| 2.2 | Video Curation (real video IDs) | in-progress | phase-1/vercel-deploy | 2026-03-06 | All 9 candidates researched. Awaiting user approval before writing to content.json. |
 | 2.3 | Verify Try-it URL Patterns | pending | | | Requires browser test of ChatGPT/Claude/Perplexity |
 | 2.R | Phase 2 Regression | pending | | | |
 
@@ -112,11 +112,11 @@
 |-------------|--------|-------|
 | Supabase Project | done | Project tqknjbjvdkipszyghfgj active in us-east-2 |
 | Supabase Anonymous Auth | pending | MANUAL STEP: Enable in Dashboard: Authentication → Settings → Anonymous sign-ins |
-| Vercel Project | pending | Account confirmed ✓ — link to Git repo during Task 1.4 |
-| Vercel Analytics | pending | Enable in Dashboard after deploy |
-| Custom Domain (doppio.kookyos.com) | pending | CNAME record on Hostgator DNS |
+| Vercel Project | done | Deployed — https://doppio-gold.vercel.app (production). Project: doppio under renatos-projects-e523b708 |
+| Vercel Analytics | done | <Analytics /> component wired in App.tsx via @vercel/analytics/react |
+| Custom Domain (doppio.kookyos.com) | pending | Domain added to Vercel project. USER ACTION NEEDED: Add A record on Hostgator DNS: doppio → 76.76.21.21 |
 | Nano Banana (teaser video) | pending | User creates teaser video after UI built |
-| Git Repository | pending | Initialize and push |
+| Git Repository | done | Active — branch phase-1/vercel-deploy |
 
 ---
 
@@ -128,7 +128,7 @@ These require user action (agent cannot complete autonomously):
 |------|------|-------------------|
 | Supabase project creation | Before Task 1.3 | Create new project at supabase.com, provide URL + anon key |
 | Vercel account | Before Task 1.4 | ✅ Account already exists |
-| Hostgator DNS | After Task 1.4 | Add CNAME record: `doppio` → Vercel's cname target |
+| Hostgator DNS | After Task 1.4 | Add A record in Hostgator DNS Zone Editor: Host=`doppio`, Type=`A`, Points To=`76.76.21.21`, TTL=3600 |
 | Nano Banana session | After Phase 3 | Screenshot app UI → generate 15s teaser → add to public/ |
 | Hackathon submission | Before March 8 noon EST | Record 2-min demo video, post to Skool #Submissions |
 
