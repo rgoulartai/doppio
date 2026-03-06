@@ -45,7 +45,7 @@
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
 | 3.1 | Landing Page | done | feat/phase-3-ui | 2026-03-06 | HeroVideo.tsx + Landing.tsx built. Hero with video placeholder, headline, subheadline, CTA. ?ref=badge banner working. CTA navigates to /learn. Build passes, 0 console errors. |
-| 3.2 | VideoCard Component | pending | | | |
+| 3.2 | VideoCard Component | done | feat/phase-3-ui | 2026-03-06 | VideoCard.tsx, YouTubeEmbed.tsx, TikTokEmbed.tsx created. lite-youtube-embed wired in main.tsx. IntersectionObserver lazy load, online/offline detection, completion overlay, Mark as done button. TSX type declaration fixed (declare namespace React.JSX). Build passes, UI tested. |
 | 3.3 | "Try it" CTA Button | pending | | | |
 | 3.4 | Progress Tracking (useProgress hook + progress bar UI) | pending | | | |
 | 3.R | Phase 3 Regression | pending | | | |

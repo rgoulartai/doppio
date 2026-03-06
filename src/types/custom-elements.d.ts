@@ -1,17 +1,15 @@
-// src/types/custom-elements.d.ts
-declare global {
+// TypeScript declaration for lite-youtube-embed web component
+// React 18 with react-jsx transform resolves from React.JSX.IntrinsicElements
+declare namespace React {
   namespace JSX {
     interface IntrinsicElements {
-      'lite-youtube': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          videoid: string;
-          playlabel?: string;
-          params?: string;
-        },
-        HTMLElement
-      >;
+      'lite-youtube': {
+        videoid: string;
+        playlabel?: string;
+        params?: string;
+        style?: Record<string, string | number>;
+        className?: string;
+      };
     }
   }
 }
-
-export {};
