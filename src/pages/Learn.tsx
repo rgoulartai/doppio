@@ -1,29 +1,117 @@
-import { useState } from 'react'
-import { VideoCard } from '../components/VideoCard'
-import { TryItButton } from '../components/TryItButton'
-import contentData from '../data/content.json'
-import type { VideoCard as VideoCardType } from '../types/content'
+// src/pages/Learn.tsx
+import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import content from '../data/content.json';
+import { useProgress } from '../hooks/useProgress';
+import type { ProgressState, } from '../lib/progress';
+import type { Level } from '../types/content';
+import { LevelHeader } from '../components/LevelHeader';
+import { LevelNav } from '../components/LevelNav';
+import { CardList } from '../components/CardList';
+import { ProgressBar } from '../components/ProgressBar';
+import { LevelCompleteScreen } from '../components/LevelCompleteScreen';
 
-// Test harness — will be replaced by LevelScreen in Task 4.1
 export default function Learn() {
-  const [completed, setCompleted] = useState<Set<string>>(new Set())
-  const firstCard = contentData.levels[0].cards[0] as VideoCardType
+  const [searchParams] = useSearchParams();
+  const { progress, markComplete, totalCompleted } = useProgress();
+
+  const getInitialLevel = (): 1 | 2 | 3 => {
+    const param = searchParams.get('level');
+    if (param === '1' || param === '2' || param === '3') {
+      return parseInt(param) as 1 | 2 | 3;
+    }
+    // First incomplete level
+    for (const n of [1, 2, 3] as const) {
+      const levelKey = `level_${n}` as keyof ProgressState;
+      const allDone = Object.values(progress[levelKey]).every(Boolean);
+      if (!allDone) return n;
+    }
+    return 3;
+  };
+
+  const [activeLevel, setActiveLevel] = useState<1 | 2 | 3>(getInitialLevel);
+  const [showLevelComplete, setShowLevelComplete] = useState<1 | 2 | 3 | null>(null);
+
+  const completedCounts: Record<1 | 2 | 3, number> = {
+    1: Object.values(progress.level_1).filter(Boolean).length,
+    2: Object.values(progress.level_2).filter(Boolean).length,
+    3: Object.values(progress.level_3).filter(Boolean).length,
+  };
+
+  const handleCardComplete = (level: 1 | 2 | 3, card: 1 | 2 | 3) => {
+    markComplete(level, card);
+    // Compute next state locally to avoid stale closure
+    const levelKey = `level_${level}` as keyof ProgressState;
+    const updated = { ...progress[levelKey], [`card_${card}`]: true } as Record<string, boolean>;
+    const allDone = [1, 2, 3].every((c) => updated[`card_${c}`]);
+    if (allDone) {
+      setShowLevelComplete(level);
+    }
+  };
+
+  const handleContinue = () => {
+    const completed = showLevelComplete;
+    setShowLevelComplete(null);
+    if (completed !== null && completed < 3) {
+      setActiveLevel((completed + 1) as 2 | 3);
+    }
+    // level 3: LevelCompleteScreen handles navigation to /complete
+  };
+
+  const currentLevel = content.levels.find((l) => l.level === activeLevel) as Level | undefined;
+  if (!currentLevel) return null;
+
+  const currentLevelProgress = progress[`level_${activeLevel}` as keyof ProgressState];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white p-4">
-      <h1 className="text-2xl font-bold mb-6">Level 1 — Beginner</h1>
-      <div className="max-w-md mx-auto space-y-3">
-        <VideoCard
-          card={firstCard}
-          isCompleted={completed.has(firstCard.id)}
-          onComplete={() => setCompleted(prev => new Set([...prev, firstCard.id]))}
-        />
-        <TryItButton
-          card={firstCard}
-          level={1}
-          cardIndex={1}
+    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+      <LevelHeader totalCompleted={totalCompleted} />
+      <LevelNav
+        activeLevel={activeLevel}
+        completedCounts={completedCounts}
+        onSelectLevel={setActiveLevel}
+      />
+      <div className="px-4 pt-3 pb-1 max-w-lg mx-auto w-full">
+        <ProgressBar
+          completedCards={completedCounts[activeLevel]}
+          totalCards={3}
         />
       </div>
+      <main className="flex-1 overflow-y-auto">
+        <CardList
+          level={currentLevel}
+          completedCards={currentLevelProgress}
+          onCardComplete={(card) => handleCardComplete(activeLevel, card)}
+        />
+      </main>
+
+      {showLevelComplete !== null && (
+        <LevelCompleteScreen
+          level={showLevelComplete}
+          onContinue={handleContinue}
+          onShare={handleShare}
+        />
+      )}
     </div>
-  )
+  );
+}
+
+async function handleShare() {
+  const SHARE_URL = 'https://doppio.kookyos.com/?ref=badge';
+  const shareData = {
+    title: "I'm now an AI Manager!",
+    text: "I just completed a Doppio level — the Duolingo of AI. Try it in 20 minutes:",
+    url: SHARE_URL,
+  };
+  try {
+    if (navigator.share && navigator.canShare(shareData)) {
+      await navigator.share(shareData);
+    } else {
+      await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
+    }
+  } catch (err) {
+    if ((err as Error).name !== 'AbortError') {
+      await navigator.clipboard.writeText(SHARE_URL).catch(() => {});
+    }
+  }
 }
