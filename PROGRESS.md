@@ -10,12 +10,12 @@
 | Phase | Status | Tasks Done | Total | Notes |
 |-------|--------|------------|-------|-------|
 | 1: Scaffolding & Infrastructure | done | 5 | 5 | Project scaffold, PWA, Supabase, Vercel — regression passed |
-| 2: Content Layer | in-progress | 0 | 4 | content.json skeleton done, video IDs researched (awaiting approval) |
+| 2: Content Layer | in-progress | 2 | 4 | content.json + TypeScript types done, 9 real video IDs curated (official Anthropic/Perplexity channels) |
 | 3: Core Learning UI | pending | 0 | 5 | Landing, VideoCard, Try-it CTA, progress |
 | 4: Level Flow & Gamification | pending | 0 | 5 | Navigation, completion screens, PWA prompts |
 | 5: Analytics & Polish | pending | 0 | 5 | Analytics, OG tags, icons, mobile polish |
 | 6: E2E Testing | pending | 0 | 5 | Full multi-angle testing on production |
-| **Total** | | **5** | **29** | |
+| **Total** | | **7** | **29** | |
 
 ---
 
