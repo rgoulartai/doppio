@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# Obsidian internals
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# Timeline auto-updater runtime files
+scripts/.last_run
+scripts/update_timeline.log
+scripts/auto_commit_push.log
+*.tmp

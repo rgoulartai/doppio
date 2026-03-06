@@ -1,0 +1,77 @@
+# Doppio — Project Timeline
+
+> PWA that transforms non-technical users from "ChatGPT-as-Google" to "AI coworker bosses" in 20 minutes.
+> Built during a 72-hour hackathon.
+
+---
+
+## March 6, 2026
+
+| Time | Step | Description |
+|------|------|-------------|
+| **Pre-session** | Ideation | Brainstormed hackathon idea with Perplexity AI → [session link](https://www.perplexity.ai/search/i-ll-be-participating-on-a-72-ahC6A.jrQb2_JpS_uckEtA) |
+| **14:20** | Project created | `KOOKY/Doppio` directory initialized |
+| **14:44** | Tooling setup | Claude Code configured for project (`.claude/settings.local.json`) |
+| **~15:00** | Repo created | Public GitHub repository created → [github.com/rgoulartai/doppio](https://github.com/rgoulartai/doppio) |
+| **15:09** | Obsidian vault | Obsidian initialized as project knowledge base |
+| **15:09** | Claude session | Opened Antigravity terminal with `ENABLE_TOOL_SEARCH=true claude` |
+| **15:09** | m2c1 skill | First prompt to Claude Sonnet 4.6 — launched [m2c1](https://github.com/grandamenium/m2c1) orchestration skill |
+| **15:12** | Brain Dump | Pasted Perplexity brain dump into Claude → Phase 0 (Setup) + Phase 1 (Brain Dump to PRD) initiated |
+| **15:13** | Budget noted | Budget constraints documented |
+| **15:14** | Scaffold | Orchestration directory structure created (research, reports, skills, tasks) |
+| **15:22** | Research wave | Phase 2 begins — parallel research across 7 domains: |
+| **15:22** | → Supabase | Anonymous progress sync research |
+| **15:22** | → Video embedding | YouTube / TikTok / Reels / X oEmbed strategies |
+| **15:23** | → Analytics | Lightweight analytics options for PWA |
+| **15:23** | → PWA implementation | Vite PWA plugin, service workers, offline support |
+| **15:23** | → AI video generation | Researched AI-generated content options |
+| **15:24** | → Gamification UX | Streaks, confetti, progress bars, badge mechanics |
+| **15:24** | → Content curation | Social video curation strategy for 3-level learning path |
+| **15:27** | PRD | `PRD.md` generated — product requirements finalized |
+| **15:32** | Obsidian review | Workspace arranged, documents reviewed in Obsidian |
+| **15:33** | Discovery | `DISCOVERY.md` completed — Phase 3 done |
+| **15:35** | Skills generated | Implementation skills authored for each domain: |
+| **15:35** | → Architecture | Overall app architecture skill |
+| **15:35** | → Supabase anonymous progress | LocalStorage → Supabase sync pattern |
+| **15:35** | → Analytics | Doppio-specific analytics skill |
+| **15:36** | → PWA + Vite | Full PWA setup with Vite configuration |
+| **15:36** | → Vercel deploy | Deploy + custom domain configuration |
+| **15:36** | → Video embed facade | Facade pattern for multi-platform video embeds |
+| **15:37** | → Gamification | Canvas confetti + streak mechanics |
+| **15:37** | → Content schema | Video card content schema and data model |
+| **15:38** | Timeline created | This file committed to repo |
+
+---
+
+## Stack
+
+| Layer | Choice |
+|-------|--------|
+| Frontend | React + Tailwind + Vite |
+| PWA | Vite PWA Plugin + Service Worker |
+| Progress | localStorage → Supabase (anonymous) |
+| Video | YouTube / TikTok / Reels / X oEmbed |
+| Deploy | Vercel |
+| AI backend | None — static curation |
+
+---
+
+## Naming History
+
+`AICoworker → AgentUnlock → AIgnition → IronSpark → AgentDuo → Ignis → **Doppio**`
+
+*Doppio: Italian for "double shot" — double your AI skills, double your output.*
+
+---
+
+## Pitch
+
+> "20 minutes from ChatGPT Googler to Claude Coworker boss — curated through Crowd Knowledge magic. No coding, no prompting, just natural language superpowers."
+
+---
+
+## Activity Log
+
+<!-- AUTO-TIMELINE:START -->
+_No activity logged yet. Auto-updater will populate this section every 30 minutes._
+<!-- AUTO-TIMELINE:END -->
