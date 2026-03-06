@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from 'react-hot-toast'
 import Landing from './pages/Landing'
 import Learn from './pages/Learn'
 import Complete from './pages/Complete'
@@ -35,6 +36,7 @@ function App() {
     <BrowserRouter>
       <AppRoutes />
       <Analytics />
+      <Toaster />
     </BrowserRouter>
   )
 }
