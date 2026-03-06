@@ -8,6 +8,7 @@ import Complete from './pages/Complete'
 import { IOSInstallBanner } from './components/IOSInstallBanner'
 import { AndroidInstallBanner } from './components/AndroidInstallBanner'
 import { getOrCreateAnonUser } from './lib/auth'
+import { syncFromSupabase } from './lib/progress'
 import { usePageTracking } from './hooks/usePageTracking'
 
 function AppRoutes() {
@@ -27,9 +28,17 @@ function AppRoutes() {
 }
 
 function App() {
-  // Initialize anonymous auth on mount (called once — cached in auth.ts module)
+  // Initialize anonymous auth + background Supabase sync on mount
   useEffect(() => {
     void getOrCreateAnonUser()
+    void syncFromSupabase()
+  }, [])
+
+  // Re-sync when user returns to the tab (e.g., after using a Try-it tool in a new tab)
+  useEffect(() => {
+    const handleFocus = () => { void syncFromSupabase() }
+    window.addEventListener('focus', handleFocus)
+    return () => window.removeEventListener('focus', handleFocus)
   }, [])
 
   return (
