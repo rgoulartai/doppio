@@ -226,6 +226,32 @@ export default function Profile() {
           )}
         </div>
 
+        {/* AI Feed */}
+        <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #e8ecee' }}>
+          <div className="px-4 pt-4 pb-1">
+            <p className="text-[12px] font-semibold uppercase tracking-wider" style={{ color: 'rgba(28,47,62,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Daily AI Videos
+            </p>
+          </div>
+          <div className="px-4 pb-4 pt-3">
+            <button
+              onClick={() => navigate('/ai-feed')}
+              className="w-full py-2.5 rounded-2xl text-[14px] font-semibold flex items-center justify-center gap-2"
+              style={{
+                background: 'rgba(0,113,227,0.06)',
+                border: '1.5px solid rgba(0,113,227,0.2)',
+                color: '#0071e3',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+              }}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+              Today's AI Videos
+            </button>
+          </div>
+        </div>
+
         {/* Danger zone */}
         <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #e8ecee' }}>
           <div className="px-4 pt-4 pb-1">

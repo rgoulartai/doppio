@@ -11,6 +11,7 @@ import VideoShare from './pages/VideoShare'
 import Bookmarks from './pages/Bookmarks'
 import Profile from './pages/Profile'
 import DevLogin from './pages/DevLogin'
+import AIFeed from './pages/AIFeed'
 import { IOSInstallBanner } from './components/IOSInstallBanner'
 import { AndroidInstallBanner } from './components/AndroidInstallBanner'
 import { getOrCreateAnonUser } from './lib/auth'
@@ -31,6 +32,7 @@ function AppRoutes() {
         <Route path="/bookmarks" element={<Bookmarks />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/dev" element={<DevLogin />} />
+        <Route path="/ai-feed" element={<AIFeed />} />
       </Routes>
       {/* PWA install banners — platform-detected, shown after 5s delay */}
       <IOSInstallBanner />
