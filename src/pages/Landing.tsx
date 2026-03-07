@@ -22,7 +22,7 @@ export default function Landing() {
             fontFamily: "'Plus Jakarta Sans', sans-serif",
           }}
         >
-          Someone completed Doppio and became an AI Manager — start your journey
+          🎉 Someone completed Doppio and became an AI Manager! Start your journey →
         </div>
       )}
 
