@@ -35,6 +35,8 @@ No prompting tips. No coding. No app store. Just a shareable URL.
 
 Doppio curates existing high-quality social video demos (TikTok, YouTube Shorts, Reels) into a structured 3-level learning path. Users watch real people doing real things with AI tools, then immediately try it themselves.
 
+> **Update:** During development, the video platform scope narrowed to **YouTube only**. The original plan included TikTok (technically viable — public oEmbed, no auth required) and Instagram Reels. In practice, all 9 best-fit videos were found on YouTube, so TikTok was never used despite being supported in code. Instagram Reels was permanently excluded early on — it requires a Facebook App token (OAuth client credentials) registered through Meta's developer platform, which would need a backend secret or expose credentials client-side. Since Doppio is a fully client-side PWA with no backend, Instagram is technically infeasible without a security violation. See `DISCOVERY.md` D62 for the full reasoning.
+
 ### The 3 Levels
 
 | Level | Theme | AI Tool | Example Card |
@@ -43,7 +45,9 @@ Doppio curates existing high-quality social video demos (TikTok, YouTube Shorts,
 | **2 — Intermediate** | Simple AI delegation | Claude.ai | "Clean my Downloads folder" |
 | **3 — Advanced** | Full AI agents | Claude Cowork + Perplexity | "Take 5 receipts → expense report" |
 
-Each card has: (1) an embedded social video demo, (2) a "Try it" CTA that opens the AI tool in a new tab with a prefilled natural-language prompt, (3) a clipboard copy fallback.
+> **Update:** "Claude Cowork" was the product name used in early planning research. During implementation it became clear that "Claude Cowork" is not a distinct product — the correct name is **Claude computer use**, a capability within Claude.ai that allows Claude to browse the web, interact with apps, and handle multi-step tasks. The Level 3 AI tool column should more accurately read: **Claude (computer use) + Perplexity**. In `content.json`, Level 3 cards 1 uses Claude and cards 2–3 use Perplexity.
+
+Each card has: (1) an embedded social video demo, (2) a "Try it" CTA that opens the AI tool in a new tab with a prefilled natural-language prompt, (3) a clipboard copy fallback, (4) a "Mark as done" completion button, and (5) creator attribution with a link to the creator's channel.
 
 ### Key Features
 
@@ -52,6 +56,8 @@ Each card has: (1) an embedded social video demo, (2) a "Try it" CTA that opens 
 - **Confetti + completion badge** — gamified experience, shareable on completion
 - **Zero backend AI** — pure static curation, no LLM calls, ships in a day
 - **Swappable content** — all video IDs live in `content.json`, no code changes needed to update videos
+
+> **Update:** The "completion badge" is currently a **URL share only** — `navigator.share()` (Web Share API) with a clipboard fallback sharing the link `https://doppio.kookyos.com/?ref=badge`. An `og-badge.png` static image asset for link preview was planned (Phase 5 Task 5.2) but has not yet been generated. The badge share CTA is live and functional; the social preview image is pending.
 
 ---
 
@@ -70,6 +76,8 @@ Each card has: (1) an embedded social video demo, (2) a "Try it" CTA that opens 
 | Video (TikTok) | Direct iframe embed |
 | Confetti | canvas-confetti (~6 kB) |
 | Deployment | Vercel Hobby (free) |
+
+> **Update:** The planned versions shifted during scaffolding — the actual installed versions are **React 19**, **Vite 7**, and **React Router v7** (the latest stable at build time). The framework APIs are fully compatible; only the version numbers differ from what was originally planned. TikTok embed support is in the codebase (`TikTokEmbed.tsx`) but no TikTok videos are used in the current `content.json` — all 9 cards use YouTube.
 
 ---
 
@@ -203,6 +211,8 @@ Videos for Doppio are selected using a **weighted scoring model** that balances 
 
 A video must score above a minimum threshold on **all four signals** to qualify. No single metric can carry a weak score — a viral old video still loses to a recent accurate one with solid engagement.
 
+> **Update:** The weighted scoring model above was a **planning framework**, not an automated tool. In practice, curation was a manual process: Claude ran parallel web searches using the Exa MCP server, applying these criteria as evaluation guidelines, and the final 9 video IDs were selected collaboratively based on the scoring logic and human judgment. No automated scorer was built. The model remains a useful mental framework for future content updates.
+
 ### Minimum Thresholds (Current)
 
 | Signal | Minimum | Notes |
@@ -237,11 +247,13 @@ A video with 80K views from March 2026 beats a video with 2M views from 2024 eve
 
 ### How to Update Videos
 
-All video content lives in `src/content.json`. To swap a video:
+All video content lives in `src/data/content.json`. To swap a video:
+
+> **Update:** The path referenced in early documentation was `src/content.json`. The actual path is `src/data/content.json`. All video IDs, prompts, resource links, and backup IDs live there.
 
 1. Find a replacement that meets the criteria above
 2. Copy the YouTube video ID from the URL (`youtube.com/watch?v=VIDEO_ID_HERE`)
-3. Update the `videoId` field in `content.json` for that card
+3. Update the `videoId` field in `src/data/content.json` for that card
 4. No code change, no redeployment needed for content-only swaps (Vercel auto-deploys on git push)
 
 ---
@@ -273,38 +285,37 @@ That's it. Obsidian will index all markdown files. The `.obsidian/` folder (auto
 
 ## Environment Variables and Secrets
 
-**Never commit secrets to GitHub.** This project uses a `.env` file for sensitive configuration.
+**Never commit secrets to GitHub.** This project uses a `.env.local` file for sensitive configuration.
 
 ### Setup
 
-Create a `.env` file in the project root (it is gitignored):
+Create a `.env.local` file in the project root (it is gitignored):
 
 ```bash
-# .env — never commit this file
+# .env.local — never commit this file
 VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<your-anon-key>
+VITE_STRIPE_PAYMENT_URL=<your-stripe-payment-link>
+VITE_STRIPE_PORTAL_URL=<your-stripe-portal-link>
 ```
+
+> **Update:** Early documentation referenced `.env` as the local secrets file. The actual file used is `.env.local` (Vite's preferred local override convention). Additionally, `VITE_STRIPE_PAYMENT_URL` and `VITE_STRIPE_PORTAL_URL` were added during development when a trial/payment flow was explored. Both are set in Vercel Dashboard for production.
 
 Copy `.env.example` as your starting point:
 
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 Then fill in your values from the [Supabase Dashboard](https://supabase.com/dashboard) → Project Settings → API.
 
 ### Notes on These Specific Keys
 
-Supabase's `anon` key is intentionally designed to be safe for client-side use — it is governed by your Row Level Security (RLS) policies on the database. It is not the same as an admin/service key. Still, keep it in `.env` and out of git as a habit.
+Supabase's `anon` key is intentionally designed to be safe for client-side use — it is governed by your Row Level Security (RLS) policies on the database. It is not the same as an admin/service key. Still, keep it in `.env.local` and out of git as a habit.
 
 ### `.env.example`
 
 The `.env.example` file is committed to git and contains all required variable names with blank or placeholder values. **Always update `.env.example` when you add a new environment variable.** This is the contract for anyone cloning the repo.
-
-```bash
-VITE_SUPABASE_URL=
-VITE_SUPABASE_ANON_KEY=
-```
 
 ---
 
@@ -450,6 +461,8 @@ Doppio/
 │   ├── orchestration-doppio/         # m2c1 orchestration output
 │   │   ├── PRD.md                    # Product Requirements Document
 │   │   ├── DISCOVERY.md              # Resolved decisions (source of truth)
+│   │   ├── PHASES.md                 # 29 tasks across 6 phases
+│   │   ├── tasks/                    # Per-task specification files
 │   │   └── research/                 # Subagent research outputs
 │   │       ├── supabase-sync.md
 │   │       ├── video-embedding.md
@@ -467,16 +480,39 @@ Doppio/
 │       ├── video-embed-facade/
 │       ├── canvas-confetti-gamification/
 │       └── doppio-content-schema/
+├── agents/
+│   └── sessions/                     # /handoff outputs — session continuity files
 ├── scripts/
-│   └── update_timeline.sh            # Auto-updates PROJECT_TIMELINE.md every 30 min
-├── .obsidian/                        # Obsidian vault config (auto-generated)
+│   ├── update_timeline.sh            # Auto-updates PROJECT_TIMELINE.md every 30 min
+│   ├── auto_commit_push.sh           # Auto git commit + push every 30 min
+│   └── budget_screenshot.py          # Hourly Playwright screenshot of Claude credit balance
+├── src/
+│   ├── data/
+│   │   └── content.json              # All video IDs, prompts, resource links — content source of truth
+│   ├── pages/
+│   │   ├── Landing.tsx               # / — hero, CTA, badge banner
+│   │   ├── Learn.tsx                 # /learn — 3-level card flow, progress tracking
+│   │   ├── Complete.tsx              # /complete — final screen, confetti, badge share
+│   │   ├── Trial.tsx                 # /trial — name+email trial capture (see Update below)
+│   │   ├── Payment.tsx               # /payment — Stripe gate (see Update below)
+│   │   ├── Profile.tsx               # /profile — user status, Stripe portal
+│   │   ├── Bookmarks.tsx             # /bookmarks — saved videos (paid users)
+│   │   └── DevLogin.tsx              # /dev — dev tool, REMOVE before submission
+│   ├── components/                   # Shared UI components
+│   ├── hooks/                        # React hooks (useProgress, usePWAInstall)
+│   ├── lib/                          # Helpers (supabase, progress, analytics, tryit)
+│   └── types/                        # TypeScript interfaces
+├── public/                           # Static assets (icons, favicon, PWA manifest)
+├── supabase/
+│   └── migrations/                   # SQL schema (user_progress, analytics_events, RLS)
 ├── docs/
 │   ├── Brain Dump.md                 # Original raw idea document from Perplexity brainstorm
 │   └── Step By Step.md               # Session workflow notes, m2c1 rationale, UI principles
 ├── screenshots/
 │   ├── budget_*.png                  # Hourly Claude credit balance screenshots
 │   └── regression/                   # Regression test evidence screenshots
-├── .env                              # Local secrets — NEVER commit
+├── .obsidian/                        # Obsidian vault config (auto-generated)
+├── .env.local                        # Local secrets — NEVER commit
 ├── .env.example                      # Template — always keep updated
 ├── .gitignore
 ├── Budget.md                         # Claude credit budget tracker
@@ -484,6 +520,10 @@ Doppio/
 ├── PROJECT_TIMELINE.md               # Chronological project log (auto-updated)
 └── README.md                         # This file
 ```
+
+> **Update:** The original project structure shown during planning did not include `agents/sessions/` (handoff files added as sessions accumulated), the `scripts/auto_commit_push.sh` and `scripts/budget_screenshot.py` automation scripts, or the full `src/` breakdown. The structure above reflects the actual state as of Phase 4 completion.
+>
+> Additionally, several pages were built beyond the original MVP scope during a session exploring monetization: `Trial.tsx`, `Payment.tsx`, `Profile.tsx`, `Bookmarks.tsx`, and `VideoShare.tsx`. These extend the app with a Stripe-based trial/paid-user flow. Whether they are retained post-hackathon is TBD. `DevLogin.tsx` (`/dev` route) is a development utility and **must be removed or env-gated before the March 8 submission**.
 
 ---
 
@@ -506,7 +546,7 @@ cd doppio
 npm install
 
 # Set up environment variables
-cp .env.example .env
+cp .env.example .env.local
 # Fill in VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
 
 # Start dev server
@@ -538,7 +578,24 @@ create policy "Users can read their own progress"
 create policy "Users can insert their own progress"
   on public.user_progress for insert
   with check (auth.uid() = user_id);
+
+-- Analytics events table
+create table public.analytics_events (
+  id           uuid default gen_random_uuid() primary key,
+  event_name   text not null,
+  session_id   text,
+  properties   jsonb,
+  created_at   timestamptz not null default now()
+);
+
+alter table public.analytics_events enable row level security;
+
+create policy "Anyone can insert analytics events"
+  on public.analytics_events for insert
+  with check (true);
 ```
+
+> **Update:** The original Getting Started section only showed the `user_progress` schema. The full applied migration also includes the `analytics_events` table (used by the `track()` helper in `src/lib/analytics.ts`). Both tables are in `supabase/migrations/001_initial.sql`.
 
 ### Deploy to Vercel
 
@@ -583,15 +640,17 @@ These documents capture the origin and process decisions behind this project. Th
 
 A few things not yet set up that are worth considering:
 
-**`CHANGELOG.md`** — Start logging what changes between sessions. Even a one-liner per session compounds into something very useful for the demo video script and for anyone reviewing the repo after the hackathon.
+~~**`CHANGELOG.md`** — Start logging what changes between sessions.~~ ✅ Done — CHANGELOG.md is active and covers all Phase 1–4 entries.
 
-**Git commits per phase** — Commit after each major phase (after PRD, after research, after each implementation skill). Right now the repo has no commits yet. Small, frequent commits make it easy to roll back if something breaks at 2am before a deadline.
+~~**Git commits per phase** — Right now the repo has no commits yet.~~ ✅ Done — the repo has 20+ commits across all phases with per-task commit messages.
+
+~~**`content.json` first** — Before writing any React, curate the 9 videos and write `content.json`.~~ ✅ Done — `src/data/content.json` was built in Phase 2 before UI work began.
 
 **Demo video script** — The `DISCOVERY.md` already contains the perfect 2-minute script structure: problem → solution → 3 levels → live demo → share badge. Start drafting it early so it doesn't become a last-minute scramble.
 
-**`content.json` first** — Before writing any React, curate the 9 videos and write `content.json`. It's the heart of the app and will inform every component you build. Getting this wrong wastes UI work.
-
 **Test on real iOS Safari** — The PWA install flow on iOS Safari is the trickiest part of the stack. Test it on a real device early, not just in a desktop Chrome DevTools simulation.
+
+**Landing page teaser video** — The hero `<video>` element is scaffolded and ready. The actual video file needs to be created in Nano Banana (screenshot the app → generate 15s animated MP4 → compress under 8 MB → add to `public/`). This is a user action — the code is waiting for the file.
 
 ---
 
