@@ -41,6 +41,14 @@ export function useAndroidInstallPrompt() {
     const handleAppInstalled = () => {
       setDeferredPrompt(null)
       setShowBanner(false)
+      ;(async () => {
+        try {
+          const { track } = await import('../lib/analytics')
+          track('pwa_installed')
+        } catch {
+          // analytics not yet wired — silent fail
+        }
+      })()
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
