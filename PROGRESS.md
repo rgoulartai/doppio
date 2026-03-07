@@ -23,7 +23,7 @@
 | 3: Core Learning UI | done | 5 | 5 | All 5 tasks complete. 1 user action needed: enable anon auth in Supabase Dashboard. |
 | 4: Level Flow & Gamification | done | 5 | 5 | All tasks complete. Regression PASS on production. |
 | 5: Analytics & Polish | done | 5 | 5 | All tasks complete. Regression PASS. |
-| 6: E2E Testing | in progress | 3 | 5 | 6.1 full journey PASS, 6.2 mobile+PWA PASS, 6.3 Supabase+progress PASS |
+| 6: E2E Testing | done ✅ | 5 | 5 | All 5 tasks PASS. READY FOR SUBMISSION. |
 | **Total** | | **29** | **29** | |
 
 ---
@@ -87,7 +87,7 @@
 | 6.2 | Cross-Device + PWA Install Test | done | main | 2026-03-07 | PASS 36/36. iPhone12Pro 390px ✅, Pixel5 393px ✅, iOS banner visible+dismissable ✅, dismiss persists localStorage ✅, PWA manifest valid (standalone, icons, SW ready) ✅, offline app shell ✅. No bugs found. |
 | 6.3 | Supabase + Progress Persistence Test | done | main | 2026-03-07 | PASS 21/21. Auth session persists across progress clear ✅. localStorage shape verified ✅. DB rows match localStorage ✅. Unique constraint enforced (409) ✅. Offline card marks immediately ✅, syncs to DB on reconnect ✅. Focus sync (remote insert → localStorage) ✅. Note: full localStorage.clear() hits 429 rate limit in automated tests (not a prod bug — per D54). |
 | 6.4 | Analytics Verification | done | main | 2026-03-07 | PASS. Bug found+fixed: level_started not firing from Continue buttons — added track() to LevelCompleteScreen.handleContinue. All 7 event types verified: page_view:11✅, card_completed:9✅, level_completed:3✅, try_it_clicked:3✅, badge_shared:1✅, level_started:3(full flow)✅, pwa_installed:0(expected)✅. No PII. Zero console errors. All-time: 333 page views, 82 sessions. |
-| 6.5 | Performance + Production Health | pending | | | |
+| 6.5 | Performance + Production Health | done | main | 2026-03-07 | PASS — READY FOR SUBMISSION. Bundle: 484KB/146.5KB gzipped ✅. FCP:1368ms, CLS:0 ✅. Zero console errors ✅. Zero CSP violations ✅. Badge ref ✅. OG tags ✅. PWA manifest ✅. Teaser video ✅. |
 
 ---
 
