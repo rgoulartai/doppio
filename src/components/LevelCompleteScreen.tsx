@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import toast from 'react-hot-toast';
+import { track } from '../lib/analytics';
 
 const LEVEL_CONFIG = {
   1: {
@@ -44,7 +45,8 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
       origin: { y: 0.6 },
       colors: ['#0071e3', '#34c759', '#ff9f0a', '#ff375f', '#5e5ce6'],
     });
-  }, []);
+    void track('level_completed', { level });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleContinue = () => {
     if (level === 3) {
@@ -57,7 +59,7 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
   const handleShare = async () => {
     const shareData = {
       title: "I'm now an AI Manager!",
-      text: "I just completed a Doppio level — the Duolingo of AI. Try it in 20 minutes:",
+      text: "I just completed a Doppio level — the Duolingo of AI. Start your daily AI practice:",
       url: SHARE_URL,
     };
     try {
@@ -91,12 +93,7 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
         });
       }
     }
-    try {
-      const { track } = await import('../lib/analytics');
-      void track('badge_shared');
-    } catch {
-      // silent
-    }
+    void track('badge_shared', { level });
     onShare();
   };
 

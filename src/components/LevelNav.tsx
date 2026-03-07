@@ -1,5 +1,6 @@
 // src/components/LevelNav.tsx
 import content from '../data/content.json';
+import { track } from '../lib/analytics';
 
 interface LevelNavProps {
   activeLevel: 1 | 2 | 3;
@@ -17,7 +18,7 @@ export function LevelNav({ activeLevel, completedCounts, onSelectLevel }: LevelN
         return (
           <button
             key={level}
-            onClick={() => onSelectLevel(level)}
+            onClick={() => { void track('level_started', { level }); onSelectLevel(level); }}
             className={`
               flex-1 py-3 text-[13px] font-medium
               flex items-center justify-center gap-1.5

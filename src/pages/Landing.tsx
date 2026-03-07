@@ -1,5 +1,6 @@
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { HeroVideo } from '../components/HeroVideo'
+import { track } from '../lib/analytics'
 
 export default function Landing() {
   const [searchParams] = useSearchParams()
@@ -31,7 +32,7 @@ export default function Landing() {
       {/* CTA section */}
       <div className="flex flex-col items-center px-6 py-10 text-center stagger-1">
         <button
-          onClick={() => navigate('/trial')}
+          onClick={() => { void track('level_started', { level: 1 }); navigate('/trial'); }}
           className="landing-cta-btn"
           style={{ touchAction: 'manipulation' }}
         >

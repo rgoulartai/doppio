@@ -1,6 +1,8 @@
 // src/lib/progress.ts
 import { supabase } from './supabase';
 import { getOrCreateAnonUser } from './auth';
+import { track } from './analytics';
+import content from '../data/content.json';
 
 const STORAGE_KEY = 'doppio_progress_v1';
 
@@ -54,7 +56,12 @@ export function markCardComplete(level: 1 | 2 | 3, card: 1 | 2 | 3): void {
   (state[levelKey] as Record<string, boolean>)[cardKey] = true;
   writeProgress(state);
 
-  // 2. Fire-and-forget Supabase upsert (non-blocking)
+  // 2. Track analytics (fire-and-forget)
+  const levelData = content.levels.find(l => l.level === level);
+  const cardData = levelData?.cards.find(c => c.card === card);
+  void track('card_completed', { level, card, card_title: cardData?.title ?? '' });
+
+  // 3. Fire-and-forget Supabase upsert (non-blocking)
   void (async () => {
     try {
       const user = await getOrCreateAnonUser();

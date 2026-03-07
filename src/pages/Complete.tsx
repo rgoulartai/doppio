@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import toast from 'react-hot-toast';
+import { track } from '../lib/analytics';
 import { ResourceLinks } from '../components/ResourceLinks';
 
 const SHARE_URL = 'https://doppio.kookyos.com/?ref=badge';
@@ -36,20 +37,13 @@ export default function Complete() {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { track } = await import('../lib/analytics');
-        track('level_completed', { level: 3 });
-      } catch {
-        // analytics not yet wired — silent fail
-      }
-    })();
+    void track('level_completed', { level: 3 });
   }, []);
 
   const handleShare = async () => {
     const shareData = {
       title: "I'm now an AI Manager!",
-      text: "I just completed Doppio — the Duolingo of AI. Try it in 20 minutes:",
+      text: "I just completed Doppio — the Duolingo of AI. Start your daily AI practice:",
       url: SHARE_URL,
     };
     try {
@@ -66,12 +60,7 @@ export default function Complete() {
       }
     }
 
-    try {
-      const { track } = await import('../lib/analytics');
-      track('badge_shared');
-    } catch {
-      // silent fail
-    }
+    void track('badge_shared', { method: 'share' });
   };
 
   return (

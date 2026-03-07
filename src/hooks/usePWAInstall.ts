@@ -1,5 +1,6 @@
 // src/hooks/usePWAInstall.ts
 import { useState, useEffect } from 'react'
+import { track } from '../lib/analytics'
 
 // iOS detection helpers
 export const isIOS = (): boolean =>
@@ -41,14 +42,7 @@ export function useAndroidInstallPrompt() {
     const handleAppInstalled = () => {
       setDeferredPrompt(null)
       setShowBanner(false)
-      ;(async () => {
-        try {
-          const { track } = await import('../lib/analytics')
-          track('pwa_installed')
-        } catch {
-          // analytics not yet wired — silent fail
-        }
-      })()
+      void track('pwa_installed', { platform: 'android' })
     }
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
@@ -65,8 +59,7 @@ export function useAndroidInstallPrompt() {
     deferredPrompt.prompt()
     const { outcome } = await deferredPrompt.userChoice
     if (outcome === 'accepted') {
-      // Task 5.1 adds analytics here: track('pwa_installed', {})
-      console.log('[PWA] User accepted install prompt')
+      void track('pwa_installed', { platform: 'android' })
     }
     setDeferredPrompt(null)
     setShowBanner(false)
