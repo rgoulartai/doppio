@@ -3,8 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'react-hot-toast'
 import Landing from './pages/Landing'
+import Trial from './pages/Trial'
 import Learn from './pages/Learn'
 import Complete from './pages/Complete'
+import Payment from './pages/Payment'
+import VideoShare from './pages/VideoShare'
+import Bookmarks from './pages/Bookmarks'
+import DevLogin from './pages/DevLogin'
 import { IOSInstallBanner } from './components/IOSInstallBanner'
 import { AndroidInstallBanner } from './components/AndroidInstallBanner'
 import { getOrCreateAnonUser } from './lib/auth'
@@ -17,8 +22,13 @@ function AppRoutes() {
     <>
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/trial" element={<Trial />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/complete" element={<Complete />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/video/:cardId" element={<VideoShare />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/dev" element={<DevLogin />} />
       </Routes>
       {/* PWA install banners — platform-detected, shown after 5s delay */}
       <IOSInstallBanner />

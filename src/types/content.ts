@@ -12,6 +12,8 @@ export interface VideoCard {
   platform: Platform;
   videoId: string;              // YouTube video ID (11 chars) or TikTok numeric string
   thumbnailUrl?: string;        // Optional; if omitted, YouTube thumbnail auto-derived
+  creator?: string;             // Channel / creator name shown in credits
+  creatorUrl?: string;          // Link to creator's channel
   aiTool: AITool;               // Which AI tool the "Try it" button opens
   tryItPrompt: string;          // Natural language prompt (single sentence, action-first)
   tryItUrl: string;             // Full URL with ?q= pre-filled (URL-encoded)

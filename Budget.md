@@ -36,3 +36,11 @@ Start : 2:20 PM
 **Balance:** $90.03
 
 ![Credit Balance March 6, 2026 at 8:00 PM](screenshots/budget_2026-03-06_20-00.png)
+
+---
+
+### March 6, 2026 at 9:00 PM
+
+**Balance:** $85.18
+
+![Credit Balance March 6, 2026 at 9:00 PM](screenshots/budget_2026-03-06_21-00.png)

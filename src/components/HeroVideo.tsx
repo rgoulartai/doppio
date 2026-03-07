@@ -2,7 +2,7 @@ export function HeroVideo() {
   return (
     <div
       className="relative w-full overflow-hidden"
-      style={{ backgroundColor: '#0a1929', minHeight: '68vh' }}
+      style={{ backgroundColor: '#f5f5f7', minHeight: '68vh' }}
     >
       {/* Animated gradient orbs */}
       <div className="hero-orb hero-orb-1" />
@@ -37,12 +37,12 @@ export function HeroVideo() {
         {/* Headline */}
         <div>
           <div className="hero-hl-lost">
-            <span style={{ fontSize: '0.32em', fontWeight: 600, letterSpacing: '0.12em', opacity: 0.6, textTransform: 'uppercase', marginBottom: '0.15em', display: 'block', fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'rgba(255,255,255,0.7)' }}>from</span>
+            <span style={{ fontSize: '0.32em', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase' as const, marginBottom: '0.15em', display: 'block', fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'rgba(28,47,62,0.45)' }}>from</span>
             LOST
           </div>
           <div className="hero-hl-arrow">to</div>
           <div className="hero-hl-boss">AI BOSS</div>
-          <div className="hero-hl-sub">in 20 Minutes Flat</div>
+          <div className="hero-hl-sub">by dedicating just a few minutes</div>
         </div>
 
         {/* Quote */}

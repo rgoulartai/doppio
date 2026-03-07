@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { useOnlineStatus } from '../hooks/useOnlineStatus'
 import { YouTubeEmbed } from './YouTubeEmbed'
 import { TikTokEmbed } from './TikTokEmbed'
+import { ShareModal } from './ShareModal'
+import { isPaid } from '../lib/leads'
+import { isBookmarked, toggleBookmark } from '../lib/bookmarks'
 import type { VideoCard as VideoCardType } from '../types/content'
 
 interface VideoCardProps {
@@ -13,7 +16,10 @@ interface VideoCardProps {
 export function VideoCard({ card, isCompleted, onComplete }: VideoCardProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [bookmarked, setBookmarked] = useState(() => isBookmarked(card.id))
+  const [showShare, setShowShare] = useState(false)
   const isOnline = useOnlineStatus()
+  const userIsPaid = isPaid()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -111,6 +117,81 @@ export function VideoCard({ card, isCompleted, onComplete }: VideoCardProps) {
           {isCompleted ? '✓ Done' : 'Mark as done'}
         </button>
       </div>
+
+      {/* Paid user actions — bookmark + share */}
+      {userIsPaid && (
+        <div className="px-4 pb-3 flex gap-2 border-t border-apple-divider pt-3">
+          <button
+            onClick={() => setBookmarked(toggleBookmark(card.id))}
+            className="paid-action-btn flex-1"
+            aria-label={bookmarked ? 'Remove bookmark' : 'Save for later'}
+          >
+            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2">
+              <path d="M6 2a2 2 0 0 0-2 2v18l8-4 8 4V4a2 2 0 0 0-2-2H6z" />
+            </svg>
+            <span>{bookmarked ? 'Saved' : 'Save for later'}</span>
+          </button>
+          <button
+            onClick={() => setShowShare(true)}
+            className="paid-action-btn flex-1"
+            aria-label="Share this video"
+          >
+            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+            <span>Share</span>
+          </button>
+        </div>
+      )}
+
+      {/* Share modal */}
+      {showShare && <ShareModal card={card} onClose={() => setShowShare(false)} />}
+
+      {/* Credits panel — shown after completion */}
+      {isCompleted && (
+        <div className="video-credits-panel">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[11px] font-medium tracking-widest uppercase text-apple-secondary mb-0.5">
+                Video by
+              </p>
+              {card.creatorUrl ? (
+                <a
+                  href={card.creatorUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[14px] font-semibold text-apple-text hover:text-apple-orange transition-colors"
+                >
+                  {card.creator ?? 'Original Creator'} ↗
+                </a>
+              ) : (
+                <span className="text-[14px] font-semibold text-apple-text">
+                  {card.creator ?? 'Original Creator'}
+                </span>
+              )}
+            </div>
+            <a
+              href={
+                card.platform === 'youtube'
+                  ? `https://www.youtube.com/watch?v=${card.videoId}`
+                  : `https://www.tiktok.com/video/${card.videoId}`
+              }
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-[13px] font-semibold transition-colors"
+              style={{
+                border: '1px solid #d2d2d7',
+                color: '#1c2f3e',
+                background: 'white',
+              }}
+            >
+              ↺ Watch again
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

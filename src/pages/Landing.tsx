@@ -7,7 +7,7 @@ export default function Landing() {
   const isBadgeRef = searchParams.get('ref') === 'badge'
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0a1929' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f5f5f7' }}>
 
       {/* Badge referral banner */}
       {isBadgeRef && (
@@ -31,28 +31,28 @@ export default function Landing() {
       {/* CTA section */}
       <div className="flex flex-col items-center px-6 py-10 text-center stagger-1">
         <button
-          onClick={() => navigate('/learn')}
+          onClick={() => navigate('/trial')}
           className="landing-cta-btn"
           style={{ touchAction: 'manipulation' }}
         >
           START NOW
         </button>
 
-        <p className="mt-4 text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <p className="mt-4 text-[14px] leading-relaxed" style={{ color: 'rgba(28,47,62,0.5)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Handpicked lessons &middot; 3 levels &middot; No coding
         </p>
-        <p className="mt-1 text-[13px]" style={{ color: 'rgba(255,255,255,0.25)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+        <p className="mt-1 text-[13px]" style={{ color: 'rgba(28,47,62,0.38)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
           Pick your track → Learn by watching AI work
         </p>
       </div>
 
       {/* Built by */}
       <div className="flex justify-center pb-10 stagger-2">
-        <div className="flex items-center gap-2" style={{ opacity: 0.28 }}>
+        <div className="flex items-center gap-2" style={{ opacity: 0.45 }}>
           <img src="/kooky-logo.png" alt="KOOKY AI Exchange" className="w-5 h-5 rounded-full" />
           <span
             className="text-[12px] font-medium tracking-tight"
-            style={{ color: 'rgba(255,255,255,0.9)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            style={{ color: 'rgba(28,47,62,0.7)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
           >
             Built by KOOKY AI Exchange
           </span>
