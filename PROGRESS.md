@@ -22,9 +22,9 @@
 | 2: Content Layer | done | 4 | 4 | All 4 tasks complete. content.json validated, 9 real video IDs, tryItUrl patterns verified, regression passed. |
 | 3: Core Learning UI | done | 5 | 5 | All 5 tasks complete. 1 user action needed: enable anon auth in Supabase Dashboard. |
 | 4: Level Flow & Gamification | done | 5 | 5 | All tasks complete. Regression PASS on production. |
-| 5: Analytics & Polish | in progress | 4 | 5 | 5.1–5.4 done. 5.R pending. |
+| 5: Analytics & Polish | done | 5 | 5 | All tasks complete. Regression PASS. |
 | 6: E2E Testing | pending | 0 | 5 | Full multi-angle testing on production |
-| **Total** | | **25** | **29** | |
+| **Total** | | **26** | **29** | |
 
 ---
 
@@ -77,7 +77,7 @@
 | 5.2 | OG Meta Tags + Share Assets | done | main | 2026-03-06 | og-badge.png (1200×630, KOOKY brand) + full OG + Twitter Card meta tags in index.html. |
 | 5.3 | PWA Icon Generation + Manifest Polish | done | main | 2026-03-07 | All 4 icon sizes confirmed in public/icons/ + dist/icons/. icon-source.png 512×512 fully opaque. vite.config.ts manifest correct (theme/bg #1a1a2e, display standalone, both any+maskable). index.html apple-touch-icon + iOS meta tags verified. Build clean. |
 | 5.4 | Mobile Polish + vercel.json Final | done | main | 2026-03-07 | Full CSP in vercel.json (frame-src, connect-src Supabase+Vercel, worker-src blob:, media-src, font-src). viewport-fit=cover. overflow-x:hidden global guard. All buttons ≥44px (LevelNav, VideoCard, TryItButton, btn-apple-primary/outline). IOSInstallBanner safe area insets. Zero horizontal scroll at 375px+390px. Build clean. |
-| 5.R | Phase 5 Regression | pending | | | |
+| 5.R | Phase 5 Regression | done | main | 2026-03-07 | PASS. Fixes: (1) CSP fonts.googleapis.com added to style-src; (2) Google Fonts moved from CSS @import to HTML <link> (SW precache was serving stale CSP). Production: HTTP 200 ✅, all OG tags ✅, no CSP violations ✅, zero horizontal scroll ✅, all buttons ≥44px ✅, analytics_events 201 ✅, Vercel Analytics 200 ✅. Manual steps pending: Supabase SQL verify 7 event types, Twitter Card Validator. |
 
 ### Phase 6: Comprehensive E2E Testing
 
@@ -137,8 +137,20 @@
 - Phase 5 ready: YES
 
 ### Phase 5 Regression
-- Status: pending
-- Results: TBD
+- Status: done
+- Date: 2026-03-07
+- Overall: PASS (with 2 fixes applied during regression)
+- Production deploy: PASS — https://doppio.kookyos.com HTTP 200
+- OG meta tags: PASS — all 10 tags present (og:title, og:type, og:url, og:image, og:image:width/height, og:image:alt, og:site_name, og:locale, twitter:card, twitter:image)
+- og-badge.png: PASS — HTTP 200, accessible at /og-badge.png
+- viewport-fit=cover: PASS
+- CSP: PASS — frame-src youtube+tiktok, connect-src supabase+vercel analytics, no violations in console
+- Mobile layout (390px): PASS — zero horizontal scroll, all buttons ≥44px, all 3 routes correct
+- Supabase analytics_events: PASS — 201 responses confirmed in network
+- Vercel Analytics: PASS — _vercel/insights/view 200
+- Fixes applied: (1) fonts.googleapis.com added to style-src in CSP; (2) Google Fonts moved from CSS @import to HTML link tag (SW precache was caching old CSP headers)
+- Manual steps still pending: Supabase SQL Editor verify 7 event types; Twitter Card Validator
+- Phase 6 ready: YES
 
 ---
 
