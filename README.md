@@ -8,9 +8,9 @@
 
 ## Executive Summary
 
-**Doppio is an AI literacy PWA** that transforms non-technical workers — office professionals, managers, small business owners — from people who use ChatGPT like a Google search into confident AI coworkers. It takes daily practice and real dedication — but no coding, no app store, just a shareable URL you return to every day until it clicks.
+**Doppio is an AI literacy PWA based web-app** that transforms non-technical workers — office professionals, managers, small business owners — from people who use ChatGPT like a Google search into confident AI coworkers. It takes daily practice and real dedication — but no coding, no app store, just a shareable URL you return to every day until it clicks.
 
-The app guides users through **3 levels × 3 cards = 9 real-world AI demos**, each showing an actual person doing an actual task with AI — then immediately letting the user try the same thing. Watch → Try → Succeed.
+The app MVP guides users through **3 levels × 3 cards = 9 real-world AI demos**, each showing an actual person doing an actual task with AI — then immediately letting the user try the same thing. Watch → Try → Succeed.
 
 **Built entirely with AI in one day** using Claude Code + the [m2c1](https://github.com/grandamenium/m2c1) orchestration framework. The entire development pipeline — from raw idea to production PWA — was driven by Claude: 7 parallel research subagents, a 63-decision discovery document, 8 implementation skill files, and 19 of 29 tasks completed in a single session. Total API budget: $156.08. Spent to date: ~$78.
 
