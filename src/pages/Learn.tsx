@@ -71,7 +71,7 @@ export default function Learn() {
       />
 
       {/* Progress dots + label */}
-      <div className="w-full max-w-lg mx-auto px-4 pt-4 pb-1">
+      <div className="w-full max-w-lg lg:max-w-5xl mx-auto px-4 pt-4 pb-1">
         <ProgressBar
           completedCards={completedCounts[activeLevel]}
           totalCards={3}

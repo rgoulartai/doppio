@@ -11,7 +11,7 @@ interface CardListProps {
 
 export function CardList({ level, completedCards, onCardComplete }: CardListProps) {
   return (
-    <div className="flex flex-col gap-5 px-3 pt-5 pb-8 max-w-lg mx-auto w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 px-3 pt-5 pb-8 max-w-lg lg:max-w-5xl mx-auto w-full">
       {level.cards.map((card, i) => (
         <div
           key={card.id}
