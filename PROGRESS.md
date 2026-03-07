@@ -23,8 +23,8 @@
 | 3: Core Learning UI | done | 5 | 5 | All 5 tasks complete. 1 user action needed: enable anon auth in Supabase Dashboard. |
 | 4: Level Flow & Gamification | done | 5 | 5 | All tasks complete. Regression PASS on production. |
 | 5: Analytics & Polish | done | 5 | 5 | All tasks complete. Regression PASS. |
-| 6: E2E Testing | in progress | 1 | 5 | Task 6.1 done — full journey PASS |
-| **Total** | | **27** | **29** | |
+| 6: E2E Testing | in progress | 2 | 5 | Task 6.1 full journey PASS, 6.2 mobile+PWA PASS |
+| **Total** | | **28** | **29** | |
 
 ---
 
@@ -84,7 +84,7 @@
 | Task | Title | Status | Branch | Date | Notes |
 |------|-------|--------|--------|------|-------|
 | 6.1 | Full User Journey E2E | done | main | 2026-03-07 | PASS. Full journey: landing→trial→learn→L1→L2→L3→/complete. LCP 59ms. Progress persistence ✅. 16 screenshots in reports/e2e-screenshots/. Notes: (1) Trial gate new since last session; (2) Share My Badge AbortError in headless — not a prod bug; (3) badge banner copy minor diff from spec. |
-| 6.2 | Cross-Device + PWA Install Test | pending | | | |
+| 6.2 | Cross-Device + PWA Install Test | done | main | 2026-03-07 | PASS 36/36. iPhone12Pro 390px ✅, Pixel5 393px ✅, iOS banner visible+dismissable ✅, dismiss persists localStorage ✅, PWA manifest valid (standalone, icons, SW ready) ✅, offline app shell ✅. No bugs found. |
 | 6.3 | Supabase + Progress Persistence Test | pending | | | |
 | 6.4 | Analytics Verification | pending | | | |
 | 6.5 | Performance + Production Health | pending | | | |
