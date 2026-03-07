@@ -22,9 +22,9 @@
 | 2: Content Layer | done | 4 | 4 | All 4 tasks complete. content.json validated, 9 real video IDs, tryItUrl patterns verified, regression passed. |
 | 3: Core Learning UI | done | 5 | 5 | All 5 tasks complete. 1 user action needed: enable anon auth in Supabase Dashboard. |
 | 4: Level Flow & Gamification | done | 5 | 5 | All tasks complete. Regression PASS on production. |
-| 5: Analytics & Polish | in progress | 3 | 5 | 5.1 + 5.2 + 5.3 done. 5.4 + 5.R pending. |
+| 5: Analytics & Polish | in progress | 4 | 5 | 5.1–5.4 done. 5.R pending. |
 | 6: E2E Testing | pending | 0 | 5 | Full multi-angle testing on production |
-| **Total** | | **24** | **29** | |
+| **Total** | | **25** | **29** | |
 
 ---
 
@@ -76,7 +76,7 @@
 | 5.1 | Analytics Implementation | done | main | 2026-03-06 | All 7 event types wired: page_view, level_started, card_completed, try_it_clicked, level_completed, badge_shared, pwa_installed. |
 | 5.2 | OG Meta Tags + Share Assets | done | main | 2026-03-06 | og-badge.png (1200×630, KOOKY brand) + full OG + Twitter Card meta tags in index.html. |
 | 5.3 | PWA Icon Generation + Manifest Polish | done | main | 2026-03-07 | All 4 icon sizes confirmed in public/icons/ + dist/icons/. icon-source.png 512×512 fully opaque. vite.config.ts manifest correct (theme/bg #1a1a2e, display standalone, both any+maskable). index.html apple-touch-icon + iOS meta tags verified. Build clean. |
-| 5.4 | Mobile Polish + vercel.json Final | pending | | | |
+| 5.4 | Mobile Polish + vercel.json Final | done | main | 2026-03-07 | Full CSP in vercel.json (frame-src, connect-src Supabase+Vercel, worker-src blob:, media-src, font-src). viewport-fit=cover. overflow-x:hidden global guard. All buttons ≥44px (LevelNav, VideoCard, TryItButton, btn-apple-primary/outline). IOSInstallBanner safe area insets. Zero horizontal scroll at 375px+390px. Build clean. |
 | 5.R | Phase 5 Regression | pending | | | |
 
 ### Phase 6: Comprehensive E2E Testing
