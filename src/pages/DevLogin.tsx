@@ -1,6 +1,6 @@
 // DEV ONLY — remove before production launch
 import { useNavigate } from 'react-router-dom'
-import { markAsPaid } from '../lib/leads'
+import { markAsPaid as _markAsPaid } from '../lib/leads'
 
 export default function DevLogin() {
   const navigate = useNavigate()
