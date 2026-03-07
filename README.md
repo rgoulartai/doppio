@@ -4,7 +4,26 @@
 
 **Live**: [doppio.kookyos.com](https://doppio.kookyos.com) — built in a single day for the Skool Hackathon, March 6–8, 2026.
 
-This README is not just a technical spec. It documents the **entire development process** — from raw idea to production PWA — so that anyone reading this can understand how an AI-driven workflow makes a 72-hour hackathon project possible.
+---
+
+## Executive Summary
+
+**Doppio is an AI literacy PWA** that transforms non-technical workers — office professionals, managers, small business owners — from people who use ChatGPT like a Google search into confident AI coworker managers. In 20 minutes. No coding. No app store. Just a shareable URL.
+
+The app guides users through **3 levels × 3 cards = 9 real-world AI demos**, each showing an actual person doing an actual task with AI — then immediately letting the user try the same thing. Watch → Try → Succeed.
+
+**Built entirely with AI in one day** using Claude Code + the [m2c1](https://github.com/grandamenium/m2c1) orchestration framework. The entire development pipeline — from raw idea to production PWA — was driven by Claude: 7 parallel research subagents, a 63-decision discovery document, 8 implementation skill files, and 19 of 29 tasks completed in a single session. Total API budget: $156.08. Spent to date: ~$78.
+
+**The KOOKY OS angle:** Doppio is part of the KOOKY OS ecosystem. The roadmap includes connecting Doppio to **KOOKY-outlaw** — a live, self-hosted agentic AI running open-source Qwen LLM on a Hostinger VPS via Ollama. This would transform Doppio from a passive video curator into an **interactive AI learning companion** with personalized coaching, memory of your progress, and 24/7 availability via WhatsApp and Telegram — powered by infrastructure KOOKY already owns, at zero incremental API cost.
+
+This README documents not just what was built, but the **entire development process** — so anyone reading it can understand how this kind of AI-driven workflow turns a brain dump into a production app in hours, not weeks.
+
+**TL;DR for busy readers:**
+- 🎯 **What**: PWA that makes non-technical users confident AI managers in 20 minutes
+- ⚡ **How**: Claude Code + m2c1 orchestration + 7 MCP servers, one day of work
+- 💰 **Budget**: $156.08 hard cap — automated hourly credit tracking, Sonnet for building / Opus for planning
+- 🚀 **Next**: KOOKY-outlaw integration for personalized AI coaching via open-source LLM
+- 🏆 **Stakes**: Skool Hackathon, March 8, 2026 noon EST deadline, $6,000 prize
 
 ---
 
@@ -23,7 +42,8 @@ This README is not just a technical spec. It documents the **entire development 
 11. [How to Run It](#how-to-run-it)
 12. [Project Structure](#project-structure)
 13. [Background Documents](#background-documents)
-14. [Hackathon Context](#hackathon-context)
+14. [Future Updates — KOOKY-outlaw Integration](#future-updates--kooky-outlaw-integration)
+15. [Hackathon Context](#hackathon-context)
 
 ---
 
@@ -488,6 +508,74 @@ A complete walkthrough of the actual build process — every tool, command, and 
 - What would be done differently on the next project
 
 If you want to replicate this kind of AI-driven hackathon build, start here.
+
+---
+
+## Future Updates — KOOKY-outlaw Integration
+
+> **Status:** Planned — contingent on time and budget remaining after Phase 6 completion.
+
+### What Is KOOKY-outlaw?
+
+**KOOKY-outlaw** is a live, self-hosted agentic AI assistant built by KOOKY OS. It is the infrastructure backbone of the KOOKY AI ecosystem — a 24/7 always-on bot that runs in its own Docker container on a Hostinger VPS, powered by **Qwen 2.5 (14B parameter open-source LLM)** via **Ollama**, connected through a **Tailscale secure mesh VPN**.
+
+Unlike API-dependent chatbots, KOOKY-outlaw:
+- Runs entirely on **infrastructure KOOKY already owns** — no per-token API costs for inference
+- **Learns continuously** by writing its own execution skills into persistent Markdown memory files
+- **Operates proactively** via a heartbeat scheduler — it can reach out, not just respond
+- **Lives in your workflow** through Telegram (live), WhatsApp, Slack, and Discord (planned)
+- Exposes an **HTTP gateway** (`POST /webhook`) for programmatic integration from any external app
+
+As of February 2026, Sprints 0–6 are complete with 31/31 tests passing. The bot is live on Telegram, connected to a RunPod GPU for the Qwen inference layer, and running in production on the Hostinger VPS.
+
+### The Doppio Integration Vision
+
+Doppio currently has zero backend AI — it is pure static curation. That is a feature for MVP (no latency, no cost, ships fast). But it is also a ceiling.
+
+Connecting Doppio to KOOKY-outlaw breaks through that ceiling without introducing API cost:
+
+| What Changes | How |
+|---|---|
+| **Personalized coaching** | After each card, users can ask the bot a question about what they just watched. The bot responds using Qwen via Ollama — open-source, self-hosted, free at inference time. |
+| **Progress memory** | KOOKY-outlaw's SQLite conversation memory and file-based state mean the bot remembers your learning progress across sessions. It knows you completed Level 1 last Tuesday and can ask how the expense report went. |
+| **Proactive follow-up** | Via the heartbeat scheduler, the bot can message users on WhatsApp or Telegram 24 hours after completion: "You finished Doppio yesterday — have you tried the meal plan trick with your actual grocery receipt yet?" |
+| **Guided try-it support** | If a user gets stuck trying a prompt in ChatGPT or Claude, they can forward their screen to the bot and get contextual help — without leaving their AI tool of choice. |
+
+### Why This Is a KOOKY OS Selling Point
+
+Every component of this integration runs on infrastructure KOOKY already owns:
+
+- **Hostinger VPS** — already hosts the bot containers
+- **Ollama + Qwen** — already running on the RunPod GPU, zero additional model cost
+- **Tailscale** — already secured the mesh VPN between VPS and GPU
+- **HTTP Gateway** — already built (Sprint 6), accepts `POST /webhook` with `X-Gateway-Secret` auth
+
+The integration from Doppio's side is a single `fetch()` call from the React frontend to the KOOKY-outlaw HTTP gateway. No new backend, no new infrastructure, no new API keys.
+
+This is KOOKY OS as a platform in practice: one project (KOOKY-outlaw) becomes the AI brain for another (Doppio), at zero marginal cost, because the infrastructure is shared across the ecosystem.
+
+### What the Integration Would Look Like in Practice
+
+```
+User completes Level 2 in Doppio
+  → Doppio POSTs to KOOKY-outlaw HTTP gateway:
+    { "message": "User completed L2C3 — expense forms with Claude. Ask if they tried it." }
+  → KOOKY-outlaw (Qwen via Ollama) generates a contextual follow-up
+  → Response delivered via Telegram or WhatsApp
+  → User replies → multi-turn coaching conversation begins
+  → Bot writes a skill entry: "User 42 — completed Doppio L1+L2, tried expense form demo"
+```
+
+No cloud AI API costs. No new infrastructure. No new accounts. Just two KOOKY OS projects talking to each other.
+
+### Implementation Path
+
+If time and budget allow after Phase 6:
+
+1. **Expose a Doppio-specific endpoint** in KOOKY-outlaw — a named route that accepts completion events and generates coaching responses with awareness of the Doppio curriculum
+2. **Wire Doppio's analytics layer** to fire a gateway event on level/app completion (alongside existing Supabase events)
+3. **Add an opt-in flow** — user provides Telegram handle or phone number → linked to their anonymous Doppio session
+4. **Test end-to-end** — complete the Doppio flow, verify coaching message arrives via Telegram within 30 seconds
 
 ---
 
