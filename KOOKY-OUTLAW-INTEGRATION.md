@@ -1,167 +1,175 @@
-# kooky-outlaw Integration Briefing
+# kooky-outlaw Integration
 
-> **For:** Claude Code working on the Doppio project
-> **Goal:** kooky-outlaw fetches YouTube AI videos daily, ranks top 5 for non-technical learners, writes to Supabase
-> **Deadline:** MVP demo tomorrow
+> **Status:** ✅ Phase 1 implemented — 2026-03-07
+> **Live at:** `doppio.kookyos.com/ai-feed`
 
 ---
 
-## Architecture
+## What's Built
 
 ```
 kooky-outlaw (Hostinger VPS, Docker)
   LLM: qwen2.5:7b via Ollama on RunPod (Tailscale 100.90.24.91)
-  Tools: web_fetch, bash_executor
+  HTTP Gateway: port 8080, POST /webhook
     │
-    │ 1. Fetch YouTube Data API
-    │ 2. LLM ranks top 5 for non-technical learners
-    │ 3. POST results to Supabase
+    │ 1. Bot receives prompt via gateway
+    │ 2. Calls YouTube Data API (3 searches × 15 results)
+    │ 3. qwen2.5:7b ranks top 3 per level (9 total)
+    │ 4. POSTs each video to Supabase (service role key)
     ▼
-Doppio's Supabase → youtube_ai_videos table
+Supabase youtube_ai_videos table (tqknjbjvdkipszyghfgj)
     ▼
-Doppio frontend reads + displays
+Doppio /ai-feed page — reads today's rows on load
 ```
 
 ---
 
-## ⚠️ Known Limitation: HEARTBEAT.md Bug
+## VPS Gateway
 
-The heartbeat system has a mismatch between its parser and the engine prompt template:
+**Status:** ✅ Live
 
-- The parser extracts `instructions` from `- Instructions:` lines in HEARTBEAT.md
-- The engine **ignores** `instructions` — it builds the LLM prompt using `task.get('run', '')` and `task.get('purpose', '')`, which are never populated by the parser
-- Result: every heartbeat task fires with a nearly empty prompt — the bot only sees the task name
-
-**This means HEARTBEAT.md is unreliable for complex LLM tasks out of the box.**
-
-**For the MVP demo: use the HTTP Gateway instead.** It lets you send a full, explicit prompt in the request body. The bot receives it exactly as written.
-
----
-
-## Integration Path: HTTP Gateway (use this for the MVP)
-
-### Step 1 — Enable the Gateway on the VPS
-
-SSH into the VPS:
 ```bash
+# Health check
+curl http://100.94.51.9:8080/health
+# → {"status":"ok"}
+
+# SSH access
 ssh -i ~/.ssh/id_ed25519 root@100.94.51.9
-```
 
-Edit `/opt/kooky-outlaw/.env`, add/update:
-```
+# Bot directory
+/opt/kooky-outlaw/
+
+# Env vars added (2026-03-07)
 ENABLE_GATEWAY=true
-GATEWAY_SECRET=doppio-kooky-secret-2026   # pick any strong secret
+GATEWAY_SECRET=<in 1Password — "Doppio Gateway Secret">
 GATEWAY_PORT=8080
+
+# Restart
+cd /opt/kooky-outlaw && docker compose up --force-recreate -d
+
+# Logs
+cd /opt/kooky-outlaw && docker compose logs -f
 ```
 
-Restart the container:
-```bash
-cd /opt/kooky-outlaw
-docker compose up --force-recreate -d
-```
+---
 
-Verify it's up:
-```bash
-curl http://localhost:8080/health
-# Expected: {"status":"ok"}
-```
+## Supabase Table
 
-### Step 2 — Create Supabase Table (in Doppio's Supabase project)
+**Status:** ✅ Applied to production (project `tqknjbjvdkipszyghfgj`)
 
 ```sql
-CREATE TABLE youtube_ai_videos (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  fetched_at TIMESTAMPTZ DEFAULT now(),
-  rank INTEGER,
-  title TEXT,
-  channel TEXT,
-  url TEXT,
-  reason TEXT  -- why the bot ranked it for non-technical learners
+create table public.youtube_ai_videos (
+  id           uuid default gen_random_uuid() primary key,
+  session_date date not null default current_date,
+  fetched_at   timestamptz not null default now(),
+  level        smallint not null check (level between 1 and 3),
+  rank         smallint not null,
+  title        text not null,
+  channel      text not null,
+  url          text not null,
+  reason       text not null
 );
+-- Public read (anon key), bot writes via service role key (bypasses RLS)
 ```
 
-### Step 3 — The Prompt to Send
+Migration file: `supabase/migrations/002_youtube_ai_videos.sql`
 
-When Doppio calls the gateway, send this as `content`:
+---
 
-```
-Search YouTube for AI videos published in the last 7 days. Use web_fetch to call this URL:
-https://www.googleapis.com/youtube/v3/search?part=snippet&q=AI+tools+beginners+tutorial&type=video&order=viewCount&publishedAfter=SEVEN_DAYS_AGO&maxResults=20&key=YOUTUBE_API_KEY
+## Triggering the Daily Run
 
-Replace SEVEN_DAYS_AGO with the ISO 8601 date 7 days ago (e.g. 2026-03-01T00:00:00Z).
-Replace YOUTUBE_API_KEY with the actual key.
+### Credentials needed
 
-From the results, identify the 5 videos most useful for non-technical users who are new to AI — people who use ChatGPT like Google Search and want to learn to use AI as a real tool. Prioritize practical tutorials, demos, and explainers over research or developer content.
+| Credential | Where |
+|-----------|-------|
+| `YOUTUBE_API_KEY` | Google Cloud Console → APIs → YouTube Data API v3 |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Dashboard → doppio project → Settings → API |
+| `GATEWAY_SECRET` | 1Password — "Doppio Gateway Secret" |
 
-For each of the 5 selected videos, call web_fetch to POST to:
-https://SUPABASE_REF.supabase.co/rest/v1/youtube_ai_videos
-
-Headers: apikey: SUPABASE_ANON_KEY, Content-Type: application/json, Prefer: return=minimal
-Body: {"rank": N, "title": "...", "channel": "...", "url": "https://youtube.com/watch?v=VIDEO_ID", "reason": "one sentence explaining why this helps non-technical users"}
-
-Post each video one at a time. Confirm each POST succeeds (HTTP 201) before moving to the next.
-```
-
-Replace `YOUTUBE_API_KEY`, `SUPABASE_REF`, and `SUPABASE_ANON_KEY` with real values before sending.
-
-### Step 4 — Call the Gateway
+### The curl command
 
 ```bash
 curl -X POST http://100.94.51.9:8080/webhook \
   -H "Content-Type: application/json" \
-  -H "X-Gateway-Secret: doppio-kooky-secret-2026" \
+  -H "X-Gateway-Secret: GATEWAY_SECRET" \
   -d '{
-    "content": "FULL PROMPT FROM STEP 3",
-    "sender_id": "doppio"
+    "sender_id": "doppio-cron",
+    "content": "FULL_PROMPT_BELOW"
   }'
 ```
 
-Response: `{"queued": true, "message_id": "..."}` — the bot processes async. Watch logs:
-```bash
-docker compose logs -f
-```
-
-Results appear in Supabase within ~2–5 minutes (LLM + multiple web_fetch calls).
-
----
-
-## Credentials Needed
-
-| Credential | Where to get it |
-|-----------|----------------|
-| YouTube Data API v3 key | Google Cloud Console → APIs & Services → Credentials. Free tier: 10,000 units/day, search = 100 units, so 100 queries/day free. Enable "YouTube Data API v3". |
-| Supabase URL + anon key | Doppio's Supabase project → Settings → API |
-| VPS SSH key | `~/.ssh/id_ed25519` on Renato's Mac (already registered in RunPod + VPS) |
-| Gateway secret | You define it — set in VPS `.env` and match in your curl call |
-
----
-
-## For the Demo
-
-Since the gateway is fire-and-forget (no synchronous result), the demo flow is:
-
-1. **Before the demo:** Run the curl command once. Wait 2–5 minutes for results to appear in Supabase.
-2. **During the demo:** Show the Doppio frontend reading from `youtube_ai_videos` table.
-
-If you want to trigger it live during the demo, you can wrap the curl in a Doppio UI button (calls a Vercel serverless function which calls the gateway), but that's optional for MVP.
-
----
-
-## VPS Access Summary
+### The prompt (replace placeholders before sending)
 
 ```
-Hostinger VPS Tailscale IP: 100.94.51.9
-SSH: ssh -i ~/.ssh/id_ed25519 root@100.94.51.9
-Bot directory: /opt/kooky-outlaw/
-Bot .env: /opt/kooky-outlaw/.env
-Logs: cd /opt/kooky-outlaw && docker compose logs -f
-Restart: cd /opt/kooky-outlaw && docker compose up --force-recreate -d
+You are curating daily YouTube videos for Doppio, an AI literacy app for non-technical users.
+
+Search YouTube for recent AI videos using the YouTube Data API. Make three separate searches:
+
+SEARCH 1 — Level 1 Beginner (ChatGPT everyday tasks):
+URL: https://www.googleapis.com/youtube/v3/search?part=snippet&q=chatgpt+tutorial+beginners+everyday+tasks&type=video&order=viewCount&publishedAfter=SEVEN_DAYS_AGO&maxResults=15&key=YOUTUBE_API_KEY
+
+SEARCH 2 — Level 2 Intermediate (Claude computer use / delegation):
+URL: https://www.googleapis.com/youtube/v3/search?part=snippet&q=claude+computer+use+agentic+tasks&type=video&order=viewCount&publishedAfter=SEVEN_DAYS_AGO&maxResults=15&key=YOUTUBE_API_KEY
+
+SEARCH 3 — Level 3 Advanced (AI workflows, Claude + Perplexity):
+URL: https://www.googleapis.com/youtube/v3/search?part=snippet&q=claude+perplexity+AI+workflow+automation&type=video&order=viewCount&publishedAfter=SEVEN_DAYS_AGO&maxResults=15&key=YOUTUBE_API_KEY
+
+Replace SEVEN_DAYS_AGO with the ISO 8601 date 7 days ago (e.g. 2026-03-01T00:00:00Z).
+Replace YOUTUBE_API_KEY with the actual key.
+
+For each search, select the 3 best videos:
+
+LEVEL 1 rules — must show ChatGPT doing a task on screen (not just talking about it), task must be instantly recognizable to an office worker (meal planning, summarizing a doc, writing an email), no coding or developer content, prefer channels: Skill Leap AI, The Rundown AI, Matt Wolfe, under 10 minutes.
+
+LEVEL 2 rules — must show Claude's computer use or agentic capabilities specifically, video must demonstrate handing off a multi-step job (organizing files, booking something, filling a form), prefer Anthropic's official YouTube channel, no coding tutorials.
+
+LEVEL 3 rules — must show a complete workflow from raw input to polished output (receipts → expense report, research → dashboard), tools can include Claude AND/OR Perplexity, prefer Anthropic or Perplexity official channels, demonstrates multi-step chaining of tools.
+
+After selecting 3 videos per level (9 total), save each one to Supabase by making a POST request to:
+https://SUPABASE_REF.supabase.co/rest/v1/youtube_ai_videos
+
+Headers:
+  apikey: SUPABASE_SERVICE_ROLE_KEY
+  Authorization: Bearer SUPABASE_SERVICE_ROLE_KEY
+  Content-Type: application/json
+  Prefer: return=minimal
+
+Body for each video (one POST per video):
+{"level": LEVEL_NUMBER, "rank": RANK_WITHIN_LEVEL, "title": "VIDEO_TITLE", "channel": "CHANNEL_NAME", "url": "https://youtube.com/watch?v=VIDEO_ID", "reason": "One sentence: why this video helps a non-technical person at this level"}
+
+Post all 9 videos. Confirm each POST returns HTTP 201 before proceeding to the next. Log a summary when done.
 ```
+
+Replace `SUPABASE_REF` with `tqknjbjvdkipszyghfgj`.
 
 ---
 
-## After the MVP (Production Path)
+## Demo Flow
 
-Once the demo is done, the HEARTBEAT.md approach can be made to work properly — it just requires a one-line fix in kooky-outlaw's `engine.py` to use `task.get('instructions', '')` in the prompt template instead of `task.get('run', '')`. That fix lives in the kooky-outlaw repo and is a separate task.
+The gateway is fire-and-forget (async). For the demo:
 
-The gateway approach also works long-term if triggered by a daily Vercel cron function or a GitHub Actions schedule — both are free on the plans Doppio is already on.
+1. **Before the demo** — run the curl command. Wait ~2–5 min for results in Supabase.
+2. **During the demo** — navigate to `doppio.kookyos.com/ai-feed`. Video cards render grouped by level.
+3. **Or** — access Profile page → "Today's AI Videos" button.
+
+---
+
+## ⚠️ Known Issue: HEARTBEAT.md Parser Bug
+
+The heartbeat system has a mismatch — `engine.py` uses `task.get('run', '')` and `task.get('purpose', '')` for the LLM prompt, but the parser only populates `instructions`. Result: heartbeat tasks fire with nearly empty prompts.
+
+**Fix:** one-line change in `kooky-outlaw/src/kookyoutlaw/core/engine.py` — use `task.get('instructions', '')` instead of `task.get('run', '')`. Lives in the kooky-outlaw repo.
+
+**For now:** use the HTTP gateway (above) — it receives the full prompt exactly as written.
+
+---
+
+## Phase 2 Roadmap
+
+| Feature | What | Status |
+|---------|------|--------|
+| **Live content in /learn** | `fetchTodaysVideos()` replaces `content.json` in `Learn.tsx` | Planned |
+| **Daily Vercel cron** | Trigger gateway automatically at 06:00 UTC via `vercel.json` cron | Planned |
+| **Personalized coaching** | After card completion, user can ask bot a question (Qwen, zero API cost) | Planned |
+| **HEARTBEAT.md fix** | One-line engine.py fix to make scheduled runs reliable | Planned (kooky-outlaw repo) |
+| **Proactive follow-up** | Bot messages user on Telegram 24h after Doppio completion | Future |

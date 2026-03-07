@@ -78,4 +78,32 @@ Categories: `Planning` | `Research` | `Architecture` | `Content` | `Dev` | `Depl
 **[~21:46] Deploy** — Phase 4 regression PASS — production deployed to `https://doppio.kookyos.com`; full E2E Playwright verified (landing, /learn, /complete, Android banner)
 
 ---
+
+## 2026-03-07 (post-submission)
+
+**[~10:30] Dev** — Medal system: `CardList.tsx` layout polish — increased card gap to `gap-8`, added horizontal divider between cards on mobile, `pt-6 pb-10` spacing
+
+**[~10:30] Dev** — Medal system: `VideoCard.tsx` — "Video by" label renamed to "Original creator"; creator link gets `title` tooltip; fallback text changed to "Unknown"
+
+**[~10:30] Content** — `content.json` — L1C2 video updated (SlZLZRJ450M → 9qwacTcHbTw, creator: Tutorials With Alex)
+
+**[~10:30] Deploy** — `vercel.json` — `unsafe-inline` removed from `script-src` (CSP hardening); `Strict-Transport-Security` header added (HSTS max-age 1 year, includeSubDomains, preload)
+
+**[~16:00] Dev** — KOOKY-outlaw AI Feed integration — `supabase/migrations/002_youtube_ai_videos.sql` created: `youtube_ai_videos` table (level 1–3, rank, title, channel, url, reason, session_date) with RLS public-read policy
+
+**[~16:00] Dev** — KOOKY-outlaw AI Feed integration — `src/lib/youtube-ai-videos.ts` created: `fetchTodaysVideos()` queries today's rows ordered by level + rank
+
+**[~16:00] Dev** — KOOKY-outlaw AI Feed integration — `src/pages/AIFeed.tsx` created: standalone `/ai-feed` page with sticky header, loading spinner, empty state, and video cards grouped by level (🌱/⚡/🚀) with rank badge, channel, reason, and YouTube link
+
+**[~16:00] Dev** — `src/App.tsx` updated — `/ai-feed` route added
+
+**[~16:00] Dev** — `src/pages/Profile.tsx` updated — "Daily AI Videos" section added with "Today's AI Videos" button navigating to `/ai-feed`
+
+**[~16:00] Infra** — Hostinger VPS HTTP gateway enabled — `ENABLE_GATEWAY=true`, `GATEWAY_PORT=8080` added to `/opt/kooky-outlaw/.env`; port `8080:8080` published in `docker-compose.yml`; container recreated; `GET /health → {"status":"ok"}` verified
+
+**[~16:00] Deploy** — Supabase migration `002_youtube_ai_videos` applied to production project `tqknjbjvdkipszyghfgj`
+
+**[~16:15] Deploy** — Feature branch `feature/kooky-outlaw-youtube-feed` merged to `main` and pushed — build passes (126 modules, 0 TS errors)
+
+---
 <!-- Auto-commits will append entries above this line -->

@@ -455,18 +455,20 @@ Doppio/
 │   │   ├── Landing.tsx               # / — hero, CTA, badge banner
 │   │   ├── Learn.tsx                 # /learn — 3-level card flow, progress tracking
 │   │   ├── Complete.tsx              # /complete — final screen, confetti, badge share
+│   │   ├── AIFeed.tsx                # /ai-feed — daily AI videos from kooky-outlaw (added 2026-03-07)
 │   │   ├── Trial.tsx                 # /trial — trial capture (beyond MVP scope)
 │   │   ├── Payment.tsx               # /payment — Stripe gate (beyond MVP scope)
-│   │   ├── Profile.tsx               # /profile — user status (beyond MVP scope)
+│   │   ├── Profile.tsx               # /profile — user status + AI feed nav button
 │   │   ├── Bookmarks.tsx             # /bookmarks — saved videos (beyond MVP scope)
-│   │   └── DevLogin.tsx              # /dev — REMOVE before March 8 submission
+│   │   └── DevLogin.tsx              # /dev — dev utility
 │   ├── components/                   # Shared UI components
 │   ├── hooks/                        # useProgress, usePWAInstall
-│   ├── lib/                          # supabase, progress, analytics, tryit helpers
+│   ├── lib/                          # supabase, progress, analytics, tryit, youtube-ai-videos helpers
 │   └── types/                        # TypeScript interfaces
 ├── public/                           # Icons, favicon, PWA manifest, static assets
 ├── supabase/
-│   └── migrations/001_initial.sql    # Full schema (user_progress + analytics_events + RLS)
+│   ├── migrations/001_initial.sql    # Full schema (user_progress + analytics_events + RLS)
+│   └── migrations/002_youtube_ai_videos.sql  # AI video feed table + RLS (added 2026-03-07)
 ├── docs/
 │   ├── Brain Dump.md                 # Original raw idea from Perplexity brainstorm
 │   └── Step By Step.md               # Complete build walkthrough — how this was done
@@ -513,9 +515,9 @@ If you want to replicate this kind of AI-driven hackathon build, start here.
 
 ---
 
-## Future Updates — KOOKY-outlaw Integration
+## KOOKY-outlaw Integration — Daily AI Video Feed
 
-> **Status:** Planned — contingent on time and budget remaining after Phase 6 completion.
+> **Status:** ✅ Implemented — March 7, 2026. Live at `/ai-feed`.
 
 ### What Is KOOKY-outlaw?
 
@@ -530,54 +532,58 @@ Unlike API-dependent chatbots, KOOKY-outlaw:
 
 As of February 2026, Sprints 0–6 are complete with 31/31 tests passing. The bot is live on Telegram, connected to a RunPod GPU for the Qwen inference layer, and running in production on the Hostinger VPS.
 
-### The Doppio Integration Vision
+### What Was Built
 
-Doppio currently has zero backend AI — it is pure static curation. That is a feature for MVP (no latency, no cost, ships fast). But it is also a ceiling.
+The first KOOKY-outlaw → Doppio integration is live. Every day, kooky-outlaw fetches YouTube AI videos, uses its LLM (qwen2.5:7b on RunPod) to curate the top 9 for non-technical learners, and writes them to Supabase. Doppio reads them on the `/ai-feed` page — fresh every morning, zero human curation required.
 
-Connecting Doppio to KOOKY-outlaw breaks through that ceiling without introducing API cost:
-
-| What Changes | How |
-|---|---|
-| **Personalized coaching** | After each card, users can ask the bot a question about what they just watched. The bot responds using Qwen via Ollama — open-source, self-hosted, free at inference time. |
-| **Progress memory** | KOOKY-outlaw's SQLite conversation memory and file-based state mean the bot remembers your learning progress across sessions. It knows you completed Level 1 last Tuesday and can ask how the expense report went. |
-| **Proactive follow-up** | Via the heartbeat scheduler, the bot can message users on WhatsApp or Telegram 24 hours after completion: "You finished Doppio yesterday — have you tried the meal plan trick with your actual grocery receipt yet?" |
-| **Guided try-it support** | If a user gets stuck trying a prompt in ChatGPT or Claude, they can forward their screen to the bot and get contextual help — without leaving their AI tool of choice. |
-
-### Why This Is a KOOKY OS Selling Point
-
-Every component of this integration runs on infrastructure KOOKY already owns:
-
-- **Hostinger VPS** — already hosts the bot containers
-- **Ollama + Qwen** — already running on the RunPod GPU, zero additional model cost
-- **Tailscale** — already secured the mesh VPN between VPS and GPU
-- **HTTP Gateway** — already built (Sprint 6), accepts `POST /webhook` with `X-Gateway-Secret` auth
-
-The integration from Doppio's side is a single `fetch()` call from the React frontend to the KOOKY-outlaw HTTP gateway. No new backend, no new infrastructure, no new API keys.
-
-This is KOOKY OS as a platform in practice: one project (KOOKY-outlaw) becomes the AI brain for another (Doppio), at zero marginal cost, because the infrastructure is shared across the ecosystem.
-
-### What the Integration Would Look Like in Practice
-
+**The pipeline:**
 ```
-User completes Level 2 in Doppio
-  → Doppio POSTs to KOOKY-outlaw HTTP gateway:
-    { "message": "User completed L2C3 — expense forms with Claude. Ask if they tried it." }
-  → KOOKY-outlaw (Qwen via Ollama) generates a contextual follow-up
-  → Response delivered via Telegram or WhatsApp
-  → User replies → multi-turn coaching conversation begins
-  → Bot writes a skill entry: "User 42 — completed Doppio L1+L2, tried expense form demo"
+kooky-outlaw (Hostinger VPS)
+  → YouTube Data API v3 (3 searches × 15 results = 45 videos)
+  → qwen2.5:7b via Ollama on RunPod (ranks top 3 per level)
+  → Supabase youtube_ai_videos table (9 rows with session_date)
+  → Doppio /ai-feed page (fetches today's rows on load)
 ```
 
-No cloud AI API costs. No new infrastructure. No new accounts. Just two KOOKY OS projects talking to each other.
+**New files:**
+| File | What it does |
+|------|-------------|
+| `supabase/migrations/002_youtube_ai_videos.sql` | Table schema + RLS (public read, service-role write) |
+| `src/lib/youtube-ai-videos.ts` | `fetchTodaysVideos()` — queries Supabase for today's rows |
+| `src/pages/AIFeed.tsx` | `/ai-feed` page — level-grouped cards (🌱/⚡/🚀), empty state, loading state |
 
-### Implementation Path
+**Updated files:**
+- `src/App.tsx` — `/ai-feed` route
+- `src/pages/Profile.tsx` — "Today's AI Videos" button in Daily AI Videos section
 
-If time and budget allow after Phase 6:
+**Infrastructure:**
+- HTTP gateway enabled on Hostinger VPS: `ENABLE_GATEWAY=true`, port `8080` published
+- Gateway secret configured in `/opt/kooky-outlaw/.env`
+- Health endpoint: `curl http://100.94.51.9:8080/health → {"status":"ok"}`
 
-1. **Expose a Doppio-specific endpoint** in KOOKY-outlaw — a named route that accepts completion events and generates coaching responses with awareness of the Doppio curriculum
-2. **Wire Doppio's analytics layer** to fire a gateway event on level/app completion (alongside existing Supabase events)
-3. **Add an opt-in flow** — user provides Telegram handle or phone number → linked to their anonymous Doppio session
-4. **Test end-to-end** — complete the Doppio flow, verify coaching message arrives via Telegram within 30 seconds
+### Triggering the Daily Run
+
+Fire the gateway with a POST containing the YouTube + Supabase prompt:
+```bash
+curl -X POST http://100.94.51.9:8080/webhook \
+  -H "Content-Type: application/json" \
+  -H "X-Gateway-Secret: <GATEWAY_SECRET>" \
+  -d '{"sender_id": "doppio-cron", "content": "<see KOOKY-OUTLAW-INTEGRATION.md>"}'
+```
+
+Credentials needed: `YOUTUBE_API_KEY` (Google Cloud Console), `SUPABASE_SERVICE_ROLE_KEY` (Doppio project → Settings → API).
+
+### The Road Ahead
+
+This is Phase 1 of the KOOKY-outlaw ↔ Doppio integration. The video feed demonstrates the pipeline working end-to-end. The longer-term vision:
+
+| What | How |
+|------|-----|
+| **Videos replace static content** | `fetchTodaysVideos()` feeds directly into `Learn.tsx` instead of `content.json` — the learning path is live-curated |
+| **Personalized coaching** | After each card, users ask the bot questions — answered by Qwen via Ollama, zero API cost |
+| **Proactive follow-up** | Heartbeat scheduler messages users on Telegram/WhatsApp 24h after completion |
+
+Every component already exists on KOOKY infrastructure — no new services, no new accounts, no new API costs.
 
 ---
 

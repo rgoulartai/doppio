@@ -183,8 +183,27 @@ These require user action (agent cannot complete autonomously):
 
 ---
 
+---
+
+## Post-Submission: KOOKY-outlaw AI Feed (2026-03-07)
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `supabase/migrations/002_youtube_ai_videos.sql` | ✅ done | Table + RLS applied to production |
+| `src/lib/youtube-ai-videos.ts` | ✅ done | `fetchTodaysVideos()` — queries today's rows |
+| `src/pages/AIFeed.tsx` | ✅ done | `/ai-feed` page — level-grouped cards, empty + loading states |
+| `src/App.tsx` — `/ai-feed` route | ✅ done | Route added |
+| `src/pages/Profile.tsx` — nav button | ✅ done | "Today's AI Videos" button |
+| VPS HTTP gateway enabled | ✅ done | `ENABLE_GATEWAY=true`, port 8080 live, health check verified |
+| Build passes | ✅ done | `npm run build` — 126 modules, 0 TS errors |
+| Merged + pushed to main | ✅ done | Branch `feature/kooky-outlaw-youtube-feed` |
+
+**Next:** Obtain `YOUTUBE_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` → fire gateway curl → verify 9 rows in Supabase → reload `/ai-feed`
+
+---
+
 ## Blockers
 
 | Blocker | Type | Status | Resolution |
 |---------|------|--------|------------|
-| None currently | | | |
+| YouTube API key needed | credential | open | User must create key in Google Cloud Console → YouTube Data API v3 |
