@@ -45,7 +45,7 @@ export function TryItButton({ card, level, cardIndex, onTryIt }: TryItButtonProp
       <button
         onClick={() => { void handleClick() }}
         className="
-          w-full py-2.5 px-4 rounded-pill
+          w-full py-2.5 min-h-[44px] px-4 rounded-pill
           bg-apple-surface border border-apple-border
           text-apple-blue text-[15px] font-semibold
           flex items-center justify-center gap-2

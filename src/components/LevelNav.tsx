@@ -20,7 +20,7 @@ export function LevelNav({ activeLevel, completedCounts, onSelectLevel }: LevelN
             key={level}
             onClick={() => { void track('level_started', { level }); onSelectLevel(level); }}
             className={`
-              flex-1 py-3 text-[13px] font-medium
+              flex-1 py-3 min-h-[44px] text-[13px] font-medium
               flex items-center justify-center gap-1.5
               transition-colors duration-150 relative
               ${isActive

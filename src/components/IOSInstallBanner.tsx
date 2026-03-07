@@ -18,7 +18,10 @@ export function IOSInstallBanner() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-700 text-white p-4 flex items-center gap-3 shadow-xl">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-700 text-white p-4 flex items-center gap-3 shadow-xl"
+      style={{ paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))' }}
+    >
       <div className="flex-1">
         <p className="text-sm font-semibold">Install Doppio</p>
         <p className="text-xs text-gray-300 mt-0.5">
