@@ -1,9 +1,18 @@
-Start : 2:20 PM
-![[Pasted image 20260306151339.png]]
+# Doppio — Claude Credit Budget
 
-3:56 PM
-![[Pasted image 20260306155615.png]]
+Tracking Claude API credit balance throughout the hackathon build (March 6–8, 2026).
 
+---
+
+### March 6, 2026 at 2:20 PM (Session Start)
+
+![Credit Balance Session Start](screenshots/budget_2026-03-06_15-13.png)
+
+---
+
+### March 6, 2026 at 3:56 PM
+
+![Credit Balance March 6, 2026 at 3:56 PM](screenshots/budget_2026-03-06_15-56.png)
 
 ---
 
@@ -44,3 +53,9 @@ Start : 2:20 PM
 **Balance:** $85.18
 
 ![Credit Balance March 6, 2026 at 9:00 PM](screenshots/budget_2026-03-06_21-00.png)
+
+---
+
+### March 6, 2026 at 9:55 PM
+
+**Balance:** $78.78

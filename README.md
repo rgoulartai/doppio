@@ -25,8 +25,9 @@ No prompting tips. No coding. No app store. Just a shareable URL.
 11. [Claude Code Status Bar and Context Progress](#claude-code-status-bar-and-context-progress)
 12. [Full Autonomy Mode: --dangerously-skip-permissions](#full-autonomy-mode---dangerously-skip-permissions)
 13. [Project Structure](#project-structure)
-13. [Getting Started](#getting-started)
-14. [Hackathon Context](#hackathon-context)
+14. [Getting Started](#getting-started)
+15. [Background Documents](#background-documents)
+16. [Hackathon Context](#hackathon-context)
 
 ---
 
@@ -469,17 +470,20 @@ Doppio/
 ├── scripts/
 │   └── update_timeline.sh            # Auto-updates PROJECT_TIMELINE.md every 30 min
 ├── .obsidian/                        # Obsidian vault config (auto-generated)
+├── docs/
+│   ├── Brain Dump.md                 # Original raw idea document from Perplexity brainstorm
+│   └── Step By Step.md               # Session workflow notes, m2c1 rationale, UI principles
+├── screenshots/
+│   ├── budget_*.png                  # Hourly Claude credit balance screenshots
+│   └── regression/                   # Regression test evidence screenshots
 ├── .env                              # Local secrets — NEVER commit
 ├── .env.example                      # Template — always keep updated
 ├── .gitignore
-├── Brain Dump.md                     # Original raw idea document
-├── Budget.md                         # Budget constraints
+├── Budget.md                         # Claude credit budget tracker
+├── CHANGELOG.md                      # Notable changes log
 ├── PROJECT_TIMELINE.md               # Chronological project log (auto-updated)
-├── README.md                         # This file
-└── Step By Step.md                   # Session workflow notes
+└── README.md                         # This file
 ```
-
-> **Note**: The `src/` app code directory will be created during the implementation phase. The structure above reflects the planning and research phase.
 
 ---
 
@@ -549,6 +553,17 @@ vercel --prod
 Then add your environment variables in the Vercel dashboard under Project → Settings → Environment Variables.
 
 For the custom domain `doppio.kookyos.com`, add a CNAME record in your DNS provider (Hostgator) pointing to Vercel's target after Vercel provides it.
+
+---
+
+## Background Documents
+
+These documents capture the origin and process decisions behind this project. They're preserved because they show how a hackathon idea turns into a shipped product in one day using AI tooling.
+
+| Document | Purpose |
+|----------|---------|
+| [`docs/Brain Dump.md`](docs/Brain%20Dump.md) | The original raw idea — written from a Perplexity brainstorming session before any code existed. Shows the core concept, UX flow, tech stack hypothesis, and naming journey. |
+| [`docs/Step By Step.md`](docs/Step%20By%20Step.md) | The build process walkthrough — documents why m2c1 was used instead of plan mode, why Opus was chosen for PRD generation, and the Apple.com aesthetic design principles guiding the UI. |
 
 ---
 
