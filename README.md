@@ -128,11 +128,13 @@ The total setup time from first Claude prompt to a fully planned, skill-loaded, 
 
 ### Why Not Plan Mode?
 
-Claude Code has a built-in **plan mode** that pauses execution and waits for human approval before writing code. m2c1 is not used with plan mode — and that's intentional.
+Claude Code has a built-in **plan mode** that pauses execution and waits for human approval before writing code. m2c1 is not used with plan mode — and the reason is budget, not architecture.
 
-m2c1 IS a planning system. It already implements a richer, multi-phase pipeline with built-in checkpoints. Using plan mode inside m2c1 would interrupt the autonomous pipeline at every step, creating approval gates for work that m2c1 is already structuring safely. The two systems conflict: m2c1 expects to run sequentially and autonomously; plan mode expects human approval at each step.
+Plan mode in Claude Code runs on **Opus**, which is significantly more expensive per token than Sonnet. With a tight $156.08 budget for the entire hackathon, every Opus call had to count. m2c1 solves this by front-loading all the expensive reasoning (PRD generation, research, discovery, task decomposition) into a single structured pipeline — then handing off well-specified tasks to Sonnet for the actual implementation. The result: Opus is used once, strategically, to build the plan. Sonnet executes it.
 
-**Rule of thumb:** Use plan mode for ad-hoc tasks. Use m2c1 for full projects — it IS the plan mode, at a much larger scale.
+Using plan mode on top of m2c1 would have doubled the Opus token usage without adding value — m2c1 already provides the structure, checkpoints, and task clarity that plan mode is designed to create.
+
+**Rule of thumb:** Use plan mode for ad-hoc tasks when you have budget headroom. Use m2c1 when budget is tight and scope is large — it does the planning work upfront so the cheaper model can execute cleanly.
 
 The operational details of how this was set up — including the exact terminal commands, Claude session configuration, and workflow steps — are documented in **[`docs/Step By Step.md`](docs/Step%20By%20Step.md)**.
 
