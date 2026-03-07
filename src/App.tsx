@@ -9,6 +9,7 @@ import Complete from './pages/Complete'
 import Payment from './pages/Payment'
 import VideoShare from './pages/VideoShare'
 import Bookmarks from './pages/Bookmarks'
+import Profile from './pages/Profile'
 import DevLogin from './pages/DevLogin'
 import { IOSInstallBanner } from './components/IOSInstallBanner'
 import { AndroidInstallBanner } from './components/AndroidInstallBanner'
@@ -28,6 +29,7 @@ function AppRoutes() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/video/:cardId" element={<VideoShare />} />
         <Route path="/bookmarks" element={<Bookmarks />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/dev" element={<DevLogin />} />
       </Routes>
       {/* PWA install banners — platform-detected, shown after 5s delay */}
