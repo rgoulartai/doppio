@@ -1,7 +1,16 @@
 # Doppio - Implementation Progress
 
 **Target**: Sunday March 8, 2026 12:00 PM EST (Skool Hackathon submission)
-**Current Phase**: Phase 4: Level Flow & Gamification (pending)
+**Current Phase**: Phase 4: Level Flow & Gamification (in-progress — 4.1 + 4.2 done)
+
+---
+
+## Optional Polish (post Phase 4.R, if time permits)
+
+| Item | Effort | Description |
+|------|--------|-------------|
+| Checkmark-flies-to-bar animation | medium | When "Mark as done" is tapped, the checkmark icon animates toward the progress dot row (FLIP/translate animation) — inspired by Duolingo card completion |
+| Long-press card → "Share this trick" | small | `onContextMenu` / `onLongPress` → native share with card title + doppio.kookyos.com |
 
 ---
 

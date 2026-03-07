@@ -21,14 +21,15 @@ export function TryItButton({ card, level, cardIndex, onTryIt }: TryItButtonProp
     const result = await openTryIt(card)
 
     if (result.copied) {
-      toast.success(`Prompt copied! Paste it in ${toolName}`, {
+      toast.success(`Prompt copied — paste it in ${toolName}`, {
         duration: 4000,
         position: 'bottom-center',
         style: {
-          background: '#1a1a2e',
-          color: '#fff',
-          borderRadius: '12px',
+          background: '#1d1d1f',
+          color: '#f5f5f7',
+          borderRadius: '100px',
           fontSize: '14px',
+          padding: '10px 20px',
         },
       })
       setFallbackPrompt(null)
@@ -40,23 +41,30 @@ export function TryItButton({ card, level, cardIndex, onTryIt }: TryItButtonProp
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2.5">
       <button
         onClick={() => { void handleClick() }}
-        className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold flex items-center justify-center gap-2 active:scale-95 transition-transform duration-150"
+        className="
+          w-full py-2.5 px-4 rounded-pill
+          bg-apple-surface border border-apple-border
+          text-apple-blue text-[15px] font-semibold
+          flex items-center justify-center gap-2
+          active:scale-[0.97] transition-all duration-150
+          hover:border-apple-blue hover:bg-blue-50/40
+        "
         style={{ touchAction: 'manipulation' }}
         aria-label={`Try it in ${toolName}`}
       >
         <span>Try it in {toolName}</span>
-        <span aria-hidden="true">→</span>
+        <span aria-hidden="true" className="text-[13px]">↗</span>
       </button>
 
       {fallbackPrompt && (
-        <div className="rounded-lg border border-gray-700 bg-gray-800 p-3">
-          <p className="text-xs text-gray-400 mb-1 font-medium">
-            Copy this prompt and paste it in {toolName}:
+        <div className="rounded-2xl border border-apple-divider bg-apple-surface p-4">
+          <p className="text-[12px] text-apple-secondary mb-1.5 font-medium uppercase tracking-wide">
+            Copy &amp; paste in {toolName}
           </p>
-          <p className="text-sm text-gray-200 leading-relaxed select-all">
+          <p className="text-[14px] text-apple-text leading-relaxed select-all">
             {fallbackPrompt}
           </p>
         </div>

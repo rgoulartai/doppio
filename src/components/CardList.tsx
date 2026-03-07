@@ -11,9 +11,13 @@ interface CardListProps {
 
 export function CardList({ level, completedCards, onCardComplete }: CardListProps) {
   return (
-    <div className="flex flex-col gap-6 p-4 max-w-lg mx-auto w-full">
-      {level.cards.map((card) => (
-        <div key={card.id} className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5 px-3 pt-5 pb-8 max-w-lg mx-auto w-full">
+      {level.cards.map((card, i) => (
+        <div
+          key={card.id}
+          className="flex flex-col gap-2.5"
+          style={{ animation: `slideFromRight 0.35s ease ${i * 0.07}s both` }}
+        >
           <VideoCard
             card={card}
             isCompleted={completedCards[`card_${card.card}`] ?? false}

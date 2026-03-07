@@ -40,7 +40,6 @@ export default function Learn() {
 
   const handleCardComplete = (level: 1 | 2 | 3, card: 1 | 2 | 3) => {
     markComplete(level, card);
-    // Compute next state locally to avoid stale closure
     const levelKey = `level_${level}` as keyof ProgressState;
     const updated = { ...progress[levelKey], [`card_${card}`]: true } as Record<string, boolean>;
     const allDone = [1, 2, 3].every((c) => updated[`card_${c}`]);
@@ -55,7 +54,6 @@ export default function Learn() {
     if (completed !== null && completed < 3) {
       setActiveLevel((completed + 1) as 2 | 3);
     }
-    // level 3: LevelCompleteScreen handles navigation to /complete
   };
 
   const currentLevel = content.levels.find((l) => l.level === activeLevel) as Level | undefined;
@@ -64,20 +62,24 @@ export default function Learn() {
   const currentLevelProgress = progress[`level_${activeLevel}` as keyof ProgressState];
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+    <div className="min-h-screen bg-apple-bg text-apple-text flex flex-col">
       <LevelHeader totalCompleted={totalCompleted} />
       <LevelNav
         activeLevel={activeLevel}
         completedCounts={completedCounts}
         onSelectLevel={setActiveLevel}
       />
-      <div className="px-4 pt-3 pb-1 max-w-lg mx-auto w-full">
+
+      {/* Progress dots + label */}
+      <div className="w-full max-w-lg mx-auto px-4 pt-4 pb-1">
         <ProgressBar
           completedCards={completedCounts[activeLevel]}
           totalCards={3}
         />
       </div>
-      <main className="flex-1 overflow-y-auto">
+
+      {/* key={activeLevel} triggers remount → slide-from-right animation fires on every tab switch */}
+      <main key={activeLevel} className="flex-1 overflow-y-auto">
         <CardList
           level={currentLevel}
           completedCards={currentLevelProgress}

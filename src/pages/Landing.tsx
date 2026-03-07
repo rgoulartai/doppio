@@ -37,6 +37,16 @@ export default function Landing() {
         </p>
       </div>
 
+      {/* Built by */}
+      <div className="flex justify-center pb-2 stagger-2">
+        <div className="flex items-center gap-2 opacity-60">
+          <img src="/kooky-logo.png" alt="KOOKY AI Exchange" className="w-5 h-5 rounded-full" />
+          <span className="text-[12px] text-apple-secondary font-medium tracking-tight">
+            Built by KOOKY AI Exchange
+          </span>
+        </div>
+      </div>
+
       {/* Feature pills */}
       <div className="flex justify-center gap-3 px-6 pb-16 flex-wrap stagger-2">
         {['No coding', 'No prompting', 'Just natural language'].map((label) => (

@@ -41,24 +41,26 @@
   /* Apple-style primary CTA button */
   .btn-apple-primary {
     @apply inline-flex items-center justify-center gap-2
-           bg-apple-blue text-white font-semibold
-           rounded-pill px-8 py-3 text-[17px]
-           transition-all duration-150 active:scale-[0.97]
-           shadow-apple-btn;
-  }
-  .btn-apple-primary:hover {
-    background-color: #0077ed;
-  }
-
-  /* Apple-style outlined button */
-  .btn-apple-outline {
-    @apply inline-flex items-center justify-center gap-2
-           border border-apple-blue text-apple-blue font-semibold
+           text-white font-semibold
            rounded-pill px-8 py-3 text-[17px]
            transition-all duration-150 active:scale-[0.97];
+    background-color: #e8722a;
+    box-shadow: 0 1px 3px rgba(232,114,42,0.35);
+  }
+  .btn-apple-primary:hover {
+    background-color: #d4621a;
+  }
+
+  /* Outlined button */
+  .btn-apple-outline {
+    @apply inline-flex items-center justify-center gap-2
+           font-semibold rounded-pill px-8 py-3 text-[17px]
+           transition-all duration-150 active:scale-[0.97];
+    border: 1px solid #e8722a;
+    color: #e8722a;
   }
   .btn-apple-outline:hover {
-    background-color: rgba(0, 113, 227, 0.06);
+    background-color: rgba(232, 114, 42, 0.06);
   }
 
   /* Apple-style card */
@@ -80,4 +82,9 @@
 @keyframes fadeUp {
   0%   { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideFromRight {
+  0%   { opacity: 0; transform: translateX(18px); }
+  100% { opacity: 1; transform: translateX(0); }
 }

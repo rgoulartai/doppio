@@ -15,9 +15,16 @@ export function LevelHeader({ totalCompleted }: LevelHeaderProps) {
       >
         Doppio
       </Link>
-      <span className="text-[13px] text-apple-secondary font-medium tabular-nums">
-        {totalCompleted} of 9
-      </span>
+      <div className="flex items-center gap-3">
+        <span className="text-[13px] text-apple-secondary font-medium tabular-nums">
+          {totalCompleted} of 9
+        </span>
+        <img
+          src="/kooky-logo.png"
+          alt="KOOKY AI Exchange"
+          className="w-7 h-7 rounded-full"
+        />
+      </div>
     </div>
   );
 }

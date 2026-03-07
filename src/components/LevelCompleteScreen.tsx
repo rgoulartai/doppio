@@ -7,21 +7,21 @@ import toast from 'react-hot-toast';
 const LEVEL_CONFIG = {
   1: {
     emoji: '🌱',
-    headline: 'Level 1 Complete!',
+    headline: 'Level 1 complete',
     subtext: "You're thinking like an AI user. Time to delegate.",
-    ctaLabel: 'Start Level 2',
+    ctaLabel: 'Continue to Level 2',
   },
   2: {
     emoji: '⚡',
-    headline: 'Level 2 Complete!',
+    headline: 'Level 2 complete',
     subtext: "You're delegating tasks to AI. Let's go deeper.",
-    ctaLabel: 'Start Level 3',
+    ctaLabel: 'Continue to Level 3',
   },
   3: {
     emoji: '🏆',
-    headline: "You're an AI Manager! 🎉",
+    headline: "You're an AI Manager",
     subtext: 'You just transformed how you work. Forever.',
-    ctaLabel: 'See Your Badge',
+    ctaLabel: 'See your badge',
   },
 } as const;
 
@@ -37,13 +37,12 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
   const navigate = useNavigate();
   const config = LEVEL_CONFIG[level];
 
-  // Fire confetti on mount — once, imperative
   useEffect(() => {
     confetti({
-      particleCount: 100,
-      spread: 70,
+      particleCount: 90,
+      spread: 65,
       origin: { y: 0.6 },
-      colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'],
+      colors: ['#0071e3', '#34c759', '#ff9f0a', '#ff375f', '#5e5ce6'],
     });
   }, []);
 
@@ -55,7 +54,6 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
     }
   };
 
-  // Share must be called from onClick (iOS Safari requires user gesture)
   const handleShare = async () => {
     const shareData = {
       title: "I'm now an AI Manager!",
@@ -67,21 +65,32 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
         await navigator.share(shareData);
       } else {
         await navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`);
-        toast.success('Link copied! Share your progress 🎉', {
+        toast.success('Link copied — share your progress', {
           position: 'bottom-center',
-          style: { background: '#1a1a2e', color: '#fff', borderRadius: '12px' },
+          style: {
+            background: '#1d1d1f',
+            color: '#f5f5f7',
+            borderRadius: '100px',
+            fontSize: '14px',
+            padding: '10px 20px',
+          },
         });
       }
     } catch (err) {
       if ((err as Error).name !== 'AbortError') {
         await navigator.clipboard.writeText(SHARE_URL).catch(() => {});
-        toast.success('Link copied! Share your progress 🎉', {
+        toast.success('Link copied — share your progress', {
           position: 'bottom-center',
-          style: { background: '#1a1a2e', color: '#fff', borderRadius: '12px' },
+          style: {
+            background: '#1d1d1f',
+            color: '#f5f5f7',
+            borderRadius: '100px',
+            fontSize: '14px',
+            padding: '10px 20px',
+          },
         });
       }
     }
-    // Fire analytics — dynamic import so it silently fails if module not ready
     try {
       const { track } = await import('../lib/analytics');
       void track('badge_shared');
@@ -93,36 +102,55 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center p-8"
+      className="fixed inset-0 z-50 bg-apple-surface flex flex-col items-center justify-center px-8"
+      style={{ animation: 'fadeUp 0.35s ease both' }}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="text-8xl mb-6 animate-bounce" role="img" aria-label={config.headline}>
+      {/* Emoji */}
+      <div
+        className="text-[72px] mb-5 leading-none"
+        role="img"
+        aria-label={config.headline}
+        style={{ animation: 'fadeUp 0.4s ease 0.05s both' }}
+      >
         {config.emoji}
       </div>
 
-      <h1 className="text-3xl font-bold text-gray-900 text-center mb-3">
+      {/* Text */}
+      <h1
+        className="text-[28px] font-bold text-apple-text text-center tracking-tighter mb-3 leading-tight"
+        style={{ animation: 'fadeUp 0.4s ease 0.1s both' }}
+      >
         {config.headline}
       </h1>
-
-      <p className="text-lg text-gray-500 text-center mb-10 max-w-xs">
+      <p
+        className="text-[17px] text-apple-secondary text-center mb-12 max-w-xs leading-relaxed"
+        style={{ animation: 'fadeUp 0.4s ease 0.15s both' }}
+      >
         {config.subtext}
       </p>
 
-      <button
-        onClick={handleContinue}
-        className="w-full max-w-xs bg-blue-600 text-white text-lg font-semibold py-4 rounded-2xl mb-4 active:scale-95 transition-transform"
-        style={{ touchAction: 'manipulation' }}
+      {/* CTAs */}
+      <div
+        className="w-full max-w-xs flex flex-col gap-3"
+        style={{ animation: 'fadeUp 0.4s ease 0.2s both' }}
       >
-        {config.ctaLabel}
-      </button>
+        <button
+          onClick={handleContinue}
+          className="btn-apple-primary w-full"
+          style={{ touchAction: 'manipulation' }}
+        >
+          {config.ctaLabel}
+        </button>
 
-      <button
-        onClick={() => { void handleShare() }}
-        className="w-full max-w-xs border-2 border-blue-600 text-blue-600 text-lg font-semibold py-4 rounded-2xl active:scale-95 transition-transform"
-        style={{ touchAction: 'manipulation' }}
-      >
-        Share
-      </button>
+        <button
+          onClick={() => { void handleShare() }}
+          className="btn-apple-outline w-full"
+          style={{ touchAction: 'manipulation' }}
+        >
+          Share
+        </button>
+      </div>
 
       <div style={{ paddingBottom: 'env(safe-area-inset-bottom)' }} />
     </div>
