@@ -1,0 +1,82 @@
+{
+  "auth": {
+    "session_created_on_load": {
+      "pass": true,
+      "detail": "user_id=c2be5a7f-ee77-456d-ba74-6a252cade5e8"
+    },
+    "session_persists_after_progress_clear": {
+      "pass": true,
+      "detail": "uid before=c2be5a7f-ee77-456d-ba74-6a252cade5e8 | uid after=c2be5a7f-ee77-456d-ba74-6a252cade5e8 | same=True"
+    },
+    "new_user_after_full_clear": {
+      "pass": true,
+      "detail": "new uid=7fb00e9a-59f1-42c5-88bb-02b93f92c738 | old uid=c2be5a7f-ee77-456d-ba74-6a252cade5e8 | different=True"
+    },
+    "app_works_after_new_user": {
+      "pass": true,
+      "detail": "START NOW still visible after new user creation"
+    }
+  },
+  "progress_shape": {
+    "localStorage_key_exists": {
+      "pass": true,
+      "detail": "key=doppio_progress_v1 present=True"
+    },
+    "has_level_1_2_3_keys": {
+      "pass": true,
+      "detail": "keys=['level_1', 'level_2', 'level_3']"
+    },
+    "has_card_1_2_3_in_each_level": {
+      "pass": true,
+      "detail": "PASS"
+    },
+    "some_cards_completed": {
+      "pass": true,
+      "detail": "2 cards completed"
+    }
+  },
+  "progress_restore": {
+    "progress_restored_in_new_context": {
+      "pass": true,
+      "detail": "restored=2 cards | original=2"
+    },
+    "checkmarks_visible_on_restore": {
+      "pass": true,
+      "detail": "2 \u2713 Done buttons visible"
+    }
+  },
+  "supabase": {
+    "rest_api_skipped": {
+      "pass": false,
+      "detail": "No JWT session available \u2014 run manually in Supabase Dashboard"
+    }
+  },
+  "offline_sync": {
+    "learn_page_renders_offline": {
+      "pass": true,
+      "detail": "cards visible while offline"
+    },
+    "card_marked_done_offline_ui": {
+      "pass": true,
+      "detail": "\u2713 Done count=1"
+    },
+    "no_error_toast_offline": {
+      "pass": true,
+      "detail": "no error toast while offline"
+    },
+    "localStorage_written_offline": {
+      "pass": true,
+      "detail": "level_1.card_1=True"
+    },
+    "offline_sync_jwt_available": {
+      "pass": false,
+      "detail": "No JWT to verify \u2014 check manually"
+    }
+  },
+  "focus_sync": {
+    "skipped_no_jwt": {
+      "pass": false,
+      "detail": "No JWT \u2014 Test 7 requires manual Supabase insert"
+    }
+  }
+}
