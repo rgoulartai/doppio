@@ -1,38 +1,55 @@
 export function HeroVideo() {
   return (
-    <div className="relative w-full h-[58vh] min-h-[340px] overflow-hidden" style={{ backgroundColor: '#1c2f3e' }}>
-      {/* Background video */}
+    <div
+      className="relative w-full overflow-hidden"
+      style={{ backgroundColor: '#0a1929', minHeight: '68vh' }}
+    >
+      {/* Animated gradient orbs */}
+      <div className="hero-orb hero-orb-1" />
+      <div className="hero-orb hero-orb-2" />
+      <div className="hero-orb hero-orb-3" />
+
+      {/* Grain texture */}
+      <div className="hero-grain" />
+
+      {/* Background video (teaser — replace with Nano Banana) */}
       <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        autoPlay muted loop playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ opacity: 0.08 }}
         aria-hidden="true"
       >
-        {/* Replace with Nano Banana teaser when ready */}
         <source src="/teaser-placeholder.mp4" type="video/mp4" />
         <source src="/teaser-placeholder.webm" type="video/webm" />
       </video>
 
-      {/* Flat dark overlay for text contrast — no gradient */}
-      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(28,47,62,0.65)' }} />
-
-      {/* Hero text */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center">
-        <div className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 rounded-pill px-4 py-1.5 mb-5">
-          <span className="text-white/80 text-[13px] font-medium tracking-tight">
-            Bite Size daily AI knowledge
-          </span>
+      {/* Content */}
+      <div
+        className="relative flex flex-col justify-center px-7 pt-14 pb-10 max-w-lg mx-auto"
+        style={{ minHeight: '68vh', zIndex: 10 }}
+      >
+        {/* Badge */}
+        <div className="hero-badge">
+          <span className="hero-badge-pulse" />
+          Daily AI Wins
         </div>
 
-        <h1 className="text-[clamp(2rem,6vw,3.5rem)] font-bold text-white leading-[1.1] tracking-tighter mb-4 max-w-xl">
-          Go from LOST<br />to IN CONTROL
-        </h1>
+        {/* Headline */}
+        <div>
+          <div className="hero-hl-lost">
+            <span style={{ fontSize: '0.32em', fontWeight: 600, letterSpacing: '0.12em', opacity: 0.6, textTransform: 'uppercase', marginBottom: '0.15em', display: 'block', fontFamily: "'Plus Jakarta Sans', sans-serif", color: 'rgba(255,255,255,0.7)' }}>from</span>
+            LOST
+          </div>
+          <div className="hero-hl-arrow">to</div>
+          <div className="hero-hl-boss">AI BOSS</div>
+          <div className="hero-hl-sub">in 20 Minutes Flat</div>
+        </div>
 
-        <p className="text-[17px] text-white/70 font-normal max-w-sm leading-relaxed italic">
-          "One small step for men, a huge leap for mankind" — Neil Armstrong
-        </p>
+        {/* Quote */}
+        <blockquote className="hero-quote">
+          <p>"Success is the sum of small efforts,<br />repeated day in and day out."</p>
+          <cite>— Robert Collier</cite>
+        </blockquote>
       </div>
     </div>
   )

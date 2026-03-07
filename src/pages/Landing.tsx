@@ -7,13 +7,19 @@ export default function Landing() {
   const isBadgeRef = searchParams.get('ref') === 'badge'
 
   return (
-    <div className="min-h-screen bg-apple-bg text-apple-text">
+    <div className="min-h-screen" style={{ backgroundColor: '#0a1929' }}>
 
       {/* Badge referral banner */}
       {isBadgeRef && (
         <div
           data-testid="badge-banner"
-          className="w-full bg-apple-blue text-white text-[13px] font-medium py-2.5 px-4 text-center tracking-tight"
+          className="w-full text-[13px] font-medium py-2.5 px-4 text-center"
+          style={{
+            backgroundColor: 'rgba(232,114,42,0.15)',
+            borderBottom: '1px solid rgba(232,114,42,0.2)',
+            color: '#e8a570',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}
         >
           Someone completed Doppio and became an AI Manager — start your journey
         </div>
@@ -23,40 +29,34 @@ export default function Landing() {
       <HeroVideo />
 
       {/* CTA section */}
-      <div className="flex flex-col items-center px-6 py-14 text-center stagger-1">
+      <div className="flex flex-col items-center px-6 py-10 text-center stagger-1">
         <button
           onClick={() => navigate('/learn')}
-          className="btn-apple-primary w-full max-w-[280px]"
+          className="landing-cta-btn"
           style={{ touchAction: 'manipulation' }}
         >
-          Start Learning
+          START NOW
         </button>
 
-        <p className="mt-5 text-[15px] text-apple-secondary max-w-xs leading-relaxed">
-          9 curated lessons &middot; 3 levels &middot; 20 minutes
+        <p className="mt-4 text-[14px] leading-relaxed" style={{ color: 'rgba(255,255,255,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          Handpicked lessons &middot; 3 levels &middot; No coding
+        </p>
+        <p className="mt-1 text-[13px]" style={{ color: 'rgba(255,255,255,0.25)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          Pick your track → Learn by watching AI work
         </p>
       </div>
 
       {/* Built by */}
-      <div className="flex justify-center pb-2 stagger-2">
-        <div className="flex items-center gap-2 opacity-60">
+      <div className="flex justify-center pb-10 stagger-2">
+        <div className="flex items-center gap-2" style={{ opacity: 0.28 }}>
           <img src="/kooky-logo.png" alt="KOOKY AI Exchange" className="w-5 h-5 rounded-full" />
-          <span className="text-[12px] text-apple-secondary font-medium tracking-tight">
+          <span
+            className="text-[12px] font-medium tracking-tight"
+            style={{ color: 'rgba(255,255,255,0.9)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
             Built by KOOKY AI Exchange
           </span>
         </div>
-      </div>
-
-      {/* Feature pills */}
-      <div className="flex justify-center gap-3 px-6 pb-16 flex-wrap stagger-2">
-        {['No coding', 'No prompting', 'Just natural language'].map((label) => (
-          <span
-            key={label}
-            className="text-[13px] text-apple-secondary bg-white border border-apple-divider rounded-pill px-4 py-1.5 font-medium"
-          >
-            {label}
-          </span>
-        ))}
       </div>
 
     </div>
