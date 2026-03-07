@@ -4,7 +4,16 @@ import { getOrCreateAnonUser } from './auth';
 import { track } from './analytics';
 import content from '../data/content.json';
 
-const STORAGE_KEY = 'doppio_progress_v1';
+const PROGRESS_KEY = 'doppio_progress_v2';
+const MEDALS_KEY = 'doppio_medals_v1';
+
+export type MedalTier = 'bronze' | 'silver' | 'gold' | null;
+
+export interface MedalCounts {
+  bronze: number;
+  silver: number;
+  gold: number;
+}
 
 export interface ProgressState {
   level_1: { card_1: boolean; card_2: boolean; card_3: boolean };
@@ -12,139 +21,177 @@ export interface ProgressState {
   level_3: { card_1: boolean; card_2: boolean; card_3: boolean };
 }
 
-function emptyProgress(): ProgressState {
+export interface DailyProgress extends ProgressState {
+  date: string;           // 'YYYY-MM-DD' local time
+  awardedMedalTier: MedalTier; // highest medal awarded today (prevents double-celebration on reload)
+}
+
+function todayDate(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+function emptyDailyProgress(): DailyProgress {
   return {
+    date: todayDate(),
+    awardedMedalTier: null,
     level_1: { card_1: false, card_2: false, card_3: false },
     level_2: { card_1: false, card_2: false, card_3: false },
     level_3: { card_1: false, card_2: false, card_3: false },
   };
 }
 
-/**
- * Read progress from localStorage synchronously.
- * Always instant. Works offline. Returns emptyProgress() if nothing stored.
- */
-export function loadProgress(): ProgressState {
+function emptyMedalCounts(): MedalCounts {
+  return { bronze: 0, silver: 0, gold: 0 };
+}
+
+export function loadDailyProgress(): DailyProgress {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return emptyProgress();
-    // Spread over emptyProgress() ensures all keys exist even if stored data
-    // is from an older version missing some keys
-    return { ...emptyProgress(), ...JSON.parse(raw) };
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return emptyDailyProgress();
+    const stored: DailyProgress = { ...emptyDailyProgress(), ...JSON.parse(raw) };
+    if (stored.date !== todayDate()) return emptyDailyProgress(); // new day — reset
+    return stored;
   } catch {
-    return emptyProgress();
+    return emptyDailyProgress();
   }
 }
 
-function writeProgress(state: ProgressState): void {
+function writeDailyProgress(state: DailyProgress): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(state));
   } catch (err) {
-    console.error('[doppio] Failed to write progress to localStorage', err);
+    console.error('[doppio] Failed to write progress', err);
   }
+}
+
+export function loadMedals(): MedalCounts {
+  try {
+    const raw = localStorage.getItem(MEDALS_KEY);
+    if (!raw) return emptyMedalCounts();
+    return { ...emptyMedalCounts(), ...JSON.parse(raw) };
+  } catch {
+    return emptyMedalCounts();
+  }
+}
+
+function writeMedals(counts: MedalCounts): void {
+  try {
+    localStorage.setItem(MEDALS_KEY, JSON.stringify(counts));
+  } catch (err) {
+    console.error('[doppio] Failed to write medals', err);
+  }
+}
+
+const MEDAL_RANK: Record<string, number> = { bronze: 1, silver: 2, gold: 3 };
+
+export function medalRank(tier: MedalTier): number {
+  return tier ? (MEDAL_RANK[tier] ?? 0) : 0;
 }
 
 /**
- * Mark a card complete: synchronous localStorage write, then fire-and-forget Supabase upsert.
- * The UI never waits on network. Works offline.
+ * Determine the highest medal tier earned based on today's progress.
+ * Bronze = Level 1 complete today
+ * Silver = Level 1 + Level 2 complete today
+ * Gold   = All 3 levels complete today
  */
-export function markCardComplete(level: 1 | 2 | 3, card: 1 | 2 | 3): void {
-  // 1. Synchronous write — instant UI update
-  const state = loadProgress();
-  const levelKey = `level_${level}` as keyof ProgressState;
-  const cardKey = `card_${card}`;
-  (state[levelKey] as Record<string, boolean>)[cardKey] = true;
-  writeProgress(state);
+export function getMedalTier(progress: ProgressState): MedalTier {
+  const l1 = isLevelComplete(progress, 1);
+  const l2 = isLevelComplete(progress, 2);
+  const l3 = isLevelComplete(progress, 3);
+  if (l1 && l2 && l3) return 'gold';
+  if (l1 && l2) return 'silver';
+  if (l1) return 'bronze';
+  return null;
+}
 
-  // 2. Track analytics (fire-and-forget)
+/**
+ * Award a medal: increment lifetime count + record in today's progress.
+ * Safe to call multiple times — only awards if the tier is higher than already awarded today.
+ */
+export function awardMedal(tier: MedalTier): void {
+  if (!tier) return;
+  const medals = loadMedals();
+  medals[tier] += 1;
+  writeMedals(medals);
+  // Record that this tier was awarded today
+  const progress = loadDailyProgress();
+  if (medalRank(tier) > medalRank(progress.awardedMedalTier)) {
+    progress.awardedMedalTier = tier;
+    writeDailyProgress(progress);
+  }
+}
+
+export function markCardComplete(level: 1 | 2 | 3, card: 1 | 2 | 3): void {
+  const state = loadDailyProgress();
+  const levelKey = `level_${level}` as keyof ProgressState;
+  (state[levelKey] as Record<string, boolean>)[`card_${card}`] = true;
+  writeDailyProgress(state);
+
   const levelData = content.levels.find(l => l.level === level);
   const cardData = levelData?.cards.find(c => c.card === card);
   void track('card_completed', { level, card, card_title: cardData?.title ?? '' });
 
-  // 3. Fire-and-forget Supabase upsert (non-blocking)
   void (async () => {
     try {
       const user = await getOrCreateAnonUser();
-      if (!user) return; // Offline mode — skip silently
-
+      if (!user) return;
       const { error } = await supabase
         .from('user_progress')
         .upsert(
-          {
-            user_id: user.id,
-            level,
-            card,
-            completed_at: new Date().toISOString(),
-          },
-          {
-            onConflict: 'user_id,level,card',
-            ignoreDuplicates: true,
-          }
+          { user_id: user.id, level, card, completed_at: new Date().toISOString() },
+          { onConflict: 'user_id,level,card', ignoreDuplicates: true }
         );
-
       if (error) throw error;
     } catch (err) {
-      // Swallow — localStorage write already succeeded; Supabase sync retries on focus
       console.warn('[doppio] Supabase upsert failed (offline mode continues)', err);
     }
   })();
 }
 
 /**
- * Pull all completed rows from Supabase and merge into localStorage (additive union).
- * Cards are never un-completed. Safe to call multiple times.
+ * Pull today's completed rows from Supabase and merge into localStorage.
  */
 export async function syncFromSupabase(): Promise<void> {
   try {
     const user = await getOrCreateAnonUser();
     if (!user) return;
 
+    // Filter to today's completions only (UTC midnight as approximation)
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
     const { data, error } = await supabase
       .from('user_progress')
       .select('level, card')
-      .eq('user_id', user.id);
+      .eq('user_id', user.id)
+      .gte('completed_at', todayStart.toISOString());
 
     if (error) throw error;
     if (!data || data.length === 0) return;
 
-    // Merge: set any Supabase-completed cards to true in localStorage
-    const state = loadProgress();
+    const state = loadDailyProgress();
     for (const row of data) {
       const levelKey = `level_${row.level}` as keyof ProgressState;
-      const cardKey = `card_${row.card}`;
       if (levelKey in state) {
-        (state[levelKey] as Record<string, boolean>)[cardKey] = true;
+        (state[levelKey] as Record<string, boolean>)[`card_${row.card}`] = true;
       }
     }
-    writeProgress(state);
+    writeDailyProgress(state);
   } catch (err) {
-    // Swallow — app continues from localStorage
     console.warn('[doppio] Supabase sync failed (offline mode continues)', err);
   }
 }
 
-/**
- * Convenience: get completed card count for a specific level.
- */
 export function getLevelCompletedCount(state: ProgressState, level: 1 | 2 | 3): number {
   const levelKey = `level_${level}` as keyof ProgressState;
   return Object.values(state[levelKey]).filter(Boolean).length;
 }
 
-/**
- * Convenience: check if all 3 cards in a level are complete.
- */
 export function isLevelComplete(state: ProgressState, level: 1 | 2 | 3): boolean {
   return getLevelCompletedCount(state, level) === 3;
 }
 
-/**
- * Convenience: get total completed cards across all levels.
- */
 export function getTotalCompletedCount(state: ProgressState): number {
-  return (
-    getLevelCompletedCount(state, 1) +
-    getLevelCompletedCount(state, 2) +
-    getLevelCompletedCount(state, 3)
-  );
+  return getLevelCompletedCount(state, 1) + getLevelCompletedCount(state, 2) + getLevelCompletedCount(state, 3);
 }

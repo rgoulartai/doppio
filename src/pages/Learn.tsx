@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import content from '../data/content.json';
 import { useProgress } from '../hooks/useProgress';
-import type { ProgressState, } from '../lib/progress';
+import { getMedalTier, medalRank, type ProgressState, type MedalTier } from '../lib/progress';
 import type { Level } from '../types/content';
 import { LevelHeader } from '../components/LevelHeader';
 import { LevelNav } from '../components/LevelNav';
@@ -13,7 +13,14 @@ import { LevelCompleteScreen } from '../components/LevelCompleteScreen';
 
 export default function Learn() {
   const [searchParams] = useSearchParams();
-  const { progress, markComplete, totalCompleted } = useProgress();
+  const {
+    progress,
+    markComplete,
+    totalCompleted,
+    todayMedalTier,
+    awardMedal,
+    awardedMedalTier,
+  } = useProgress();
 
   const getInitialLevel = (): 1 | 2 | 3 => {
     const param = searchParams.get('level');
@@ -30,7 +37,7 @@ export default function Learn() {
   };
 
   const [activeLevel, setActiveLevel] = useState<1 | 2 | 3>(getInitialLevel);
-  const [showLevelComplete, setShowLevelComplete] = useState<1 | 2 | 3 | null>(null);
+  const [showLevelComplete, setShowLevelComplete] = useState<{ level: 1 | 2 | 3; medal: MedalTier } | null>(null);
 
   const completedCounts: Record<1 | 2 | 3, number> = {
     1: Object.values(progress.level_1).filter(Boolean).length,
@@ -40,19 +47,31 @@ export default function Learn() {
 
   const handleCardComplete = (level: 1 | 2 | 3, card: 1 | 2 | 3) => {
     markComplete(level, card);
+
+    // Compute the updated level progress manually (React state update is async)
     const levelKey = `level_${level}` as keyof ProgressState;
-    const updated = { ...progress[levelKey], [`card_${card}`]: true } as Record<string, boolean>;
-    const allDone = [1, 2, 3].every((c) => updated[`card_${c}`]);
+    const updatedLevel = { ...progress[levelKey], [`card_${card}`]: true } as Record<string, boolean>;
+    const allDone = [1, 2, 3].every((c) => updatedLevel[`card_${c}`]);
+
     if (allDone) {
-      setShowLevelComplete(level);
+      // Check if a new medal tier is reached
+      const updatedProgress: ProgressState = { ...progress, [levelKey]: updatedLevel };
+      const newTier = getMedalTier(updatedProgress);
+      const newMedal = medalRank(newTier) > medalRank(awardedMedalTier) ? newTier : null;
+
+      if (newMedal) {
+        awardMedal(newMedal); // record lifetime count + mark today's awarded tier
+      }
+
+      setShowLevelComplete({ level, medal: newMedal });
     }
   };
 
   const handleContinue = () => {
     const completed = showLevelComplete;
     setShowLevelComplete(null);
-    if (completed !== null && completed < 3) {
-      setActiveLevel((completed + 1) as 2 | 3);
+    if (completed !== null && completed.level < 3) {
+      setActiveLevel((completed.level + 1) as 2 | 3);
     }
   };
 
@@ -63,7 +82,7 @@ export default function Learn() {
 
   return (
     <div className="min-h-screen bg-apple-bg text-apple-text flex flex-col">
-      <LevelHeader totalCompleted={totalCompleted} />
+      <LevelHeader totalCompleted={totalCompleted} todayMedalTier={todayMedalTier} />
       <LevelNav
         activeLevel={activeLevel}
         completedCounts={completedCounts}
@@ -89,7 +108,8 @@ export default function Learn() {
 
       {showLevelComplete !== null && (
         <LevelCompleteScreen
-          level={showLevelComplete}
+          level={showLevelComplete.level}
+          medal={showLevelComplete.medal}
           onContinue={handleContinue}
           onShare={handleShare}
         />

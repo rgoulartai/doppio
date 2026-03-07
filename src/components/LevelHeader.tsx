@@ -2,12 +2,20 @@
 import { Link } from 'react-router-dom';
 import { isPaid } from '../lib/leads';
 import { getBookmarkedIds } from '../lib/bookmarks';
+import type { MedalTier } from '../lib/progress';
+
+const MEDAL_EMOJI: Record<NonNullable<MedalTier>, string> = {
+  bronze: '🥉',
+  silver: '🥈',
+  gold: '🏆',
+};
 
 interface LevelHeaderProps {
   totalCompleted: number;
+  todayMedalTier: MedalTier;
 }
 
-export function LevelHeader({ totalCompleted }: LevelHeaderProps) {
+export function LevelHeader({ totalCompleted, todayMedalTier }: LevelHeaderProps) {
   const paid = isPaid();
   const bookmarkCount = paid ? getBookmarkedIds().length : 0;
 
@@ -29,6 +37,17 @@ export function LevelHeader({ totalCompleted }: LevelHeaderProps) {
       </Link>
 
       <div className="flex items-center gap-3">
+        {/* Today's medal badge */}
+        {todayMedalTier && (
+          <span
+            className="text-[22px] leading-none"
+            title={`${todayMedalTier.charAt(0).toUpperCase() + todayMedalTier.slice(1)} medal earned today`}
+            aria-label={`${todayMedalTier} medal earned today`}
+          >
+            {MEDAL_EMOJI[todayMedalTier]}
+          </span>
+        )}
+
         <span className="text-[13px] text-apple-secondary font-medium tabular-nums">
           {totalCompleted} of 9
         </span>

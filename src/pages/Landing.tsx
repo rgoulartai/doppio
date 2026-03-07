@@ -49,7 +49,7 @@ export default function Landing() {
 
       {/* Built by */}
       <div className="flex justify-center pb-10 stagger-2">
-        <div className="flex items-center gap-2" style={{ opacity: 0.45 }}>
+        <div className="flex items-center gap-2">
           <img src="/kooky-logo.png" alt="KOOKY AI Exchange" className="w-5 h-5 rounded-full" />
           <span
             className="text-[12px] font-medium tracking-tight"

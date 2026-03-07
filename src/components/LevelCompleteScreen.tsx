@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import toast from 'react-hot-toast';
 import { track } from '../lib/analytics';
+import type { MedalTier } from '../lib/progress';
 
 const LEVEL_CONFIG = {
   1: {
@@ -26,30 +27,62 @@ const LEVEL_CONFIG = {
   },
 } as const;
 
+const MEDAL_CONFIG = {
+  bronze: {
+    emoji: '🥉',
+    headline: 'Bronze Medal!',
+    subtext: "You completed the Beginner level today. You're thinking like an AI user!",
+    ctaLabel: 'Continue',
+    confettiColors: ['#cd7f32', '#e8a870', '#f5d08a', '#b87333', '#ffd700'],
+  },
+  silver: {
+    emoji: '🥈',
+    headline: 'Silver Medal!',
+    subtext: "Beginner + Intermediate done today. You're delegating to AI like a pro.",
+    ctaLabel: 'Continue',
+    confettiColors: ['#c0c0c0', '#e8e8e8', '#a8a8a8', '#d4d4d4', '#ffffff'],
+  },
+  gold: {
+    emoji: '🏆',
+    headline: 'Gold Trophy!',
+    subtext: "All 3 levels done today. You're a certified AI Manager!",
+    ctaLabel: 'See your badge',
+    confettiColors: ['#ffd700', '#ffb700', '#ffa500', '#ff8c00', '#fff3b0'],
+  },
+} as const;
+
 const SHARE_URL = 'https://doppio.kookyos.com/?ref=badge';
 
 interface LevelCompleteScreenProps {
   level: 1 | 2 | 3;
+  medal: MedalTier; // null = generic level complete; non-null = medal earned
   onContinue: () => void;
   onShare: () => void;
 }
 
-export function LevelCompleteScreen({ level, onContinue, onShare }: LevelCompleteScreenProps) {
+export function LevelCompleteScreen({ level, medal, onContinue, onShare }: LevelCompleteScreenProps) {
   const navigate = useNavigate();
-  const config = LEVEL_CONFIG[level];
+  const medalCfg = medal ? MEDAL_CONFIG[medal] : null;
+  const levelCfg = LEVEL_CONFIG[level];
+
+  const emoji = medalCfg?.emoji ?? levelCfg.emoji;
+  const headline = medalCfg?.headline ?? levelCfg.headline;
+  const subtext = medalCfg?.subtext ?? levelCfg.subtext;
+  const ctaLabel = medal === 'gold' || level === 3 ? (medalCfg?.ctaLabel ?? levelCfg.ctaLabel) : (medalCfg?.ctaLabel ?? levelCfg.ctaLabel);
 
   useEffect(() => {
+    const colors = medalCfg?.confettiColors ?? ['#0071e3', '#34c759', '#ff9f0a', '#ff375f', '#5e5ce6'];
     confetti({
-      particleCount: 90,
-      spread: 65,
+      particleCount: medal ? 120 : 90,
+      spread: medal ? 80 : 65,
       origin: { y: 0.6 },
-      colors: ['#0071e3', '#34c759', '#ff9f0a', '#ff375f', '#5e5ce6'],
+      colors: [...colors],
     });
     void track('level_completed', { level });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleContinue = () => {
-    if (level === 3) {
+    if (medal === 'gold' || level === 3) {
       navigate('/complete');
     } else {
       void track('level_started', { level: (level + 1) as 2 | 3 });
@@ -104,14 +137,14 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
       style={{ animation: 'fadeUp 0.35s ease both' }}
       onClick={(e) => e.stopPropagation()}
     >
-      {/* Emoji */}
+      {/* Medal/emoji */}
       <div
-        className="text-[72px] mb-5 leading-none"
+        className="leading-none mb-5"
         role="img"
-        aria-label={config.headline}
-        style={{ animation: 'fadeUp 0.4s ease 0.05s both' }}
+        aria-label={headline}
+        style={{ fontSize: medal ? 88 : 72, animation: 'fadeUp 0.4s ease 0.05s both' }}
       >
-        {config.emoji}
+        {emoji}
       </div>
 
       {/* Text */}
@@ -119,13 +152,13 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
         className="text-[28px] font-bold text-apple-text text-center tracking-tighter mb-3 leading-tight"
         style={{ animation: 'fadeUp 0.4s ease 0.1s both' }}
       >
-        {config.headline}
+        {headline}
       </h1>
       <p
         className="text-[17px] text-apple-secondary text-center mb-12 max-w-xs leading-relaxed"
         style={{ animation: 'fadeUp 0.4s ease 0.15s both' }}
       >
-        {config.subtext}
+        {subtext}
       </p>
 
       {/* CTAs */}
@@ -138,7 +171,7 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
           className="btn-apple-primary w-full"
           style={{ touchAction: 'manipulation' }}
         >
-          {config.ctaLabel}
+          {ctaLabel}
         </button>
 
         <button

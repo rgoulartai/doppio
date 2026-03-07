@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { getLead, isPaid } from '../lib/leads'
 import { supabase } from '../lib/supabase'
+import { loadMedals } from '../lib/progress'
 
 // Set VITE_STRIPE_PORTAL_URL in .env + Vercel Dashboard
 // Create it in: Stripe Dashboard → Billing → Customer Portal
@@ -16,6 +17,7 @@ export default function Profile() {
   const [name, setName] = useState(lead?.name ?? '')
   const [email, setEmail] = useState(lead?.email ?? '')
   const [saving, setSaving] = useState(false)
+  const medals = loadMedals()
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -175,6 +177,53 @@ export default function Profile() {
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Medal Collection */}
+        <div className="bg-white rounded-2xl overflow-hidden" style={{ border: '1px solid #e8ecee' }}>
+          <div className="px-4 pt-4 pb-1">
+            <p className="text-[12px] font-semibold uppercase tracking-wider" style={{ color: 'rgba(28,47,62,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              Medal Collection
+            </p>
+          </div>
+          <div className="px-4 pb-4 pt-3 grid grid-cols-3 gap-3">
+            {([
+              { tier: 'bronze', emoji: '🥉', label: 'Bronze', count: medals.bronze },
+              { tier: 'silver', emoji: '🥈', label: 'Silver', count: medals.silver },
+              { tier: 'gold',   emoji: '🏆', label: 'Gold',   count: medals.gold },
+            ] as const).map(({ tier, emoji, label, count }) => (
+              <div
+                key={tier}
+                className="flex flex-col items-center gap-1 py-3 rounded-2xl"
+                style={{
+                  background: count > 0 ? 'rgba(0,113,227,0.04)' : '#f5f5f7',
+                  border: `1px solid ${count > 0 ? 'rgba(0,113,227,0.15)' : '#e8ecee'}`,
+                }}
+              >
+                <span style={{ fontSize: 32, opacity: count > 0 ? 1 : 0.25 }}>{emoji}</span>
+                <span
+                  className="text-[20px] font-bold tabular-nums"
+                  style={{ color: count > 0 ? '#1c2f3e' : 'rgba(28,47,62,0.25)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {count}
+                </span>
+                <span
+                  className="text-[11px] font-medium"
+                  style={{ color: 'rgba(28,47,62,0.4)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                >
+                  {label}
+                </span>
+              </div>
+            ))}
+          </div>
+          {medals.bronze === 0 && medals.silver === 0 && medals.gold === 0 && (
+            <p
+              className="text-[13px] text-center pb-4 px-4"
+              style={{ color: 'rgba(28,47,62,0.35)', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+            >
+              Complete levels today to earn medals
+            </p>
+          )}
         </div>
 
         {/* Danger zone */}

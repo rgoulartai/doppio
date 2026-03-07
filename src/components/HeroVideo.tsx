@@ -4,13 +4,6 @@ export function HeroVideo() {
       className="relative w-full overflow-hidden"
       style={{ backgroundColor: '#f5f5f7', minHeight: '68vh' }}
     >
-      {/* Animated gradient orbs */}
-      <div className="hero-orb hero-orb-1" />
-      <div className="hero-orb hero-orb-2" />
-      <div className="hero-orb hero-orb-3" />
-
-      {/* Grain texture */}
-      <div className="hero-grain" />
 
       {/* Background video (teaser — replace with Nano Banana) */}
       <video
