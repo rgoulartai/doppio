@@ -155,7 +155,7 @@ export function VideoCard({ card, isCompleted, onComplete }: VideoCardProps) {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] font-medium tracking-widest uppercase text-apple-secondary mb-0.5">
-                Video by
+                Original creator
               </p>
               {card.creatorUrl ? (
                 <a
@@ -163,12 +163,13 @@ export function VideoCard({ card, isCompleted, onComplete }: VideoCardProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[14px] font-semibold text-apple-text hover:text-apple-orange transition-colors"
+                  title={`View ${card.creator ?? 'creator'}'s channel`}
                 >
-                  {card.creator ?? 'Original Creator'} ↗
+                  {card.creator ?? 'Unknown'}
                 </a>
               ) : (
                 <span className="text-[14px] font-semibold text-apple-text">
-                  {card.creator ?? 'Original Creator'}
+                  {card.creator ?? 'Unknown'}
                 </span>
               )}
             </div>
