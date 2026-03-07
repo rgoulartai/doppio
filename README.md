@@ -1,6 +1,6 @@
 # Doppio
 
-> **"20 minutes from ChatGPT Googler to AI coworker boss — curated through crowd knowledge, no coding required."**
+> **"From ChatGPT Googler to AI coworker boss — one daily session at a time, curated through crowd knowledge, no coding required."**
 
 **Live**: [doppio.kookyos.com](https://doppio.kookyos.com) — built in a single day for the Skool Hackathon, March 6–8, 2026.
 
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-**Doppio is an AI literacy PWA** that transforms non-technical workers — office professionals, managers, small business owners — from people who use ChatGPT like a Google search into confident AI coworker managers. In 20 minutes. No coding. No app store. Just a shareable URL.
+**Doppio is an AI literacy PWA** that transforms non-technical workers — office professionals, managers, small business owners — from people who use ChatGPT like a Google search into confident AI coworkers. It takes daily practice and real dedication — but no coding, no app store, just a shareable URL you return to every day until it clicks.
 
 The app guides users through **3 levels × 3 cards = 9 real-world AI demos**, each showing an actual person doing an actual task with AI — then immediately letting the user try the same thing. Watch → Try → Succeed.
 
