@@ -105,7 +105,7 @@ export function VideoCard({ card, isCompleted, onComplete }: VideoCardProps) {
           onClick={onComplete}
           disabled={isCompleted}
           className={`
-            w-full py-2.5 rounded-pill text-[15px] font-semibold
+            w-full py-2.5 min-h-[44px] rounded-pill text-[15px] font-semibold
             transition-all duration-150 active:scale-[0.97]
             ${isCompleted
               ? 'bg-apple-green-bg text-apple-green border border-apple-green/30 cursor-default'
