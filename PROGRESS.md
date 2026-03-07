@@ -86,7 +86,7 @@
 | 6.1 | Full User Journey E2E | done | main | 2026-03-07 | PASS. Full journey: landing→trial→learn→L1→L2→L3→/complete. LCP 59ms. Progress persistence ✅. 16 screenshots in reports/e2e-screenshots/. Notes: (1) Trial gate new since last session; (2) Share My Badge AbortError in headless — not a prod bug; (3) badge banner copy minor diff from spec. |
 | 6.2 | Cross-Device + PWA Install Test | done | main | 2026-03-07 | PASS 36/36. iPhone12Pro 390px ✅, Pixel5 393px ✅, iOS banner visible+dismissable ✅, dismiss persists localStorage ✅, PWA manifest valid (standalone, icons, SW ready) ✅, offline app shell ✅. No bugs found. |
 | 6.3 | Supabase + Progress Persistence Test | done | main | 2026-03-07 | PASS 21/21. Auth session persists across progress clear ✅. localStorage shape verified ✅. DB rows match localStorage ✅. Unique constraint enforced (409) ✅. Offline card marks immediately ✅, syncs to DB on reconnect ✅. Focus sync (remote insert → localStorage) ✅. Note: full localStorage.clear() hits 429 rate limit in automated tests (not a prod bug — per D54). |
-| 6.4 | Analytics Verification | pending | | | |
+| 6.4 | Analytics Verification | done | main | 2026-03-07 | PASS. Bug found+fixed: level_started not firing from Continue buttons — added track() to LevelCompleteScreen.handleContinue. All 7 event types verified: page_view:11✅, card_completed:9✅, level_completed:3✅, try_it_clicked:3✅, badge_shared:1✅, level_started:3(full flow)✅, pwa_installed:0(expected)✅. No PII. Zero console errors. All-time: 333 page views, 82 sessions. |
 | 6.5 | Performance + Production Health | pending | | | |
 
 ---

@@ -52,6 +52,7 @@ export function LevelCompleteScreen({ level, onContinue, onShare }: LevelComplet
     if (level === 3) {
       navigate('/complete');
     } else {
+      void track('level_started', { level: (level + 1) as 2 | 3 });
       onContinue();
     }
   };
